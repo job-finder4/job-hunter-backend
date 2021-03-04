@@ -13,6 +13,7 @@ class ApprovedJobadScope implements Scope
 
     public function apply(Builder $builder, Model $model)
     {
-        return $builder->whereNotNull('approved_at');
+        $builder->whereNotNull('approved_at');
     }
 }
+

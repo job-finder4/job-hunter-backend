@@ -22,10 +22,12 @@ class Jobad extends JsonResource
                 'location' => $this->location,
                 'company_id'=>$this->user_id,
                 'description' => $this->description,
-                'salary' => $this->salary,
+                'min_salary' => $this->min_salary,
+                'max_salary' => $this->max_salary,
                 'job_time' => $this->job_time,
                 'job_type' => $this->job_type,
                 'expiration_date'=>$this->expiration_date->diffForHumans(),
+                'approved_at' => $this->approved_at,
             ]
         ];
     }

@@ -13,6 +13,6 @@ class UnExpiredJobadScope implements Scope
 
     public function apply(Builder $builder, Model $model)
     {
-        return $builder->whereDate('expiration_date', '>', now());
+        $builder->whereDate('expiration_date', '>', now());
     }
 }

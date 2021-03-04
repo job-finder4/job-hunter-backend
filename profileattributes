@@ -1,0 +1,19 @@
+location : 'city,country',
+work_experience: {
+    job_title, company_name, start_data,end_data,industry-, job_category-, job_subcategory-, job_description-
+}
+education:{
+    graduation_year, institution, field_of_study, degree
+},
+skills: {
+    skill, level
+},
+languages:{
+ language, level
+}
+phone_number,
+profile_visibility,
+
+job_preference:{
+location,job_title, work_type,salary,job_industry, job_category
+}

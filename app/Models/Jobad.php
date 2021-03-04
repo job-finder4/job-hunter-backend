@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\scopes\ApprovedJobadScope;
+use App\scopes\UnExpiredJobadScope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,6 +17,22 @@ class Jobad extends Model
     const REMOTE = 'remote';
     const ON_SITE = 'on_site';
 
-    protected $guarded = [];
-    protected $casts = ['salary' => 'array'];
+    protected $guarded = ['approved_at'];
+    protected $dates = ['expiration_date'];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new ApprovedJobadScope);
+        static::addGlobalScope(new UnExpiredJobadScope);
+    }
+
+    public function scopeUnapproved($query)
+    {
+        return $query->withoutGlobalScope(ApprovedJobadScope::class);
+    }
+
+    public function scopeExpired($query)
+    {
+        return $query->withoutGlobalScope(UnExpiredJobadScope::class);
+    }
 }
