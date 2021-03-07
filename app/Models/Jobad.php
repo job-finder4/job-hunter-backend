@@ -15,5 +15,10 @@ class Jobad extends Model
     const ON_SITE = 'on_site';
 
     protected $guarded = [];
-    protected $casts = ['salary' => 'array'];
+    protected $casts = ['salary' => 'array','expiration_date'=>'date'];
+
+    public function skills()
+    {
+        return $this->morphToMany('App\Models\Skill', 'skillable');
+    }
 }
