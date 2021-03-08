@@ -19,7 +19,7 @@ class CVTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-//        Storage::fake('local');
+        Storage::fake('local');
     }
 
     /**
@@ -138,8 +138,7 @@ class CVTest extends TestCase
         ]);
 
         $cv = Cv::first();
-        $resp = $this->call('GET', '/api/cvs/' . $cv->id . '/download'
-        );
+        $resp = $this->call('GET', '/api/cvs/' . $cv->id . '/download');
 
         $resp->assertHeader('Content-Type', 'application/pdf');
     }

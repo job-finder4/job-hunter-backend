@@ -20,8 +20,6 @@ class AddSkillsTest extends TestCase
 
     public function an_admin_can_add_new_skills()
     {
-//        $this->withoutExceptionHandling();
-
         $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
 
         $response = $this->post('/api/skills', [
@@ -47,7 +45,6 @@ class AddSkillsTest extends TestCase
      */
     public function a_skill_cannot_be_created_without_a_name_field()
     {
-//        $this->withoutExceptionHandling();
         $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
 
         $response = $this->post('/api/skills', [

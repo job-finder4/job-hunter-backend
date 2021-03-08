@@ -2,24 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5876c416-d87e-460e-899b-1701e34c2c63" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vers8-app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vers8-app.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Exceptions/Handler.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exceptions/Handler.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/JobadController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/JobadController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Resources/Jobad.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Resources/Jobad.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Jobad.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Jobad.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bootstrap/app.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bootstrap/cache/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/auth.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/auth.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Feature/CompanyProfileTest.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Feature/CreateJobTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/CreateJobTest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Feature/UserProfileTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/q.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/AddSkillsTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/AddSkillsTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/CVTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/CVTest.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -254,7 +240,7 @@
       <workItem from="1615012635109" duration="5721000" />
       <workItem from="1615020734068" duration="3172000" />
       <workItem from="1615035608520" duration="7315000" />
-      <workItem from="1615098755757" duration="2169000" />
+      <workItem from="1615098755757" duration="2729000" />
     </task>
     <servers />
   </component>
