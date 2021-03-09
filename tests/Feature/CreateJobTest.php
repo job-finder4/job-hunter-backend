@@ -45,10 +45,8 @@ class CreateJobTest extends TestCase
         $this->withoutExceptionHandling();
         $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
 
-
         $response = $this->post('/api/jobads', $this->getJobDetails())
             ->assertStatus(201);
-
 
         $job = \App\Models\Jobad::first();
         $this->assertNotNull($job);

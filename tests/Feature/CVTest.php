@@ -14,6 +14,8 @@ use Tests\TestCase;
 
 class CVTest extends TestCase
 {
+
+
     use RefreshDatabase;
 
     protected function setUp(): void
@@ -21,6 +23,10 @@ class CVTest extends TestCase
         parent::setUp();
         Storage::fake('local');
     }
+
+    /**
+     * @group dani
+     */
 
     /**
      * @test
@@ -40,7 +46,7 @@ class CVTest extends TestCase
         ])->assertStatus(201);
 
         $uniqueName = 'cvs/' . $user->id . '/' . $file->getClientOriginalName();
-        Storage::disk('public')->assertExists($uniqueName);
+        Storage::disk('local')->assertExists($uniqueName);
 
         $cv = Cv::first();
         $this->assertCount(1, Cv::all());
