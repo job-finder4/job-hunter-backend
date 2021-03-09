@@ -1,10 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="5876c416-d87e-460e-899b-1701e34c2c63" name="Default Changelist" comment="">
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+=======
+      <change afterPath="$PROJECT_DIR$/app/Profile/Education.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Profile/UserProfile.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Profile/WorkExperience.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/scopes/ApprovedJobadScope.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/scopes/UnExpiredJobadScope.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vers8-app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vers8-app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Exceptions/Handler.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exceptions/Handler.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/JobadController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/JobadController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Resources/Jobad.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Resources/Jobad.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Jobad.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Jobad.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Traits/Company.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Traits/Company.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Traits/JobSeeker.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Traits/JobSeeker.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/auth.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/auth.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/factories/JobadFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/factories/JobadFactory.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_02_16_143446_create_jobads_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_02_16_143446_create_jobads_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/CreateJobTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/CreateJobTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/UserProfileTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/UserProfileTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Unit/ExampleTest.php" beforeDir="false" />
+>>>>>>> origin/add_retrieve_jobs_approved_feautere
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -12,9 +41,7 @@
   </component>
   <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
-    <execution>
-      <executable />
-    </execution>
+    <execution />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -158,6 +185,10 @@
       <path value="$PROJECT_DIR$/vendor/brick/math" />
       <path value="$PROJECT_DIR$/vendor/tijsverkoyen/css-to-inline-styles" />
       <path value="$PROJECT_DIR$/vendor/nyholm/psr7" />
+<<<<<<< HEAD
+=======
+      <path value="$PROJECT_DIR$/vendor/lcobucci/clock" />
+>>>>>>> origin/add_retrieve_jobs_approved_feautere
       <path value="$PROJECT_DIR$/vendor/kalnoy/nestedset" />
     </include_path>
   </component>
@@ -173,6 +204,10 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/storage/app/public" />
     <property name="nodejs_package_manager_path" value="npm" />
+<<<<<<< HEAD
+=======
+    <property name="php.override.implement.member.chooser.php.doc" value="NONE" />
+>>>>>>> origin/add_retrieve_jobs_approved_feautere
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -188,25 +223,13 @@
       <recent name="$PROJECT_DIR$/app/Traits" />
     </key>
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
   <component name="RunManager">
     <configuration name="phpunit.xml" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
       <TestRunner scope="XML" />
       <method v="2" />
     </configuration>
   </component>
-  <component name="SpellCheckerSettings" BundledDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -222,6 +245,7 @@
       <workItem from="1613657747776" duration="1796000" />
       <workItem from="1613659559050" duration="307000" />
       <workItem from="1613736400905" duration="8138000" />
+<<<<<<< HEAD
       <workItem from="1614255601892" duration="10996000" />
       <workItem from="1614360859529" duration="14728000" />
       <workItem from="1614409106073" duration="5307000" />
@@ -242,23 +266,63 @@
       <workItem from="1615201542608" duration="7127000" />
       <workItem from="1615276318605" duration="798000" />
       <workItem from="1615290676671" duration="1307000" />
+=======
+      <workItem from="1614255601892" duration="2362000" />
+      <workItem from="1614259193303" duration="1243000" />
+      <workItem from="1614260652072" duration="1677000" />
+      <workItem from="1614262468267" duration="1089000" />
+      <workItem from="1614364322966" duration="1662000" />
+      <workItem from="1614366253541" duration="1391000" />
+      <workItem from="1614368099791" duration="1455000" />
+      <workItem from="1614408427976" duration="1740000" />
+      <workItem from="1614410228823" duration="1761000" />
+      <workItem from="1614412018260" duration="1796000" />
+      <workItem from="1614426692935" duration="1802000" />
+      <workItem from="1614428519921" duration="1795000" />
+      <workItem from="1614430334637" duration="1639000" />
+      <workItem from="1614453845965" duration="227000" />
+      <workItem from="1614677690283" duration="1727000" />
+      <workItem from="1614679499108" duration="1761000" />
+      <workItem from="1614681280587" duration="237000" />
+      <workItem from="1614695914187" duration="136000" />
+      <workItem from="1614696054213" duration="175000" />
+      <workItem from="1614711183111" duration="86000" />
+      <workItem from="1614774358051" duration="101000" />
+      <workItem from="1614774709976" duration="637000" />
+      <workItem from="1614775402313" duration="868000" />
+      <workItem from="1614776493883" duration="823000" />
+      <workItem from="1614777522762" duration="1516000" />
+      <workItem from="1614779564150" duration="1776000" />
+      <workItem from="1614781368378" duration="1254000" />
+      <workItem from="1614783230996" duration="1831000" />
+      <workItem from="1614785082642" duration="1079000" />
+      <workItem from="1614789786949" duration="1034000" />
+      <workItem from="1614791588679" duration="1794000" />
+      <workItem from="1614793399687" duration="1795000" />
+      <workItem from="1614798254852" duration="1795000" />
+      <workItem from="1614800102355" duration="1569000" />
+      <workItem from="1614801914343" duration="400000" />
+>>>>>>> origin/add_retrieve_jobs_approved_feautere
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

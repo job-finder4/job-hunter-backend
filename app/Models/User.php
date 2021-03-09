@@ -51,4 +51,5 @@ class User extends Authenticatable
     public function cvs() {
         return $this->hasMany(Cv::class);
     }
+
 }

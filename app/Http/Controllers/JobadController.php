@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\MyModelNotFoundException;
+use App\Http\Resources\JobadCollection;
 use App\Models\Jobad;
 use App\Http\Resources\Jobad as JobadResource;
 use App\Models\Skill;
@@ -27,11 +28,9 @@ class JobadController extends Controller
             'job_time' => '',
             'location' => '',
             'expiration_date' => '',
-            'skills' => 'required'
+            'skills' => 'required',
+            'approved_at' => ''
         ]);
-
-        $salary = ['min_salary' => $data['min_salary'], 'max_salary' => $data['max_salary']];
-        $data['salary'] = $salary;
 
         $skills = $data['skills'];
 
@@ -40,14 +39,19 @@ class JobadController extends Controller
             Skill::findOrFail($skill['id']);
             $skillsIds[] = $skill['id'];
         }
-
-        $data = Arr::except($data, ['min_salary', 'max_salary', 'skills']);
+        $data = Arr::except($data, ['skills']);
 
         $jobad = auth()->user()->jobads()->create($data);
         $jobad->skills()->attach($skillsIds);
+        return response()->json(new JobadResource($job), 201);
 
-        return new JobadResource($jobad);
     }
+
+    public function index()
+    {
+        return response(new JobadCollection(Jobad::get()), 200);
+    }
+
 
     public function update(Request $request, Jobad $jobad)
     {
@@ -64,8 +68,8 @@ class JobadController extends Controller
             'skills' => 'required'
         ]);
 
-        if($request->company_id!=$jobad->company_id){
-            return response([],404);
+        if ($request->company_id != $jobad->company_id) {
+            return response([], 404);
         }
 
         if ($request->has('skills')) {

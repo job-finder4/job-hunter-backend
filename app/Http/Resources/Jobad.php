@@ -28,6 +28,7 @@ class Jobad extends JsonResource
                     'job_type' => $this->job_type,
                     'expiration_date' => $this->expiration_date->diffForHumans(),
                     'skills' => new SkillCollection($this->skills),
+                    'approved_at' => $this->approved_at,
                 ]
             ]
         ];

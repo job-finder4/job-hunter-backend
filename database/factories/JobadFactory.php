@@ -49,4 +49,15 @@ class JobadFactory extends Factory
             ];
         });
     }
+
+    public function expired()
+    {
+
+        return $this->state(function (array $attributes){
+           return [
+               'expiration_date' => now()->subMonth()
+           ];
+        });
+    }
+
 }

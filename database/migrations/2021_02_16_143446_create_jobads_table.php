@@ -18,7 +18,8 @@ class CreateJobadsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->string('title');
             $table->text('description');
-            $table->string('salary');
+            $table->unsignedMediumInteger('min_salary');
+            $table->unsignedMediumInteger('max_salary');
             $table->string('job_type');
             $table->string('job_time');
             $table->string('location');
