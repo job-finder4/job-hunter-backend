@@ -4,21 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5876c416-d87e-460e-899b-1701e34c2c63" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/UserProfileController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserProfileController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Profile.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Profile.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Profile/Education.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Profile/Education.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Profile/UserProfile.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Profile/UserProfile.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Profile/WorkExperience.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Profile/WorkExperience.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Traits/JobSeeker.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Traits/JobSeeker.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_03_03_174056_create_profiles_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_03_03_174056_create_profiles_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Feature/EducationClassTest.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Feature/UserProfileTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/UserProfileTest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Unit/EducationClassTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Unit/EducationClassTest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Unit/WorkExperienceClassTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Unit/WorkExperienceClassTest.php" afterDir="false" />
-    </list>
+    <list default="true" id="31fcb2e2-0ebe-43d2-82e0-dd2bf6384c81" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -26,7 +12,9 @@
   </component>
   <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
-    <execution />
+    <execution>
+      <executable />
+    </execution>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -195,13 +183,25 @@
       <recent name="$PROJECT_DIR$/app/Traits" />
     </key>
   </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
   <component name="RunManager">
     <configuration name="phpunit.xml" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
       <TestRunner scope="XML" />
       <method v="2" />
     </configuration>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpellCheckerSettings" BundledDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -274,12 +274,13 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
