@@ -6,7 +6,7 @@ use App\Profile\UserProfile;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Cv extends Model
+class Profile extends Model
 {
     use HasFactory;
 
@@ -43,5 +43,6 @@ class Cv extends Model
     {
         $this->attributes['details'] = serialize($value);
     }
+
 
 }

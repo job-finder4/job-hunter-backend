@@ -44,12 +44,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function jobads() {
-        return $this->hasMany(Jobad::class);
-    }
 
-    public function cvs() {
-        return $this->hasMany(Cv::class);
-    }
+
 
 }

@@ -98,23 +98,5 @@ class UpdateJobTest extends TestCase
             ])
             ->assertStatus(422);
     }
-    /**
-     * @test
-     */
-    public function a_job_ad_cannot_be_updated_with_null_()
-    {
-        $this->seed(SkillSeeder::class);
-
-        $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
-
-        $jobad = Jobad::factory()->create();
-
-        $response = $this->put('/api/jobads/' . $jobad->id,
-            [
-                'title' => null,
-            ])
-            ->assertStatus(422);
-    }
-
 
 }
