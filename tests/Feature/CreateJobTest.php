@@ -114,33 +114,33 @@ class CreateJobTest extends TestCase
                     'data' => [
                         'id' => $approved_job->id,
                         'type' => 'jobads',
-//                    'attributes' => [
-////                        'skills' => [
-////                            'data' =>
-////                                [
-////                                    [
-////                                        'data' => [
-////                                            'type' => 'skills',
-////                                            'id' => $skill1->id,
-////                                            'attributes' => [
-////                                                'name' => $skill1->name,
-////                                                'parent_id' => $skill1->parent_id
-////                                            ]
-////                                        ]
-////                                    ],
-////                                    [
-////                                        'data' => [
-////                                            'type' => 'skills',
-////                                            'id' => $skill2->id,
-////                                            'attributes' => [
-////                                                'name' => $skill2->name,
-////                                                'parent_id' => $skill2->parent_id
-////                                            ]
-////                                        ]
-////                                    ]
-////                                ]
-////                        ]
-//                    ],
+                        'attributes' => [
+                            'skills' => [
+                                'data' =>
+                                    [
+                                        [
+                                            'data' => [
+                                                'type' => 'skills',
+                                                'id' => $skill1->id,
+                                                'attributes' => [
+                                                    'name' => $skill1->name,
+                                                    'parent_id' => $skill1->parent_id
+                                                ]
+                                            ]
+                                        ],
+                                        [
+                                            'data' => [
+                                                'type' => 'skills',
+                                                'id' => $skill2->id,
+                                                'attributes' => [
+                                                    'name' => $skill2->name,
+                                                    'parent_id' => $skill2->parent_id
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                            ]
+                        ],
                     ]
                 ]
             ]

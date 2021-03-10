@@ -54,20 +54,18 @@ class JobadController extends Controller
 
     public function update(Request $request, Jobad $jobad)
     {
-
         $data = $request->validate([
-            'title' => '',
+            'title' => 'required',
             'description' => '',
             'min_salary' => '',
             'max_salary' => '',
             'job_type' => '',
             'job_time' => '',
             'location' => '',
-            'expiration_date' => '',
             'skills' => 'required'
         ]);
 
-        if ($request->has('skills')) {
+        if (isset($data['skills'])) {
             $skills = $data['skills'];
             $skillsIds = [];
 
@@ -82,9 +80,9 @@ class JobadController extends Controller
         $data = Arr::except($data, ['skills']);
         $jobad->update($data);
 
-        if(!$jobad->isDirty()){
-            return response()->json(['message'=>'there is no change'], 204);
-        }
+//        if(!$jobad->isDirty()){
+//            return response()->json(['message'=>'there is no change'], 204);
+//        }
         return response(new JobadResource($jobad->refresh()), 200);
     }
 

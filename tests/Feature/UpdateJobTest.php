@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Jobad;
 use App\Models\Skill;
 use Database\Seeders\SkillSeeder;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Arr;
@@ -30,7 +31,6 @@ class UpdateJobTest extends TestCase
             'location' => 'london',
             'job_type' => 'remote',
             'job_time' => 'part_time',
-            'expiration_date' => now()->addMonth(),
             'skills' => Skill::take(2)->get(),
         ];
     }
@@ -60,25 +60,61 @@ class UpdateJobTest extends TestCase
                     'max_salary' => 1500,
                     'job_time' => 'part_time',
                     'job_type' => 'remote',
-                    'expiration_date' => now()->addMonth()->diffForHumans(),
                 ],
             ]
         ]);
     }
 
+//    /**
+//     * @test
+//     */
+//    public function no_change_update_should_return_204()
+//    {
+//        $this->withoutExceptionHandling();
+//
+//        $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
+//
+//        $jobad = Jobad::factory()->create(Arr::except($this->getJobDetails(), 'skills'));
+//        $jobad->skills()->attach(Skill::where('id',1)->first()->id);
+//
+//        $response = $this->put('/api/jobads/' . $jobad->id, $this->getJobDetails())
+//            ->assertStatus(204);
+//    }
+
     /**
      * @test
      */
-    public function no_change_update_should_return_204()
+    public function a_job_ad_cannot_be_updated_with_null_title()
     {
-        $this->withoutExceptionHandling();
+        $this->seed(SkillSeeder::class);
 
         $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
 
-        $jobad = Jobad::factory()->create(Arr::except($this->getJobDetails(), 'skills'));
-        $jobad->skills()->attach(Skill::where('id',1)->first()->id);
+        $jobad = Jobad::factory()->create();
 
-        $response = $this->put('/api/jobads/' . $jobad->id, $this->getJobDetails())
-            ->assertStatus(204);
+        $response = $this->put('/api/jobads/' . $jobad->id,
+            [
+                'title' => null,
+            ])
+            ->assertStatus(422);
     }
+    /**
+     * @test
+     */
+    public function a_job_ad_cannot_be_updated_with_null_()
+    {
+        $this->seed(SkillSeeder::class);
+
+        $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
+
+        $jobad = Jobad::factory()->create();
+
+        $response = $this->put('/api/jobads/' . $jobad->id,
+            [
+                'title' => null,
+            ])
+            ->assertStatus(422);
+    }
+
+
 }
