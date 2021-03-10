@@ -17,6 +17,7 @@ class CreateProfilesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('details')->nullable();
+            $table->boolean('visible')->default(true);
             $table->timestamps();
         });
     }

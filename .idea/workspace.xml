@@ -5,30 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5876c416-d87e-460e-899b-1701e34c2c63" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Profile/Education.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Profile/UserProfile.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Profile/WorkExperience.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/scopes/ApprovedJobadScope.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/scopes/UnExpiredJobadScope.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vers8-app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vers8-app.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Exceptions/Handler.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exceptions/Handler.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/JobadController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/JobadController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Resources/Jobad.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Resources/Jobad.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Jobad.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Jobad.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Traits/Company.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Traits/Company.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/UserProfileController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserProfileController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Profile.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Profile.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Profile/Education.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Profile/Education.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Profile/UserProfile.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Profile/UserProfile.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Profile/WorkExperience.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Profile/WorkExperience.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Traits/JobSeeker.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Traits/JobSeeker.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/auth.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/auth.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/factories/JobadFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/factories/JobadFactory.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_02_16_143446_create_jobads_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_02_16_143446_create_jobads_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_03_03_174056_create_profiles_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_03_03_174056_create_profiles_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Feature/CreateJobTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/CreateJobTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/EducationClassTest.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/Feature/UserProfileTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/UserProfileTest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Unit/ExampleTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Unit/EducationClassTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Unit/EducationClassTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Unit/WorkExperienceClassTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Unit/WorkExperienceClassTest.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -263,6 +252,17 @@
       <workItem from="1614798254852" duration="1795000" />
       <workItem from="1614800102355" duration="1569000" />
       <workItem from="1614801914343" duration="400000" />
+      <workItem from="1614834917568" duration="1431000" />
+      <workItem from="1614862983285" duration="1745000" />
+      <workItem from="1614864848749" duration="1830000" />
+      <workItem from="1614866757222" duration="1789000" />
+      <workItem from="1614868655970" duration="306000" />
+      <workItem from="1615281422186" duration="204000" />
+      <workItem from="1615291080949" duration="10209000" />
+      <workItem from="1615315344310" duration="2814000" />
+      <workItem from="1615356079061" duration="5755000" />
+      <workItem from="1615372803425" duration="5105000" />
+      <workItem from="1615379599477" duration="3682000" />
     </task>
     <servers />
   </component>

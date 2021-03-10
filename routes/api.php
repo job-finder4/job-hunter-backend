@@ -6,4 +6,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiresource('/jobs',JobadController::class);
 
-Route::apiResource('/user/{user}', UserProfileController::class);
+Route::apiResource('/user/{user}/profile', UserProfileController::class);
