@@ -20,23 +20,32 @@ class AddSkillsTest extends TestCase
 
     public function an_admin_can_add_new_skills()
     {
+        $this->withoutExceptionHandling();
+
+
         $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
 
-        $response = $this->post('/api/skills', [
+        $this->post('/api/skills', [
             'name' => 'Laravel'
         ])->assertStatus(201);
 
+        $response = $this->get('api/skills')->assertStatus(200);
+
         $skill = Skill::first();
-        $this->assertNotNull($skill);
 
         $response->assertJson([
             'data' => [
-                'type' => 'skills',
-                'id' => $skill->id,
-                'attributes' => [
-                    'name' => 'Laravel',
+                [
+                    'data' => [
+                        'type' => 'skills',
+                        'id' => $skill->id,
+                        'attributes' => [
+                            'name' => $skill->name,
+                        ]
+                    ]
                 ]
             ]
+
         ]);
     }
 

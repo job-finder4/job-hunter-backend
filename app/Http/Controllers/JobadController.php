@@ -43,15 +43,14 @@ class JobadController extends Controller
 
         $jobad = auth()->user()->jobads()->create($data);
         $jobad->skills()->attach($skillsIds);
-        return response()->json(new JobadResource($job), 201);
 
+        return response()->json(new JobadResource($jobad), 201);
     }
 
     public function index()
     {
         return response(new JobadCollection(Jobad::get()), 200);
     }
-
 
     public function update(Request $request, Jobad $jobad)
     {
@@ -68,10 +67,6 @@ class JobadController extends Controller
             'skills' => 'required'
         ]);
 
-        if ($request->company_id != $jobad->company_id) {
-            return response([], 404);
-        }
-
         if ($request->has('skills')) {
             $skills = $data['skills'];
             $skillsIds = [];
@@ -84,31 +79,12 @@ class JobadController extends Controller
             $jobad->skills()->sync($skillsIds);
         }
 
-        $data = Arr::except($data, ['min_salary', 'max_salary', 'skills']);
+        $data = Arr::except($data, ['skills']);
         $jobad->update($data);
 
-//        $title = $request->title;
-//        $description = $request->description;
-//        $min_salary = $request->min_salary;
-//        $max_salary = $request->max_salary;
-//        $job_type = $request->job_type;
-//        $job_time = $request->job_time;
-//        $location = $request->location;
-//        $expiration_date = $request->expiration_date;
-//        $skills = $request->skills;
-
-//        $jobad->update([
-//            'title' => $title,
-//            'description' => $description,
-//            'min_salary' => $min_salary,
-//            'max_salary' => $max_salary,
-//            'job_type' => $job_type,
-//            'job_time' => $job_time,
-//            'location' => $location,
-//            'expiration_date' => $expiration_date,
-//            'skills' => $skills,
-//        ]);
-
+        if(!$jobad->isDirty()){
+            return response()->json(['message'=>'there is no change'], 204);
+        }
         return response(new JobadResource($jobad->refresh()), 200);
     }
 

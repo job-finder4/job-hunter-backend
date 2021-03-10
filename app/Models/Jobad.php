@@ -17,7 +17,7 @@ class Jobad extends Model
     const REMOTE = 'remote';
     const ON_SITE = 'on_site';
 
-    protected $guarded = ['approved_at'];
+    protected $guarded = ['approved_at','user_id'];
     protected $dates = ['expiration_date'];
 
     protected static function booted()

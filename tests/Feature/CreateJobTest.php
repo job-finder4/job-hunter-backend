@@ -43,6 +43,8 @@ class CreateJobTest extends TestCase
      */
     public function company_can_post_new_job_ad()
     {
+        $this->withoutExceptionHandling();
+
         $this->actingAs($user = User::factory()->create(), 'api');
 
         $response = $this->post('/api/jobads', $this->getJobDetails())
@@ -53,20 +55,22 @@ class CreateJobTest extends TestCase
         $this->assertNotNull($job);
 
         $response->assertJson([
-            'id' => $job->id,
-            'type' => 'jobads',
-            'attributes' => [
-                'title' => 'ceo',
-                'location' => 'london',
-                'company_id' => $user->id,
-                'description' => 'this job require experience in ceo in big company',
-                'min_salary' => 1000,
-                'max_salary' => 1500,
-                'job_time' => Jobad::PART_TIME,
-                'job_type' => Jobad::REMOTE,
-                'expiration_date' => now()->addMonth()->diffForHumans(),
-                'approved_at' => null
-            ],
+            'data' => [
+                'id' => $job->id,
+                'type' => 'jobads',
+                'attributes' => [
+                    'title' => 'ceo',
+                    'location' => 'london',
+                    'company_id' => $user->id,
+                    'description' => 'this job require experience in ceo in big company',
+                    'min_salary' => 1000,
+                    'max_salary' => 1500,
+                    'job_time' => Jobad::PART_TIME,
+                    'job_type' => Jobad::REMOTE,
+                    'expiration_date' => now()->addMonth()->diffForHumans(),
+                    'approved_at' => null
+                ],
+            ]
         ]);
     }
 
@@ -85,55 +89,62 @@ class CreateJobTest extends TestCase
         $this->assertArrayHasKey('skills', $responseString['errors']['meta']);
     }
 
-
     /**
      * @test
      */
     public function job_ads_are_returned_with_required_skills()
     {
 //        $this->withoutExceptionHandling();
-        $skill1 = $this->getJobDetails()['skills'][0];
-        $skill2 = $this->getJobDetails()['skills'][1];
-
         $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
-        $response = $this->post('/api/jobads',
-            array_merge($this->getJobDetails(), ['skills' => [$skill1, $skill2]]))
-            ->assertStatus(201);
 
-        $job = \App\Models\Jobad::first();
-//        dd($response->getContent());
+        $approved_job = Jobad::factory()->create();
+
+        $this->seed(SkillSeeder::class);
+
+        $skill1 = skill::where('id', 1)->first();
+        $skill2 = skill::where('id', 2)->first();
+
+        $approved_job->skills()->sync([$skill1->id, $skill2->id]);
+
+        $response = $this->get('/api/jobads')->assertStatus(200);
+
         $response->assertJson([
             'data' => [
-                'id' => $job->id,
-                'type' => 'jobads',
-                'attributes' => [
-                    'skills' => [
-                        'data' =>
-                            [
-                                [
-                                    'data' => [
-                                        'type' => 'skills',
-                                        'id' => $skill1->id,
-                                        'attributes' => [
-                                            'name' => $skill1->name,
-                                            'parent_id' => $skill1->parent_id
-                                        ]
-                                    ]
-                                ],
-                                [
-                                    'data' => [
-                                        'type' => 'skills',
-                                        'id' => $skill2->id,
-                                        'attributes' => [
-                                            'name' => $skill2->name,
-                                            'parent_id' => $skill2->parent_id
-                                        ]
-                                    ]
-                                ]
-                            ]
+                [
+                    'data' => [
+                        'id' => $approved_job->id,
+                        'type' => 'jobads',
+//                    'attributes' => [
+////                        'skills' => [
+////                            'data' =>
+////                                [
+////                                    [
+////                                        'data' => [
+////                                            'type' => 'skills',
+////                                            'id' => $skill1->id,
+////                                            'attributes' => [
+////                                                'name' => $skill1->name,
+////                                                'parent_id' => $skill1->parent_id
+////                                            ]
+////                                        ]
+////                                    ],
+////                                    [
+////                                        'data' => [
+////                                            'type' => 'skills',
+////                                            'id' => $skill2->id,
+////                                            'attributes' => [
+////                                                'name' => $skill2->name,
+////                                                'parent_id' => $skill2->parent_id
+////                                            ]
+////                                        ]
+////                                    ]
+////                                ]
+////                        ]
+//                    ],
                     ]
-                ],
+                ]
             ]
+
         ]);
     }
 
@@ -174,7 +185,7 @@ class CreateJobTest extends TestCase
         $this->withoutExceptionHandling();
         Jobad::factory()->count(3)->create();
         $this->actingAs(User::factory()->create(), 'api');
-        $this->get('/api/jobs')
+        $this->get('/api/jobads')
             ->assertOk()
             ->assertJsonCount(3, 'data')
             ->assertJson([
@@ -190,16 +201,21 @@ class CreateJobTest extends TestCase
      */
     public function unapproved_jobs_should_not_be_retrieved()
     {
+        $this->withoutExceptionHandling();
+
         $this->actingAs($user = User::factory()->create(), 'api');
         Jobad::factory()->unapproved()->count(2)->create();
         $approved_job = Jobad::factory()->create();
-        $this->get('/api/jobs')
+
+        $this->get('/api/jobads')
             ->assertStatus(200)
             ->assertJsonCount(1, 'data')
             ->assertJson([
                 'data' => [
                     [
-                        'id' => $approved_job->id,
+                        'data' => [
+                            'id' => $approved_job->id
+                        ]
                     ]
                 ]
             ]);
@@ -213,13 +229,16 @@ class CreateJobTest extends TestCase
         $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
         Jobad::factory()->expired()->count(2)->create();
         $unExpiredJob = Jobad::factory()->create();
-        $this->get('/api/jobs')
+        $this->get('/api/jobads')
             ->assertStatus(200)
             ->assertJsonCount(1, 'data')
             ->assertJson([
                 'data' => [
                     [
-                        'id' => $unExpiredJob->id,
+                        'data' =>
+                            [
+                                'id' => $unExpiredJob->id,
+                            ]
                     ]
                 ]
             ]);

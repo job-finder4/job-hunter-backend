@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Skill as SkillResource;
+use App\Http\Resources\SkillCollection;
 use App\Models\Skill;
 use Illuminate\Http\Request;
 
@@ -17,5 +18,10 @@ class SkillController extends Controller
 
         $skill = Skill::create($data);
         return new SkillResource($skill);
+    }
+
+    public function index()
+    {
+        return response(new SkillCollection(Skill::get()), 200);
     }
 }

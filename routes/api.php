@@ -11,4 +11,4 @@ Route::apiresource('/skills',SkillController::class);
 Route::get('/cvs/{cv_id}/download',[CvController::class,'downloadCv']);
 Route::apiresource('/cvs',CvController::class);
 
-Route::apiResource('/user/{user}', UserProfileController::class);
+//Route::apiResource('/user/{user}', UserProfileController::class);

@@ -3,7 +3,9 @@
 namespace Database\Factories;
 
 use App\Models\Jobad;
+use App\Models\Skill;
 use App\Models\User;
+use Database\Seeders\SkillSeeder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -30,7 +32,8 @@ class JobadFactory extends Factory
             'description' => $this->faker->text,
             'user_id' => User::factory(),
             'location' => $this->faker->address,
-            'salary' => ['min_salary'=>$tmp=$this->faker->numberBetween(100,5000),'max_salary'=>$this->faker->numberBetween($tmp,$tmp+5000)],
+            'min_salary' => $tmp=$this->faker->numberBetween(200,5000),
+            'max_salary' => $tmp=$this->faker->numberBetween($tmp,$tmp+5000),
             'expiration_date'=>$this->faker->dateTimeBetween(now()->addWeek(),now()->addWeeks(8)),
             'job_type' => $this->faker->randomElement([Jobad::FULL_TIME,Jobad::PART_TIME]),
             'job_time' => $this->faker->randomElement([Jobad::REMOTE,Jobad::ON_SITE]),
