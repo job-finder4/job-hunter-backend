@@ -2,12 +2,18 @@
 
 namespace App\Traits;
 
+use App\Models\Application;
 use App\Models\Cv;
 use App\Models\Profile;
 use App\Profile\UserProfile;
 
 trait JobSeeker
 {
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
+
     public function cvs()
     {
         return $this->hasMany(Cv::class);

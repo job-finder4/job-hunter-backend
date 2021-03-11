@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\JobadApplicationController;
 use App\Http\Controllers\JobadController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\CvController;
@@ -11,5 +12,6 @@ Route::apiresource('/skills',SkillController::class);
 Route::get('/cvs/{cv_id}/download',[CvController::class,'downloadCv']);
 Route::apiresource('/cvs',CvController::class);
 
-//Route::apiResource('/user/{user}', UserProfileController::class);
 Route::apiResource('/user/{user}/profile', UserProfileController::class);
+
+Route::apiResource('/jobads/{jobad}/applications', JobadApplicationController::class);
