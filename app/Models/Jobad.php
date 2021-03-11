@@ -25,10 +25,12 @@ class Jobad extends Model
         static::addGlobalScope(new ApprovedJobadScope);
         static::addGlobalScope(new UnExpiredJobadScope);
     }
+
     public function scopeUnapproved($query)
     {
         return $query->withoutGlobalScope(ApprovedJobadScope::class);
     }
+
     public function scopeExpired($query)
     {
         return $query->withoutGlobalScope(UnExpiredJobadScope::class);
@@ -38,6 +40,5 @@ class Jobad extends Model
     {
         return $this->morphToMany('App\Models\Skill', 'skillable');
     }
-
 
 }

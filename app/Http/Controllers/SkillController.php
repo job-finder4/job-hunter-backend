@@ -24,4 +24,5 @@ class SkillController extends Controller
     {
         return response(new SkillCollection(Skill::get()), 200);
     }
+
 }
