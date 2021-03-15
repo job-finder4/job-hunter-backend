@@ -33,7 +33,6 @@ class CVTest extends TestCase
      */
     public function a_user_can_upload_cv_file()
     {
-        $this->withoutExceptionHandling();
         $sizeInKilobytes = 1000;
         $file = UploadedFile::fake()->create(
             'document.pdf', $sizeInKilobytes, 'application/pdf'
@@ -130,7 +129,6 @@ class CVTest extends TestCase
      */
     public function cv_file_can_be_downloaded()
     {
-        $this->withoutExceptionHandling();
         $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
 //
         $sizeInKilobytes = 200;

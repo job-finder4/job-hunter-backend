@@ -4,20 +4,21 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class JobadCollection extends ResourceCollection
+class ApplicationCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
     {
         return [
             'data' => $this->collection,
-            'link' => [
-                'self' => url('/api/jobs')
+            'links' => [
+                'self' => url('api/users/' . auth()->user()->id . '/applications')
+
             ]
         ];
     }

@@ -15,36 +15,32 @@ class CvController extends Controller
     public function store(Request $request)
     {
         $user = auth()->user();
+
         $data = $request->validate([
             'title' => 'required',
             'cv_file' => 'required'
         ]);
 
-        $file = $data['cv_file'];
-        if (($file->getSize() / (1024 * 1024)) > 4) {
-            throw new FileSizeMismatchException();
-        }
+        $data2 = [];
+        $data2['title'] = $data['title'];
+        $data2['file'] = $data['cv_file'];
 
-        $uniqueName = '/cvs/' . $user->id . '/'
-            . $data['cv_file']->getClientOriginalName();
-
-        Storage::disk('local')->put($uniqueName, $data['cv_file']);
-        $cv = $user->cvs()->create(['path' => $uniqueName]);
+        $cv = $user->createCv($data2);
 
         return new CvResource($cv);
     }
 
     public function downloadCv(Request $request)
     {
-        $cv=Cv::findOrFail($request->cv_id);
+        $cv = Cv::findOrFail($request->cv_id);
 
         $path = $cv->path;
         $mime = 'application/pdf';
 
-        return Storage::disk('local')->download($path,'daniel.pdf', [
-                'Content-Type' => $mime,
-                'Content-Disposition' => 'inline; ' . $path
-            ]);
+        return Storage::disk('local')->download($path, 'daniel.pdf', [
+            'Content-Type' => $mime,
+            'Content-Disposition' => 'inline; ' . $path
+        ]);
     }
 
 }

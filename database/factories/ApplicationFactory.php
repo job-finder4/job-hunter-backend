@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Application;
+use App\Models\Cv;
 use App\Models\Jobad;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -24,7 +25,7 @@ class ApplicationFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => User::factory(),
+            'cv_id' => Cv::factory(),
             'jobad_id' => Jobad::factory(),
         ];
     }

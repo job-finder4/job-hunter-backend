@@ -12,36 +12,15 @@ class Cv extends Model
 
     protected $guarded = [];
 
-    protected $casts = [
-        'details' => 'array'
-    ];
-
-    public static function makeNew($profile)
+    public function applications()
     {
-        $details = UserProfile::make($profile['details']);
-
-        $profile = auth()->user()->profile()->create([
-            'details' => $details
-        ]);
-        return $profile;
+        return $this->hasMany(Application::class);
     }
 
-    public function addDetails($newDetails)
+    public function user()
     {
-        $this->details = $this->details->add($newDetails);
-        $this->save();
-        return $this;
+        return $this->belongsTo(User::class);
     }
 
-
-    public function getDetailsAttribute()
-    {
-        return unserialize($this->attributes['details']);
-    }
-
-    public function setDetailsAttribute($value)
-    {
-        $this->attributes['details'] = serialize($value);
-    }
 
 }

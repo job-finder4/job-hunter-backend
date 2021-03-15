@@ -17,8 +17,7 @@ class CreateCvsTable extends Migration
             $table->id();
             $table->string('path');
             $table->unsignedBigInteger('user_id');
-            $table->string('details')->nullable();
-            $table->boolean('visible')->default(true);
+            $table->string('title');
             $table->timestamps();
         });
     }

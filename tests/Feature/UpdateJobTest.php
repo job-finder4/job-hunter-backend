@@ -16,7 +16,6 @@ class UpdateJobTest extends TestCase
     /**
      * @group dani
      */
-
     use RefreshDatabase;
 
     public function getJobDetails()

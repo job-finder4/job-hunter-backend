@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Cv;
 use App\Models\Jobad;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -17,8 +18,9 @@ class CreateApplicationsTable extends Migration
     {
         Schema::create('applications', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
             $table->foreignIdFor(Jobad::class);
+            $table->foreignIdFor(Cv::class);
+            $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });
     }

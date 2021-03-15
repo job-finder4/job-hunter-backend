@@ -39,5 +39,8 @@ class Jobad extends Model
         return $this->morphToMany('App\Models\Skill', 'skillable');
     }
 
-
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
 }

@@ -16,10 +16,19 @@ class Application extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function getUserIdAttribute()
+    {
+        return $this->cv->user_id;
+    }
+
     public function Jobad()
     {
         return $this->belongsTo(Jobad::class);
     }
 
+    public function cv()
+    {
+        return $this->belongsTo(Cv::class);
+    }
 
 }

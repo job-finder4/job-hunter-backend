@@ -2,10 +2,11 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use  Illuminate\Http\Resources\Json\JsonResource;
 
 use App\Http\Resources\User as UserResource;
 use App\Http\Resources\Jobad as JobadResource;
+use App\Http\Resources\Cv as CvResource;
 
 class Application extends JsonResource
 {
@@ -24,6 +25,8 @@ class Application extends JsonResource
                 'attributes' => [
                     'user' => new UserResource($this->user),
                     'jobad' => new JobadResource($this->jobad),
+                    'cv' => new CvResource($this->cv),
+                    'status' => $this->status,
                     'applied_at' => $this->updated_at->toFormattedDateString(),
                 ]
             ]
