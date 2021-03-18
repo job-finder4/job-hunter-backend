@@ -21,9 +21,9 @@ class Profile extends Model
     public static function makeNew(Request $request)
     {
         $request->validate([
-            'details' => '',
+            'details' => 'required',
             'visible' => '',
-            'skills' => 'required'
+            'skills' => ''
         ]);
         $details = UserProfile::make($request->details);
 

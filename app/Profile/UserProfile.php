@@ -3,9 +3,8 @@
 
 namespace App\Profile;
 
-
-use Illuminate\Support\Arr;
-use PhpParser\Node\Expr\Cast\Object_;
+use Illuminate\Support\Facades\Validator;
+use phpDocumentor\Reflection\Types\This;
 
 class UserProfile
 {
@@ -27,6 +26,7 @@ class UserProfile
 
     public static function make($details)
     {
+        self::validateUserProfile($details);
         $userProfile = new UserProfile();
         $userProfile->setLocation($details);
         $userProfile->addEducations($details);
@@ -36,7 +36,7 @@ class UserProfile
         return $userProfile;
     }
 
-    private static function indexOf(Object $item, array $array)
+    private static function indexOf($item, array $array)
     {
         for ($i = 0; $i < count($array); $i++) {
             if ($array[$i]->id == $item->id)
@@ -47,6 +47,7 @@ class UserProfile
 
     public function add($newDetails)
     {
+        self::validateUserProfile($newDetails);
         $this->addEducations($newDetails);
         $this->addWorksExperience($newDetails);
         $this->addLanguages($newDetails);
@@ -93,22 +94,17 @@ class UserProfile
     public function addLanguages(array $details)
     {
         if (isset($details['languages'])) {
-            if (is_array($details['languages'])) {
-                $this->languages = array_merge($details['languages'], $this->languages);
-            } else {
-                $this->languages[] = $details['languages'];
-            }
+            $this->languages = array_merge($details['languages'], $this->languages);
         }
     }
 
     public function update($details)
     {
-
+        self::validateUserProfile();
         if (isset($details['phone_number']))
             $this->phone_number = $details->phone_number;
 
         $this->setLocation($details);
-
         $this->updateEducations($details);
         $this->updateWorksExperience($details);
         return $this;
@@ -149,7 +145,7 @@ class UserProfile
         }
     }
 
-    public  function updateWorksExperience($details)
+    public function updateWorksExperience($details)
     {
         if (!isset($details['works_experience']))
             return;
@@ -157,6 +153,17 @@ class UserProfile
             $index = self::indexOf($workItem, $this->works_experience);
             $this->works_experience[$index]->update($workItem);
         }
+    }
+
+    public static function validateUserProfile($attrs)
+    {
+        return Validator::validate($attrs, [
+            'location' => ['sometimes','required','array'],
+            'phone_number' => ['sometimes','required'],
+            'educations' => ['sometimes','required','array'],
+            'works_experience' => ['sometimes','required','array'],
+            'languages' => ['sometimes','required','array']
+        ]);
     }
 }
 

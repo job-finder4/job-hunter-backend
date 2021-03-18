@@ -125,18 +125,6 @@ class UserProfileTest extends TestCase
             ]
         );
     }
-
-    /**
-     * @test
-     */
-    public function skills_field_are_required_to_create_profile()
-    {
-        $this->actingAs($profileOwner = User::factory()->create(), 'api');
-        $resp =$this->post('/api/users/' . $profileOwner->id . '/profile', Arr::except($this->getProfileDetails(),'skills'))
-            ->assertStatus(422);
-        $this->assertObjectHasAttribute('skills',json_decode($resp->getContent())->errors->meta);
-    }
-
     /**
      * @test
      */
@@ -246,7 +234,6 @@ class UserProfileTest extends TestCase
                     ]]]]);
     }
 
-
     /**
      * @test
      */
@@ -266,6 +253,7 @@ class UserProfileTest extends TestCase
         $this->assertCount(2, $profile->details->educations);
         $this->assertCount(1, Profile::get(), 'there are more one profile for a single user');;
     }
+
 
     /**
      * @test
@@ -314,4 +302,15 @@ class UserProfileTest extends TestCase
         $this->assertEquals(false, $newProfile->visible);
     }
 
+//
+//    /**
+//     * @test
+//     */
+//    public function skills_field_are_required_to_create_profile()
+//    {
+//        $this->actingAs($profileOwner = User::factory()->create(), 'api');
+//        $resp =$this->post('/api/users/' . $profileOwner->id . '/profile', Arr::except($this->getProfileDetails(),'skills'))
+//            ->assertStatus(422);
+//        $this->assertObjectHasAttribute('skills',json_decode($resp->getContent())->errors->meta);
+//    }
 }
