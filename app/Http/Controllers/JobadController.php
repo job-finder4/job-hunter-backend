@@ -1,20 +1,22 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Exceptions\MyModelNotFoundException;
 use App\Http\Resources\JobadCollection;
 use App\Models\Jobad;
 use App\Http\Resources\Jobad as JobadResource;
 use App\Models\Skill;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Gate;
+
 
 class JobadController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:create,App\Models\Jobad')->only('store');
+    }
+
     public function store(Request $request)
     {
         $company = auth()->user();
