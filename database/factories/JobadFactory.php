@@ -28,10 +28,10 @@ class JobadFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->title,
-            'description' => $this->faker->text,
-            'user_id' => User::factory(),
-            'location' => $this->faker->address,
+            'title' => $this->faker->jobTitle,
+            'description' => $this->faker->realText(),
+            'user_id' => User::factory()->company(),
+            'location' => $this->faker->city.', '.$this->faker->country,
             'min_salary' => $tmp=$this->faker->numberBetween(200,5000),
             'max_salary' => $tmp=$this->faker->numberBetween($tmp,$tmp+5000),
             'expiration_date'=>$this->faker->dateTimeBetween(now()->addWeek(),now()->addWeeks(8)),

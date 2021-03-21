@@ -22,7 +22,7 @@ class SkillFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->title,
+            'name' => $this->faker->jobTitle,
             'parent_id' => $this->faker->randomElement([Skill::inRandomOrder()->first(),null]),
         ];
     }

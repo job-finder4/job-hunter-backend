@@ -44,4 +44,14 @@ class UserFactory extends Factory
             ];
         });
     }
+
+    public function company()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => $this->faker->company,
+            ];
+        });
+    }
+
 }
