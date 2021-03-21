@@ -13,7 +13,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasFactory, Billable, Company, JobSeeker, Notifiable,HasRoles;
+    use HasFactory, Billable, Company, JobSeeker, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.

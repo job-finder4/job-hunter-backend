@@ -18,9 +18,17 @@ class PermissionSeeder extends Seeder
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
+        Permission::create(['name' => 'create jobads']);
+        Permission::create(['name' => 'update jobads']);
+        Permission::create(['name' => 'approve jobads']);
+        Permission::create(['name' => 'view all company jobads']);
+
         $jobSeekerRole = Role::create(['name' => 'jobSeeker']);
         $companyRole = Role::create(['name' => 'company']);
         $adminRole = Role::create(['name' => 'admin']);
 
+        $companyRole->givePermissionTo('create jobads');
+        $companyRole->givePermissionTo('update jobads');
+        $companyRole->givePermissionTo('view all company jobads');
     }
 }

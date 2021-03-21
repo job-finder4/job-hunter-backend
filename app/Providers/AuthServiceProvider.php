@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\Jobad;
+use App\Models\User;
+use App\Policies\JobadPolicy;
 use Database\Factories\JobadFactory;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -16,7 +18,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
-        Jobad::class => JobadFactory::class
+        Jobad::class => JobadPolicy::class
     ];
 
     /**
@@ -27,6 +29,11 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        Gate::before(function (User $user) {
+            if ($user->hasRole('admin'))
+                return true;
+        });
 
         //
     }

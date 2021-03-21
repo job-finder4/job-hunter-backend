@@ -15,7 +15,30 @@ class JobadController extends Controller
     public function __construct()
     {
         $this->middleware('can:create,App\Models\Jobad')->only('store');
+        $this->middleware('can:update,jobad')->only('update');
+        $this->middleware('can:approve,unapprovedJobad')->only('approve');
+        $this->middleware('can:viewCompanyJobads,App\Models\Jobad')->only('getCompanyJobads');
     }
+
+    public function index()
+    {
+        return response(new JobadCollection(Jobad::get()), 200);
+    }
+
+    public function getCompanyJobads()
+    {
+        $allJobads = auth()->user()->jobads()->activeAndInactive()->get();
+        return response(new JobadCollection($allJobads),200);
+    }
+
+    public function approve(Jobad $jobad)
+    {
+        $jobad->approved_at = now();
+        $jobad->saveOrFail();
+
+        return response(new JobadResource($jobad),200);
+    }
+
 
     public function store(Request $request)
     {
@@ -47,11 +70,6 @@ class JobadController extends Controller
         $jobad->skills()->attach($skillsIds);
 
         return response()->json(new JobadResource($jobad), 201);
-    }
-
-    public function index()
-    {
-        return response(new JobadCollection(Jobad::get()), 200);
     }
 
     public function update(Request $request, Jobad $jobad)

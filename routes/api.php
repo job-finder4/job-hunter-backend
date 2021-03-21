@@ -8,6 +8,8 @@ use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::apiresource('/jobads',JobadController::class);
+Route::put('/jobads/{unapprovedJobad}/approve',[JobadController::class,'approve']);
+Route::get('/myjobads',[JobadController::class,'getCompanyJobads']);
 Route::apiresource('/skills',SkillController::class);
 Route::get('/cvs/{cv_id}/download',[CvController::class,'downloadCv']);
 Route::apiresource('/cvs',CvController::class);
