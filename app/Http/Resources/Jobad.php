@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class Jobad extends JsonResource
@@ -29,11 +30,11 @@ class Jobad extends JsonResource
                     'job_type' => $this->job_type,
                     'expiration_date' => $this->expiration_date->diffForHumans(),
                     'skills' => new SkillCollection($this->skills),
-                    'approved_at' => $this->approved_at,
                     'applied_at' => $this->when($application = auth()->user()->applications()->where('jobad_id',$this->id)->first(),function() use ($application)
                     {
                         return $application->updated_at->toFormattedDateString();
                     }),
+                    'approved_at' => optional($this->approved_at)->toFormattedDateString(),
                 ]
             ]
         ];

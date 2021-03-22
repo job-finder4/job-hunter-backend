@@ -8,11 +8,13 @@ use Database\Seeders\SkillSeeder;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Support\Arr;
 use Tests\TestCase;
 
 class UpdateJobTest extends TestCase
 {
+    use WithoutMiddleware;
     /**
      * @group dani
      */
@@ -21,7 +23,7 @@ class UpdateJobTest extends TestCase
     public function getJobDetails()
     {
         $this->seed(SkillSeeder::class);
-
+        $skills = Skill::inRandomOrder()->get()->take(2);
         return [
             'title' => 'ceo',
             'min_salary' => 1000,
@@ -30,7 +32,10 @@ class UpdateJobTest extends TestCase
             'location' => 'london',
             'job_type' => 'remote',
             'job_time' => 'part_time',
-            'skills' => Skill::take(2)->get(),
+            'skills' => [
+                ['id' => $skills[0]->id],
+                ['id' => $skills[1]->id]
+            ],
         ];
     }
 
@@ -39,6 +44,7 @@ class UpdateJobTest extends TestCase
      */
     public function a_company_can_update_job_ad()
     {
+        $this->withoutExceptionHandling();
         $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
 
         $jobad = Jobad::factory()->create();

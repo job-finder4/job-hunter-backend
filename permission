@@ -1,0 +1,36 @@
+resource : {
+    skills,jobad,cv,application,userProfile
+}
+
+roles : {
+    jobSeeker, company, admin
+}
+
+permissions: {
+    jobad => [
+        create_jobad => company
+        update_jobad => company,owner_of_jobad,
+        view_jobad => any
+        approve_jobad => admin
+        view_unapproved_jobad => company,owner_of_jobad
+    ],
+    application => [
+        create_application => jobSeeker,
+        update_application => jobSeeker,owner_of_application
+        view_application_jobad => company,owner_of_jobad,
+        view_user_jobad => job_seeker, owner_of_jobad,
+        evaluate_jobad  => company, owner_of_jobad,
+        delete_jobad => jobseeker,owner_of_application
+    ],
+    cv =>  [
+        create_cv => jobSeeker,
+    ],
+    skills => [
+        [create_skill,update_skill,delete_skill] => [admin]
+    ],
+    user_profile => [
+        create_profile => jobSeeker,
+        update_profile => jobSeeker,owner_of_profile
+        view_profile => company_if_profile_is_visible,owner_of_profile
+    ]
+}

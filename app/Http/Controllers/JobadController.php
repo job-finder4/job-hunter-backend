@@ -1,20 +1,45 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Exceptions\MyModelNotFoundException;
 use App\Http\Resources\JobadCollection;
 use App\Models\Jobad;
 use App\Http\Resources\Jobad as JobadResource;
 use App\Models\Skill;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Gate;
+
 
 class JobadController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:create,App\Models\Jobad')->only('store');
+        $this->middleware('can:update,jobad')->only('update');
+        $this->middleware('can:approve,unapprovedJobad')->only('approve');
+        $this->middleware('can:viewCompanyJobads,App\Models\Jobad')->only('getCompanyJobads');
+    }
+
+    public function index()
+    {
+        return response(new JobadCollection(Jobad::get()), 200);
+    }
+
+    public function getCompanyJobads()
+    {
+        $allJobads = auth()->user()->jobads()->activeAndInactive()->get();
+        return response(new JobadCollection($allJobads),200);
+    }
+
+    public function approve(Jobad $jobad)
+    {
+        $jobad->approved_at = now();
+        $jobad->saveOrFail();
+
+        return response(new JobadResource($jobad),200);
+    }
+
+
     public function store(Request $request)
     {
         $company = auth()->user();
@@ -47,11 +72,6 @@ class JobadController extends Controller
         return response()->json(new JobadResource($jobad), 201);
     }
 
-    public function index()
-    {
-        return response(new JobadCollection(Jobad::get()), 200);
-    }
-
     public function update(Request $request, Jobad $jobad)
     {
         $data = $request->validate([
@@ -73,7 +93,6 @@ class JobadController extends Controller
                 Skill::findOrFail($skill['id']);
                 $skillsIds[] = $skill['id'];
             }
-
             $jobad->skills()->sync($skillsIds);
         }
 

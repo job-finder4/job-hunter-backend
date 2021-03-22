@@ -11,14 +11,15 @@ use Database\Seeders\SkillSeeder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\WithoutEvents;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Arr;
 use Tests\TestCase;
 
 class CreateJobTest extends TestCase
 {
-    use RefreshDatabase;
-
+    use RefreshDatabase,WithoutMiddleware;
     public function getJobDetails()
     {
         $this->seed(SkillSeeder::class);
