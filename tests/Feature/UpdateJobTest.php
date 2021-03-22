@@ -14,7 +14,6 @@ use Tests\TestCase;
 
 class UpdateJobTest extends TestCase
 {
-    use WithoutMiddleware;
     /**
      * @group dani
      */
@@ -23,7 +22,8 @@ class UpdateJobTest extends TestCase
     public function getJobDetails()
     {
         $this->seed(SkillSeeder::class);
-        $skills = Skill::inRandomOrder()->get()->take(2);
+
+        $skills = Skill::get()->take(2);
         return [
             'title' => 'ceo',
             'min_salary' => 1000,
@@ -45,6 +45,8 @@ class UpdateJobTest extends TestCase
     public function a_company_can_update_job_ad()
     {
         $this->withoutExceptionHandling();
+        $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
+
         $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
 
         $jobad = Jobad::factory()->create();
@@ -90,6 +92,8 @@ class UpdateJobTest extends TestCase
      */
     public function a_job_ad_cannot_be_updated_with_null_title()
     {
+        $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
+
         $this->seed(SkillSeeder::class);
 
         $this->actingAs($user = \App\Models\User::factory()->create(), 'api');

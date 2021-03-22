@@ -19,7 +19,7 @@ use Tests\TestCase;
 
 class CreateJobTest extends TestCase
 {
-    use RefreshDatabase,WithoutMiddleware;
+    use RefreshDatabase;
     public function getJobDetails()
     {
         $this->seed(SkillSeeder::class);
@@ -44,7 +44,7 @@ class CreateJobTest extends TestCase
      */
     public function company_can_post_new_job_ad()
     {
-        $this->withoutExceptionHandling();
+        $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
 
         $this->actingAs($user = User::factory()->create(), 'api');
 
@@ -87,7 +87,8 @@ class CreateJobTest extends TestCase
      */
     public function a_job_ad_cannot_be_created_without_provide_skills()
     {
-//        $this->withoutExceptionHandling();
+        $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
+
         $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
 
         $response = $this->post('/api/jobads', array_merge($this->getJobDetails(), ['skills' => '']))
@@ -102,7 +103,8 @@ class CreateJobTest extends TestCase
      */
     public function job_ads_are_returned_with_required_skills()
     {
-//        $this->withoutExceptionHandling();
+        $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
+
         $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
 
         $approved_job = Jobad::factory()->create();
@@ -162,6 +164,8 @@ class CreateJobTest extends TestCase
      */
     public function a_company_can_add_skills_to_the_job_ad_only_from_available_skills()
     {
+        $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
+
         $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
 
         $this->seed(SkillSeeder::class);
@@ -190,6 +194,8 @@ class CreateJobTest extends TestCase
 
     public function user_can_retrieve_all_jobs_ad()
     {
+        $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
+
         $this->withoutExceptionHandling();
         Jobad::factory()->count(3)->create();
         $this->actingAs(User::factory()->create(), 'api');

@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Traits\RequestDataForTesting;
 use Database\Seeders\PermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class JobadPermissionTest extends TestCase
@@ -108,7 +107,7 @@ class JobadPermissionTest extends TestCase
      */
     public function any_visitor_can_view_jobads()
     {
-        $this->withoutMiddleware();
+        $this->withoutExceptionHandling();
         Jobad::factory()->count(8)->create();
         $this->getJson('api/jobads')
             ->assertStatus(200);
@@ -121,8 +120,10 @@ class JobadPermissionTest extends TestCase
      */
     public function admin_can_approve_an_unapproved_jobad()
     {
+        $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
         $this->actingAs($user = User::factory()->create());
         $jobad = Jobad::factory()->unapproved()->create();
+
         $this->putJson('api/jobads/' . $jobad->id . '/approve')
             ->assertStatus(200)
             ->assertJson([
@@ -139,7 +140,7 @@ class JobadPermissionTest extends TestCase
      */
     public function company_can_view_its_active_and_inactive_jobads()
     {
-        $this->withoutExceptionHandling();
+        $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
         $this->actingAs($this->company);
         //jobads for another company
         Jobad::factory()->count(2)->create();

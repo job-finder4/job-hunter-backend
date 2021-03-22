@@ -6,6 +6,7 @@ use App\Models\Jobad;
 use App\Http\Resources\Jobad as JobadResource;
 use App\Models\Skill;
 use Illuminate\Http\Request;
+use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Gate;
 

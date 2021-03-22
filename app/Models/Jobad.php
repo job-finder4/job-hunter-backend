@@ -51,10 +51,6 @@ class Jobad extends Model
                     ->orWhere('approved_at', null);
             });
     }
-//    public function scopeActiveAndInactive(Builder $query)
-//    {
-//        return $query->
-//    }
 
     public function skills()
     {
