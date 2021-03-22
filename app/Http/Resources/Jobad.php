@@ -21,7 +21,7 @@ class Jobad extends JsonResource
                 'attributes' => [
                     'title' => $this->title,
                     'location' => $this->location,
-                    'company_id' => $this->user_id,
+                    'company' => new User($this->user),
                     'description' => $this->description,
                     'min_salary' => $this->min_salary,
                     'max_salary' => $this->max_salary,
@@ -33,7 +33,7 @@ class Jobad extends JsonResource
                     'applied_at' => $this->when($application = auth()->user()->applications()->where('jobad_id',$this->id)->first(),function() use ($application)
                     {
                         return $application->updated_at->toFormattedDateString();
-                    })
+                    }),
                 ]
             ]
         ];

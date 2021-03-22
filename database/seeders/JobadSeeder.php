@@ -18,7 +18,7 @@ class JobadSeeder extends Seeder
     {
         Skill::factory()->count(30)->create();
 
-        $jobad = Jobad::factory()->count(30)->create()->each(function ($jobad){
+        Jobad::factory()->count(30)->create()->each(function ($jobad){
             $jobad->skills()->attach(Skill::inRandomOrder()->get()->pluck('id')->take(rand(1,3)));
         });
     }

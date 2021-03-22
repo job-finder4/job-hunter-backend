@@ -61,7 +61,14 @@ class CreateJobTest extends TestCase
                 'attributes' => [
                     'title' => 'ceo',
                     'location' => 'london',
-                    'company_id' => $user->id,
+                    'company' => [
+                        'data' => [
+                            'id' => $user->id,
+                            'attributes' => [
+                                'name' => $user->name
+                            ]
+                        ]
+                    ],
                     'description' => 'this job require experience in ceo in big company',
                     'min_salary' => 1000,
                     'max_salary' => 1500,

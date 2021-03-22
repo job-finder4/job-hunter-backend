@@ -53,7 +53,6 @@ class UpdateJobTest extends TestCase
                 'attributes' => [
                     'title' => 'ceo',
                     'location' => 'london',
-                    'company_id' => $jobad->user_id,
                     'description' => 'this job require experience in ceo in big company',
                     'min_salary' => 1000,
                     'max_salary' => 1500,
