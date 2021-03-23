@@ -30,9 +30,10 @@ class Jobad extends JsonResource
                     'job_type' => $this->job_type,
                     'expiration_date' => $this->expiration_date->diffForHumans(),
                     'skills' => new SkillCollection($this->skills),
-                    'applied_at' => $this->when($application = auth()->user()->applications()->where('jobad_id',$this->id)->first(),function() use ($application)
+                    'applied_at' => $this->when(auth()->check(),function()
                     {
-                        return $application->updated_at->toFormattedDateString();
+                        return optional(optional(auth()->user()->applications()->where('jobad_id',$this->id)
+                        ->first())->updated_at)->toFormattedDateString();
                     }),
                     'approved_at' => optional($this->approved_at)->toFormattedDateString(),
                 ]

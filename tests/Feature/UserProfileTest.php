@@ -6,6 +6,7 @@ use App\Models\Jobad;
 use App\Models\Profile;
 use App\Models\User;
 use App\Profile\UserProfile;
+use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use phpDocumentor\Reflection\Location;
@@ -69,12 +70,12 @@ class UserProfileTest extends TestCase
     /**
      * @test
      */
-    public function user_can_add_profile_information()
+    public function user_can_store_profile_information()
     {
         $this->withoutExceptionHandling();
         $this->actingAs($user = User::factory()->create(), 'api');
 
-        $response = $this->post('/api/user/' . $user->id.'/profile', $this->getProfileDetails())
+        $response = $this->post('/api/user/' . $user->id . '/profile', $this->getProfileDetails())
             ->assertStatus(201);
 
         $profile = $user->profile;
@@ -135,35 +136,36 @@ class UserProfileTest extends TestCase
             'details' => UserProfile::make($this->getProfileDetails()['details'])
         ]);
 
-        $response = $this->post('/api/user/' . $user->id.'/profile', $this->getAdditionalAttributes())
+        $response = $this->post('/api/user/' . $user->id . '/profile', $this->getAdditionalAttributes())
             ->assertStatus(201);
 
         $profile = $user->profile;
         $this->assertNotNull($profile);
         $this->assertCount(2, $profile->details->educations);
-        $this->assertCount(1, Profile::get(),'there are more one profile for a single user');;
+        $this->assertCount(1, Profile::get(), 'there are more one profile for a single user');;
     }
 
     /**
      * @test
-    */
-        public function user_can_update_his_profile()
+     */
+    public function user_can_update_his_profile()
     {
+        $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
         $this->actingAs($user = User::factory()->create(), 'api');
 
-        $resp = $this->post('api/user/'.$user->id.'./profile',$this->getProfileDetails());
+        $resp = $this->post('api/users/' . $user->id . './profile', $this->getProfileDetails());
 
         $profile = json_decode($resp->getContent())->data->attributes;
 
         $education = $profile->details->educations[0];
         $education->degree = 'DR';
 
-        $location = ['city' => 'new york','country' => 'usa'];
-        $profile->details->location = $location['country'].', '.$location['city'];
+        $location = ['city' => 'new york', 'country' => 'usa'];
+        $profile->details->location = $location['country'] . ', ' . $location['city'];
 
         $work_experience = $profile->details->works_experience[0];
         $work_experience->job_category = 'backend web developer';
-        $profile->details->works_experience ;
+        $profile->details->works_experience;
 
         $storedProfile = $user->profile;
         $storedProfile->details->location = 'usa, new york';
@@ -176,7 +178,7 @@ class UserProfileTest extends TestCase
             'works_experience' => [$work_experience]
         ];
 
-        $this->patch('/api/user/'.$user->id.'/profile/'.$user->profile->id,[
+        $this->putJson('/api/users/' . $user->id . '/profile/' . $user->profile->id, [
             'details' => $details,
             'visible' => false
         ]);
@@ -184,10 +186,10 @@ class UserProfileTest extends TestCase
         $newProfile = $user->profile;
 
         $this->assertEquals($storedProfile->details->location, $newProfile->details->location);
-        $this->assertObjectEquals($storedProfile->details->educations[0], $newProfile->details->educations[0],'equals');
-        $this->assertObjectEquals($storedProfile->details->works_experience[0], $newProfile->details->works_experience[0],'equals');
-        $this->assertObjectEquals($storedProfile->details, $newProfile->details,'equals');
-        $this->assertEquals(false,$newProfile->visible);
+        $this->assertObjectEquals($storedProfile->details->educations[0], $newProfile->details->educations[0], 'equals');
+        $this->assertObjectEquals($storedProfile->details->works_experience[0], $newProfile->details->works_experience[0], 'equals');
+        $this->assertObjectEquals($storedProfile->details, $newProfile->details, 'equals');
+        $this->assertEquals(false, $newProfile->visible);
     }
 
 }

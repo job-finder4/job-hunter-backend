@@ -36,10 +36,10 @@ class UserProfile
         return $userProfile;
     }
 
-    private static function indexOf(Object $item, array $array)
+    private static function indexOf(array $item, array $array)
     {
         for ($i = 0; $i < count($array); $i++) {
-            if ($array[$i]->id == $item->id)
+            if ($array[$i]->id == $item['id'])
                 return $i;
         }
         return -1;
@@ -103,7 +103,6 @@ class UserProfile
 
     public function update($details)
     {
-
         if (isset($details['phone_number']))
             $this->phone_number = $details->phone_number;
 

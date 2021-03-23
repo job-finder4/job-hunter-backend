@@ -22,10 +22,10 @@ Route::get('/cvs/{cv_id}/download',[CvController::class,'downloadCv']);
 
 Route::apiresource('/cvs',CvController::class);
 
-Route::apiResource('/user/{user}/profile', UserProfileController::class);
+Route::apiResource('/users/{user}/profile', UserProfileController::class);
 
 Route::apiResource('/jobads/{jobad}/applications', JobadApplicationController::class);
 
-Route::patch('jobads/{jobad}/applications/{application}/manage',[JobadApplicationManagementController::class,'evaluate']);
+Route::put('jobads/{jobad}/applications/{application}/manage',[JobadApplicationManagementController::class,'evaluate']);
 
 Route::apiResource('users/{user}/applications',UserApplicationController::class);

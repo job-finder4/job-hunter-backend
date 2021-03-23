@@ -99,7 +99,7 @@ class WorkExperience
             $this->job_description == $workExp->job_description;
     }
 
-    public function update(Object $workAttr)
+    public function update(Array $workAttr)
     {
         foreach ($workAttr as $key=>$attr)
         {

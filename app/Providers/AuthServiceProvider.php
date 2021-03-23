@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Models\Jobad;
+use App\Models\Profile;
 use App\Models\User;
 use App\Policies\JobadPolicy;
+use App\Policies\ProfilePolicy;
 use Database\Factories\JobadFactory;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -18,7 +20,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
-        Jobad::class => JobadPolicy::class
+        Jobad::class => JobadPolicy::class,
+        Profile::class => ProfilePolicy::class
     ];
 
     /**

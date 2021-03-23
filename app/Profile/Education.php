@@ -85,7 +85,7 @@ class Education
         return $edu;
     }
 
-    public function update(Object $eduAttr)
+    public function update(Array $eduAttr)
     {
         foreach ($eduAttr as $key=>$attr)
         {
