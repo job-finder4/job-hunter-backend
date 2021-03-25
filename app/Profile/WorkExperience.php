@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use phpseclib\Math\BigInteger;
 
-class WorkExperience
-{
+class  WorkExperience{
     /*** @var integer */
     public $id;
 
@@ -112,14 +111,14 @@ class WorkExperience
     public static function validateWorkExperience($attrs)
     {
         Validator::validate($attrs, [
-            'job_title' => 'required',
-            'company_name' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
-            'industry' => '',
-            'job_category' => '',
-            'job_subcategory' => '',
-            'job_description' => ''
+            'job_title' => ['required','string','max:20'],
+            'company_name' => ['required','string','max:20'],
+            'start_date' => ['required','date'],
+            'end_date' => ['sometimes','date','after:start_date'],
+            'industry' => [],
+            'job_category' => [],
+            'job_subcategory' => [],
+            'job_description' => []
         ]);
     }
 

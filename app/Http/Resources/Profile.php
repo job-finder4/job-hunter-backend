@@ -3,7 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-
+use App\Http\Resources\User as UserResource;
 class Profile extends JsonResource
 {
     /**
@@ -20,11 +20,13 @@ class Profile extends JsonResource
                 'id' => $this->id,
                 'attributes' => [
                     'details' => $this->details,
-                    'user_id' => $this->user_id
+                    'user' => new UserResource($this->user),
+                    'skills' => new SkillCollection($this->user->skills),
+                    'last_update' => $this->updated_at->toFormattedDateString()
                 ]
             ],
             'links' => [
-                'self' => '/api/user/'.$this->user_id.'/profile'
+                'self' => '/api/users/'.$this->user_id.'/profile'
             ]
         ];
     }

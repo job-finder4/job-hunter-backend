@@ -20,7 +20,7 @@ class Application extends JsonResource
     {
         return [
             'data' => [
-                'type' => 'application',
+                'type' => 'applications',
                 'id' => $this->id,
                 'attributes' => [
                     'user' => new UserResource($this->user),

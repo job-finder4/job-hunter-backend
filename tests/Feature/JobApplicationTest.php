@@ -54,7 +54,7 @@ class JobApplicationTest extends TestCase
         $this->assertEquals($this->jobSeeker->id, $userApplications->user_id);
         $resp->assertJson([
             'data' => [
-                'type' => 'application',
+                'type' => 'applications',
                 'id' => $userApplications->id,
                 'attributes' => [
                     'applied_at' => now()->toFormattedDateString(),
@@ -88,6 +88,7 @@ class JobApplicationTest extends TestCase
      */
     public function user_and_jobad_and_cv_resources_should_retrieved_with_application_resource()
     {
+        $this->withoutExceptionHandling();
         $application = Application::factory()->create();
 
         $this->actingAs($this->jobSeeker, 'api');
@@ -96,12 +97,12 @@ class JobApplicationTest extends TestCase
             ->assertStatus(200)
             ->assertJson([
                 'data' => [
-                    'type' => 'application',
+                    'type' => 'applications',
                     'id' => $application->id,
                     'attributes' => [
                         'user' => [
                             'data' => [
-                                'type' => 'user',
+                                'type' => 'users',
                                 'id' => $application->user->id,
                                 'attributes' => []
                             ]

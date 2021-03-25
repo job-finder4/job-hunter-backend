@@ -2,11 +2,14 @@
 
 namespace Tests\Feature;
 
+use App\Models\Profile;
 use App\Models\User;
+use App\Profile\UserProfile;
 use App\Traits\RequestDataForTesting;
 use Database\Seeders\PermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use phpDocumentor\Reflection\Types\Boolean;
 use Tests\TestCase;
 
 class UserProfilePermissionTest extends TestCase
@@ -17,6 +20,28 @@ class UserProfilePermissionTest extends TestCase
     public $jobSeeker;
     public $company;
     public $admin;
+
+    /**
+     * @return array
+     */
+    public function createProfileTo(User $user = null,bool $visible = true): array
+    {
+        $profileOwner = !!$user ? $user : User::factory()->create();
+        $profileOwner->assignRole('jobSeeker');
+        $this->actingAs($profileOwner);
+
+        $details = UserProfile::make($this->getProfileDetails()['details']);
+
+        $profile = auth()->user()->profile()->create([
+            'details' => $details,
+            'visible' => $visible
+        ]);
+
+        $profileResponse = response($profile);
+
+        $profile = json_decode($profileResponse->getContent());
+        return array($profileOwner, $profile);
+    }
 
     protected function setUp(): void
     {
@@ -67,10 +92,10 @@ class UserProfilePermissionTest extends TestCase
      */
     public function company_is_not_authorized_to_update_profile()
     {
+        list($profileOwner, $profile) = $this->createProfileTo();
+
         $user = $this->company;
         $this->actingAs($user);
-        $profileResponse = response($user->addProfileDetails($this->getProfileDetails()));
-        $profile = json_decode($profileResponse->getContent());
 
         $education = $profile->details->educations[0];
         $education->degree = 'DR';
@@ -93,8 +118,8 @@ class UserProfilePermissionTest extends TestCase
     {
         $user = $this->jobSeeker;
         $this->actingAs($user);
-        $profileResponse = response($user->addProfileDetails($this->getProfileDetails()));
-        $profile = json_decode($profileResponse->getContent());
+
+        list($profileOwner, $profile) = $this->createProfileTo($user);
 
         $education = $profile->details->educations[0];
         $education->degree = 'DR';
@@ -114,13 +139,7 @@ class UserProfilePermissionTest extends TestCase
      */
     public function job_seeker_is_not_authorized_to_update_profile_belongs_to_another_user()
     {
-        $profileOwner = User::factory()->create();
-        $profileOwner->assignRole('jobSeeker');
-        $this->actingAs($profileOwner);
-
-        $profileResponse = response($profileOwner->addProfileDetails($this->getProfileDetails()));
-        $profile = json_decode($profileResponse->getContent());
-
+        list($profileOwner, $profile) = $this->createProfileTo();
         $user = $this->jobSeeker;
         $this->actingAs($user);
 
@@ -137,14 +156,13 @@ class UserProfilePermissionTest extends TestCase
     }
 
 //    ----------------------------------view profile---------------------------------------
+
     /**
      * @test
      */
     public function job_seeker_is_not_authorized_to_view_another_profiles()
     {
-        $profileOwner = User::factory()->create();
-        $this->actingAs($profileOwner);
-        $profileOwner->addProfileDetails($this->getProfileDetails());
+        list($profileOwner, $profile) = $this->createProfileTo();
 
         $user = $this->jobSeeker;
         $this->actingAs($user);
@@ -157,9 +175,7 @@ class UserProfilePermissionTest extends TestCase
      */
     public function company_is_authorized_to_view_jobseeker_profiles_if_it_public()
     {
-        $profileOwner = User::factory()->create();
-        $this->actingAs($profileOwner);
-        $profileOwner->addProfileDetails($this->getProfileDetails());
+        list($profileOwner, $profile) = $this->createProfileTo();
 
         $user = $this->company;
         $this->actingAs($user);
@@ -172,9 +188,7 @@ class UserProfilePermissionTest extends TestCase
      */
     public function company_is_not_authorized_to_view_jobseeker_profiles_if_it_private()
     {
-        $profileOwner = User::factory()->create();
-        $this->actingAs($profileOwner);
-        $profileOwner->addProfileDetails(array_merge($this->getProfileDetails(),['visible' => false]));
+        list($profileOwner, $profile) = $this->createProfileTo(User::factory()->create(),false);
 
         $user = $this->company;
         $this->actingAs($user);
@@ -186,12 +200,11 @@ class UserProfilePermissionTest extends TestCase
     /**
      * @test
      */
-        public function job_seeker_is_authorized_to_view_his_profile()
+    public function job_seeker_is_authorized_to_view_his_profile()
     {
-        $this->withoutExceptionHandling();
         $user = $this->jobSeeker;
         $this->actingAs($this->jobSeeker);
-        $user->addProfileDetails($this->getProfileDetails());
+        list($profileOwner, $profile) = $this->createProfileTo($user);
         $this->get('api/users/' . $user->id . '/profile')
             ->assertStatus(200);
     }

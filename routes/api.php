@@ -32,6 +32,5 @@ Route::put('jobads/{jobad}/applications/{application}/manage',[JobadApplicationM
 
 Route::apiResource('/jobads/{jobad}/applications', JobadApplicationController::class);
 
-
-
 Route::apiResource('users/{user}/applications',UserApplicationController::class);
+
