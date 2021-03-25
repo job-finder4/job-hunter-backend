@@ -18,11 +18,14 @@ class Profile extends Model
 
     public static function makeNew($profile)
     {
+
         $details = UserProfile::make($profile['details']);
 
         $profile = auth()->user()->profile()->create([
-            'details' => $details
+            'details' => $details,
+            'visible' => $profile['visible']
         ]);
+
         return $profile;
     }
 

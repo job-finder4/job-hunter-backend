@@ -24,6 +24,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'view all company jobads']);
         Permission::create(['name' => 'create profile']);
         Permission::create(['name' => 'update profile']);
+        Permission::create(['name' => 'show profile']);
 
 
         $jobSeekerRole = Role::create(['name' => 'jobSeeker']);
@@ -33,6 +34,7 @@ class PermissionSeeder extends Seeder
         $companyRole->givePermissionTo('create jobads');
         $companyRole->givePermissionTo('update jobads');
         $companyRole->givePermissionTo('view all company jobads');
+        $companyRole->givePermissionTo('show profile');
 
         $jobSeekerRole->givePermissionTo('create profile');
         $jobSeekerRole->givePermissionTo('update profile');

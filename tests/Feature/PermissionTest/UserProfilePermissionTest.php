@@ -79,7 +79,7 @@ class UserProfilePermissionTest extends TestCase
             'educations' => [$education],
         ];
 
-        $this->putJson('/api/users/' . $user->id . '/profile/' . $profile->id, [
+        $this->putJson('/api/users/' . $user->id . '/profile', [
             'details' => $details,
             'visible' => false
         ])->assertStatus(403);
@@ -89,7 +89,7 @@ class UserProfilePermissionTest extends TestCase
     /**
      * @test
      */
-    public function job_seeker_is_authorized_to_update__his_profile()
+    public function job_seeker_is_authorized_to_update_his_profile()
     {
         $user = $this->jobSeeker;
         $this->actingAs($user);
@@ -103,7 +103,7 @@ class UserProfilePermissionTest extends TestCase
             'educations' => [$education],
         ];
 
-        $this->putJson('/api/users/' . $user->id . '/profile/' . $profile->id, [
+        $this->putJson('/api/users/' . $user->id . '/profile', [
             'details' => $details,
             'visible' => false
         ])->assertStatus(200);
@@ -111,7 +111,7 @@ class UserProfilePermissionTest extends TestCase
 
     /**
      * @test
-    */
+     */
     public function job_seeker_is_not_authorized_to_update_profile_belongs_to_another_user()
     {
         $profileOwner = User::factory()->create();
@@ -130,18 +130,70 @@ class UserProfilePermissionTest extends TestCase
             'educations' => [$education],
         ];
 
-        $this->putJson('/api/users/' . $profileOwner->id . '/profile/' . $profile->id, [
+        $this->putJson('/api/users/' . $profileOwner->id . '/profile', [
             'details' => $details,
             'visible' => false
         ])->assertStatus(403);
     }
+
 //    ----------------------------------view profile---------------------------------------
-    public function job_seeker_is_authorized_to_view_his_profile()
+    /**
+     * @test
+     */
+    public function job_seeker_is_not_authorized_to_view_another_profiles()
     {
+        $profileOwner = User::factory()->create();
+        $this->actingAs($profileOwner);
+        $profileOwner->addProfileDetails($this->getProfileDetails());
+
+        $user = $this->jobSeeker;
+        $this->actingAs($user);
+        $this->get('api/users/' . $profileOwner->id . '/profile')
+            ->assertStatus(403);
+    }
+
+    /**
+     * @test
+     */
+    public function company_is_authorized_to_view_jobseeker_profiles_if_it_public()
+    {
+        $profileOwner = User::factory()->create();
+        $this->actingAs($profileOwner);
+        $profileOwner->addProfileDetails($this->getProfileDetails());
+
+        $user = $this->company;
+        $this->actingAs($user);
+        $this->get('api/users/' . $profileOwner->id . '/profile')
+            ->assertStatus(200);
+    }
+
+    /**
+     * @test
+     */
+    public function company_is_not_authorized_to_view_jobseeker_profiles_if_it_private()
+    {
+        $profileOwner = User::factory()->create();
+        $this->actingAs($profileOwner);
+        $profileOwner->addProfileDetails(array_merge($this->getProfileDetails(),['visible' => false]));
+
+        $user = $this->company;
+        $this->actingAs($user);
+        $this->get('api/users/' . $profileOwner->id . '/profile')
+            ->assertStatus(403);
+    }
+
+
+    /**
+     * @test
+     */
+        public function job_seeker_is_authorized_to_view_his_profile()
+    {
+        $this->withoutExceptionHandling();
         $user = $this->jobSeeker;
         $this->actingAs($this->jobSeeker);
         $user->addProfileDetails($this->getProfileDetails());
-
+        $this->get('api/users/' . $user->id . '/profile')
+            ->assertStatus(200);
     }
 
 }

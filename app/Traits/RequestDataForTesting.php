@@ -61,7 +61,7 @@ trait RequestDataForTesting
                     'english', 'arabic'
                 ],
             ],
-            'visibility' => true
+            'visible' => true
         ];
     }
 

@@ -13,7 +13,13 @@ class UserProfileController extends Controller
     public function __construct()
     {
         $this->middleware('can:create,App\Models\Profile')->only('store');
-        $this->middleware('can:update,profile')->only('update');
+        $this->middleware('can:update,App\Models\Profile,user')->only('update');
+        $this->middleware('can:view,App\Models\Profile,user')->only('show');
+    }
+
+    public function show(User $user)
+    {
+        return response()->json(new ProfileResource($user->profile),200);
     }
 
     public function store(Request $request)
@@ -23,14 +29,14 @@ class UserProfileController extends Controller
         return response()->json(new ProfileResource($profile), 201);
     }
 
-    public function update(Request $request,User $user,Profile $profile)
+    public function update(Request $request,User $user)
     {
         $request->validate([
             'details' => '',
             'visible' => ''
         ]);
 
-        $profile = $user->profile;
+        $profile = auth()->user()->profile;
 
         if ($request->exists('details')) {
             $profile->details = $profile->details->update($request->details);

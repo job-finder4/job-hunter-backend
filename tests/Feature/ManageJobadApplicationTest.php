@@ -40,7 +40,7 @@ class ManageJobadApplicationTest extends TestCase
     public function company_can_evaluate_user_applications_on_its_jobad()
     {
         $this->withoutExceptionHandling();
-        $resp = $this->patch('/api/jobads/' . $this->jobad->id . '/applications/' . $this->application->id . '/manage', [
+        $resp = $this->put('/api/jobads/' . $this->jobad->id . '/applications/' . $this->application->id . '/manage', [
             'status' => 1
         ])->assertStatus(200);
 
@@ -64,7 +64,7 @@ class ManageJobadApplicationTest extends TestCase
     {
         Event::fake();
         $application = $this->application;
-        $this->patch('/api/jobads/' . $this->jobad->id . '/applications/' . $application->id . '/manage', [
+        $this->put('/api/jobads/' . $this->jobad->id . '/applications/' . $application->id . '/manage', [
             'status' => 1
         ])->assertStatus(200);
 

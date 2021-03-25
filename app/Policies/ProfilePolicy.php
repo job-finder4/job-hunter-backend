@@ -28,9 +28,12 @@ class ProfilePolicy
      * @param \App\Models\Profile $profile
      * @return mixed
      */
-    public function view(User $user, Profile $profile)
+    public function view(User $user,User $profileOwner)
     {
-        //
+        if($user->can('show profile')){
+            return $profileOwner->profile->visible;
+        }
+        return $user->id == $profileOwner->id;
     }
 
     /**
@@ -53,10 +56,10 @@ class ProfilePolicy
      * @param \App\Models\Profile $profile
      * @return mixed
      */
-    public function update(User $user, Profile $profile)
+    public function update(User $user, User $profileOwner)
     {
         if ($user->can('update profile')) {
-            return $user->id == $profile->user_id;
+            return $user->id == $profileOwner->id;
         }
         return false;
     }
