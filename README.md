@@ -42,7 +42,10 @@ We would like to extend our thanks to the following sponsors for funding Laravel
 - **[Many](https://www.many.co.uk)**
 - **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
 - **[DevSquad](https://devsquad.com)**
+<<<<<<< HEAD
 - **[Curotec](https://www.curotec.com/)**
+=======
+>>>>>>> origin/working_passport_backend
 - **[OP.GG](https://op.gg)**
 
 ## Contributing

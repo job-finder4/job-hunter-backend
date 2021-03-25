@@ -14,6 +14,7 @@ use Database\Seeders\SkillSeeder;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
+
 use Tests\TestCase;
 
 class UserProfileTest extends TestCase
@@ -23,6 +24,7 @@ class UserProfileTest extends TestCase
     public function getProfileDetails()
     {
         $this->seed(SkillSeeder::class);
+
         return [
             'details' => [
                 'phone_number' => '0936689359',
@@ -88,6 +90,7 @@ class UserProfileTest extends TestCase
         $this->actingAs($user = User::factory()->create(), 'api');
 
         $response = $this->post('/api/users/' . $user->id . '/profile', $this->getProfileDetails())
+
             ->assertStatus(201);
 
         $profile = $user->profile;
@@ -131,6 +134,7 @@ class UserProfileTest extends TestCase
                 ],
                 'links' => [
                     'self' => '/api/users/' . $user->id . '/profile'
+
                 ]
             ]
         );
@@ -250,8 +254,11 @@ class UserProfileTest extends TestCase
     /**
      * @test
      */
+
     public function user_can_add_additional_details_to_his_profile()
     {
+        $this->withoutExceptionHandling();
+
         $this->actingAs($user = User::factory()->create(), 'api');
 
         $profile = $user->profile()->create([
@@ -259,6 +266,7 @@ class UserProfileTest extends TestCase
         ]);
 
         $response = $this->post('/api/users/' . $user->id . '/profile', $this->getAdditionalAttributes())
+
             ->assertStatus(201);
 
         $profile = $user->profile;
@@ -278,6 +286,7 @@ class UserProfileTest extends TestCase
 
         $resp = $this->post('api/users/' . $user->id . './profile', $this->getProfileDetails());
 
+
         $profile = json_decode($resp->getContent())->data->attributes;
 
         $education = $profile->details->educations[0];
@@ -289,6 +298,7 @@ class UserProfileTest extends TestCase
         $work_experience = $profile->details->works_experience[0];
         $work_experience->job_category = 'backend web developer';
         $profile->details->works_experience;
+
 
         $storedProfile = $user->profile;
         $storedProfile->details->location = 'usa, new york';
@@ -302,6 +312,7 @@ class UserProfileTest extends TestCase
         ];
 
         $this->putJson('/api/users/' . $user->id . '/profile', [
+
             'details' => $details,
             'visible' => false
         ]);
@@ -326,4 +337,5 @@ class UserProfileTest extends TestCase
 //            ->assertStatus(422);
 //        $this->assertObjectHasAttribute('skills',json_decode($resp->getContent())->errors->meta);
 //    }
+
 }

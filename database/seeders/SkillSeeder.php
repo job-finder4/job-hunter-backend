@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+
+use App\Models\Jobad;
 use App\Models\Skill;
 use Illuminate\Database\Seeder;
 

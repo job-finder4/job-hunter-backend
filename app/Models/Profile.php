@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use phpDocumentor\Reflection\Types\This;
 
+
 class Profile extends Model
 {
     use HasFactory;
@@ -34,6 +35,7 @@ class Profile extends Model
 
         auth()->user()->skills()->sync($request->skills);
 
+
         return $profile;
     }
 
@@ -58,4 +60,5 @@ class Profile extends Model
     {
         return $this->belongsTo(User::class);
     }
+
 }

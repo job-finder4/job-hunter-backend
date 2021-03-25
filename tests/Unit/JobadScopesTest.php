@@ -20,6 +20,7 @@ class JobadScopesTest extends TestCase
         Jobad::factory()->unapproved()->create();
 
         $this->assertCount(1, Jobad::all());
+
         $this->assertCount(1, Jobad::unapproved()->get());
     }
 
@@ -56,6 +57,7 @@ class JobadScopesTest extends TestCase
         Jobad::factory()->unapproved()->create();
         $this->assertCount(1, Jobad::all());
         $this->assertCount(3, Jobad::activeAndInactive()->get());
+
     }
 
 }

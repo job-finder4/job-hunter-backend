@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use phpseclib\Math\BigInteger;
 
-class  WorkExperience{
+class WorkExperience
+{
     /*** @var integer */
     public $id;
 

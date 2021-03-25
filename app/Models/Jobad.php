@@ -20,6 +20,7 @@ class Jobad extends Model
     protected $guarded = ['approved_at', 'user_id'];
     protected $dates = ['expiration_date', 'approved_at'];
 
+
     protected static function booted()
     {
         static::addGlobalScope(new ApprovedJobadScope);
@@ -50,6 +51,7 @@ class Jobad extends Model
                 $query->where('expiration_date', '<', now())
                     ->orWhere('approved_at', null);
             });
+
     }
 
     public function skills()
@@ -66,5 +68,6 @@ class Jobad extends Model
     {
         return $this->belongsTo(User::class);
     }
+
 
 }

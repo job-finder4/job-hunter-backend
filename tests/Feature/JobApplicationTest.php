@@ -88,7 +88,6 @@ class JobApplicationTest extends TestCase
      */
     public function user_and_jobad_and_cv_resources_should_retrieved_with_application_resource()
     {
-        $this->withoutExceptionHandling();
         $application = Application::factory()->create();
 
         $this->actingAs($this->jobSeeker, 'api');
@@ -98,11 +97,13 @@ class JobApplicationTest extends TestCase
             ->assertJson([
                 'data' => [
                     'type' => 'applications',
+
                     'id' => $application->id,
                     'attributes' => [
                         'user' => [
                             'data' => [
                                 'type' => 'users',
+
                                 'id' => $application->user->id,
                                 'attributes' => []
                             ]
@@ -176,6 +177,7 @@ class JobApplicationTest extends TestCase
             'errors' => [
                 'code' => 404,
                 'description' => 'No query results for model [App\\Models\\Cv].',
+
             ]
         ]);
     }
@@ -208,6 +210,7 @@ class JobApplicationTest extends TestCase
      */
     public function a_jobSeeker_can_apply_the_same_job_only_once()
     {
+
         $this->actingAs($this->jobSeeker, 'api');
 
         $application = Application::factory([

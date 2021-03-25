@@ -58,6 +58,7 @@
                                     Laravel has wonderful, thorough documentation covering every aspect of the framework. Whether you are new to the framework or have previous experience with Laravel, we recommend reading all of the documentation from beginning to end.
                                 </div>
                             </div>
+
                         </div>
 
                         <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-t-0 md:border-l">
@@ -71,6 +72,7 @@
                                     Laracasts offers thousands of video tutorials on Laravel, PHP, and JavaScript development. Check them out, see for yourself, and massively level up your development skills in the process.
                                 </div>
                             </div>
+
                         </div>
 
                         <div class="p-6 border-t border-gray-200 dark:border-gray-700">
@@ -84,6 +86,7 @@
                                     Laravel News is a community driven portal and newsletter aggregating all of the latest and most important news in the Laravel ecosystem, including new package releases and tutorials.
                                 </div>
                             </div>
+
                         </div>
 
                         <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l">

@@ -44,7 +44,6 @@ class UserFactory extends Factory
             ];
         });
     }
-
     public function company()
     {
         return $this->state(function (array $attributes) {
@@ -53,5 +52,4 @@ class UserFactory extends Factory
             ];
         });
     }
-
 }

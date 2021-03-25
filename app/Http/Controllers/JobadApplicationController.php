@@ -28,7 +28,6 @@ class JobadApplicationController extends Controller
             response()->json(new ApplicationResource($application), 200);
     }
 
-
     public function store(Jobad $jobad, Request $request)
     {
         $request->validate([
@@ -39,6 +38,7 @@ class JobadApplicationController extends Controller
             throw new ValidationErrorException(json_encode([
                 'cv' => 'cv id and cv file are missing'
             ]));
+
         }
 
         $cv_id = $request->cv_id;
@@ -53,6 +53,7 @@ class JobadApplicationController extends Controller
                 'cv_details.file' => 'required'
             ]);
             $data = $data['cv_details'];
+
             $cv = auth()->user()->createCv($data);
             $cv_id = $cv->id;
         }

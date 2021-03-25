@@ -33,6 +33,7 @@ class CVTest extends TestCase
      */
     public function a_user_can_upload_cv_file()
     {
+        $this->withoutExceptionHandling();
         $sizeInKilobytes = 1000;
         $file = UploadedFile::fake()->create(
             'document.pdf', $sizeInKilobytes, 'application/pdf'
@@ -58,7 +59,7 @@ class CVTest extends TestCase
                 'attributes' => [
                     'title' => $cv->title,
                     'user_id' => $cv->user_id,
-                    'download_link' => '/api/cvs/'.$cv->id.'/download'
+                    'download_link' => '/api/cvs/' . $cv->id . '/download'
                 ],
             ],
         ]);
@@ -124,27 +125,72 @@ class CVTest extends TestCase
         $this->assertCount(0, Cv::all());
     }
 
+//    /**
+//     * @test
+//     */
+//    public function cv_file_can_be_downloaded()
+//    {
+//        $this->withoutExceptionHandling();
+//        $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
+////
+//        $sizeInKilobytes = 200;
+//        $file = UploadedFile::fake()->create(
+//            'document.pdf', $sizeInKilobytes, 'application/pdf'
+//        );
+//
+//        $this->post('/api/cvs', [
+//            'cv_file' => $file,
+//            'title' => 'dsa'
+//        ]);
+//
+//        $cv = Cv::first();
+//        $resp = $this->call('GET', '/api/cvs/' . $cv->id . '/download');
+//
+//        $resp->assertHeader('Content-Type', 'application/pdf');
+//    }
+
+
+    //---------------------------new daniel test---------------------------------
     /**
      * @test
      */
-    public function cv_file_can_be_downloaded()
+    public function user_can_retrieve_his_cvs()
     {
+        $this->withoutExceptionHandling();
         $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
-//
-        $sizeInKilobytes = 200;
-        $file = UploadedFile::fake()->create(
-            'document.pdf', $sizeInKilobytes, 'application/pdf'
-        );
-//
-        $this->post('/api/cvs', [
-            'cv_file' => $file,
-            'title' => 'dsa'
+        Cv::factory()->count(2)->create(['user_id' => $user->id]);
+
+        $cv1 = Cv::orderBy('id')->first();
+        $cv2 = Cv::orderByDesc('id')->first();
+
+        $resp = $this->get('/api/users/' . $user->id . '/cvs');
+//        dd($resp->getContent());
+
+        $resp->assertJson([
+            'data' => [
+                [
+                    'data' => [
+                        'type' => 'cvs',
+                        'id' => $cv1->id,
+                        'attributes' => [
+                            "title" => $cv1->title,
+                            "user_id" => $user->id,
+                            "download_link" => '/api/cvs/' . $cv1->id . '/download'
+                        ]
+                    ]
+                ],
+                [
+                    'data' => [
+                        'type' => 'cvs',
+                        'id' => $cv2->id,
+                        'attributes' => [
+                            "title" => $cv2->title,
+                            "user_id" => $user->id,
+                            "download_link" => '/api/cvs/' . $cv2->id . '/download'
+                        ]
+                    ]
+                ],
+            ]
         ]);
-
-        $cv = Cv::first();
-        $resp = $this->call('GET', '/api/cvs/' . $cv->id . '/download');
-
-        $resp->assertHeader('Content-Type', 'application/pdf');
     }
-
 }

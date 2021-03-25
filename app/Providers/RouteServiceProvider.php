@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Jobad;
+
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -53,6 +54,7 @@ class RouteServiceProvider extends ServiceProvider
         {
             return Jobad::unapproved()->where('id',$value)->firstOrFail();
         });
+
     }
 
     /**

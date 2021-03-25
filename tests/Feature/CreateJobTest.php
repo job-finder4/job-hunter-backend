@@ -44,7 +44,10 @@ class CreateJobTest extends TestCase
      */
     public function company_can_post_new_job_ad()
     {
+
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
+
+        $this->withoutExceptionHandling();
 
         $this->actingAs($user = User::factory()->create(), 'api');
 
@@ -70,6 +73,7 @@ class CreateJobTest extends TestCase
                             ]
                         ]
                     ],
+
                     'description' => 'this job require experience in ceo in big company',
                     'min_salary' => 1000,
                     'max_salary' => 1500,
@@ -87,8 +91,11 @@ class CreateJobTest extends TestCase
      */
     public function a_job_ad_cannot_be_created_without_provide_skills()
     {
+
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
 
+
+//        $this->withoutExceptionHandling();
         $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
 
         $response = $this->post('/api/jobads', array_merge($this->getJobDetails(), ['skills' => '']))
@@ -103,6 +110,7 @@ class CreateJobTest extends TestCase
      */
     public function job_ads_are_returned_with_required_skills()
     {
+
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
 
         $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
@@ -164,7 +172,10 @@ class CreateJobTest extends TestCase
      */
     public function a_company_can_add_skills_to_the_job_ad_only_from_available_skills()
     {
+
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
+
+
 
         $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
 
