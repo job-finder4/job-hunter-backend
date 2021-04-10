@@ -20,7 +20,6 @@ trait JobSeeker
     public function applications()
     {
         return $this->hasManyThrough(Application::class,Cv::class);
-
     }
 
     public function cvs()
@@ -58,13 +57,8 @@ trait JobSeeker
             throw new FileSizeMismatchException();
         }
 
-//        $filename = $file->getClientOriginalName();
-        $destinationPath = storage_path() . '/app/cvs/';
-//        $file->move($destinationPath, $filename);
-
         $uniqueName = '/cvs/' . $this->id . '/' ;
         $file->storeAs($uniqueName, $file->getClientOriginalName(), 'local');
-//        Storage::disk('local')->put($uniqueName,  $file);
         $cv = $this->cvs()->create(['title' => $title, 'path' => $uniqueName.$file->getClientOriginalName()]);
 
         return $cv;

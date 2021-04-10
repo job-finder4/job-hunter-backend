@@ -160,8 +160,6 @@ class JobadPermissionTest extends TestCase
             ->assertStatus(403);
     }
 
-
-
     /**
      * @test
     */

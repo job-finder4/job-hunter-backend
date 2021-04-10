@@ -20,6 +20,7 @@ use Tests\TestCase;
 class CreateJobTest extends TestCase
 {
     use RefreshDatabase;
+
     public function getJobDetails()
     {
         $this->seed(SkillSeeder::class);
@@ -34,7 +35,7 @@ class CreateJobTest extends TestCase
             'job_time' => Jobad::PART_TIME,
             'salary' => ['min_salary' => 1000, 'max_salary' => 1500],
             'expiration_date' => now()->addMonth(),
-            'skills' => Skill::take(2)->get(),
+            'skills' => Skill::take(2)->get()->pluck('id'),
             'approved_at' => now()
         ];
     }
@@ -44,10 +45,9 @@ class CreateJobTest extends TestCase
      */
     public function company_can_post_new_job_ad()
     {
+        $this->withoutExceptionHandling();
 
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
-
-        $this->withoutExceptionHandling();
 
         $this->actingAs($user = User::factory()->create(), 'api');
 
@@ -110,6 +110,7 @@ class CreateJobTest extends TestCase
      */
     public function job_ads_are_returned_with_required_skills()
     {
+        $this->withoutExceptionHandling();
 
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
 
@@ -174,15 +175,12 @@ class CreateJobTest extends TestCase
     {
 
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
-
-
-
         $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
 
         $this->seed(SkillSeeder::class);
         $skills = Skill::get()->toTree();
 
-        $unavialableSkill = ['id' => 23237777999, 'name' => 'daniel'];
+        $unavialableSkill = ['id' => 23237777999];
 
         $response = $this->post('/api/jobads',
             array_merge($this->getJobDetails(), ['skills' => [$unavialableSkill]]))
@@ -202,12 +200,11 @@ class CreateJobTest extends TestCase
     /**
      * @test
      */
-
     public function user_can_retrieve_all_jobs_ad()
     {
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
-
         $this->withoutExceptionHandling();
+
         Jobad::factory()->count(3)->create();
         $this->actingAs(User::factory()->create(), 'api');
         $this->get('/api/jobads')
@@ -218,7 +215,6 @@ class CreateJobTest extends TestCase
                     'self' => url('/api/jobs')
                 ]
             ]);
-
     }
 
     /**
@@ -267,6 +263,33 @@ class CreateJobTest extends TestCase
                     ]
                 ]
             ]);
+    }
+
+
+    //-------------------daniel tests ---------------------------------------
+
+    /**
+     * @test
+     */
+    public function jobads_should_be_returned_with_pagination()
+    {
+        $this->withoutExceptionHandling();
+
+
+        $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
+        Jobad::factory()->count(2)->create();
+
+        $resp = $this->get('/api/jobads')->assertStatus(200);
+
+
+        $resp->assertJson([
+            'data' => [
+                [
+                    'data' =>
+                        []
+                ]
+            ]
+        ]);
     }
 
 }

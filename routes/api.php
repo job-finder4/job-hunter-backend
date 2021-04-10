@@ -28,33 +28,37 @@ use App\Http\Controllers\UserApplicationController;
 |
 */
 
-Route::apiresource('/jobads', JobadController::class);
-Route::apiresource('/skills', SkillController::class);
-Route::get('/cvs/{cv_id}/download', [CvController::class, 'downloadCv']);
-Route::apiresource('/cvs', CvController::class);
-Route::apiResource('/user/{user}/profile', UserProfileController::class);
-Route::apiResource('/jobads/{jobad}/applications', JobadApplicationController::class);
-Route::patch('jobads/{jobad}/applications/{application}/manage', [JobadApplicationManagementController::class, 'evaluate']);
-Route::apiresource('/jobads', JobadController::class);
-Route::put('/jobads/{unapprovedJobad}/approve', [JobadController::class, 'approve']);
-Route::get('/myjobads', [JobadController::class, 'getCompanyJobads']);
-Route::apiresource('/skills', SkillController::class);
-Route::get('/cvs/{cv_id}/download', [CvController::class, 'downloadCv']);
+/*
+ * User
+ */
+Route::get('user', [UserController::class, 'show']);
+Route::patch('user', [UserController::class, 'update']);
+Route::delete('user', [UserController::class, 'destroy']);
+
+Route::get('/users/{user}/cvs', [CvController::class, 'index']);
 Route::get('/users/{user}/profile', [UserProfileController::class, 'show']);
 Route::put('/users/{user}/profile', [UserProfileController::class, 'update']);
 Route::post('/users/{user}/profile', [UserProfileController::class, 'store']);
-Route::put('jobads/{jobad}/applications/{application}/manage', [JobadApplicationManagementController::class, 'evaluate']);
-
-Route::apiresource('/cvs', CvController::class);
-Route::apiResource('/jobads/{jobad}/applications', JobadApplicationController::class);
 Route::apiResource('users/{user}/applications', UserApplicationController::class);
 
+Route::get('/cvs/{cv}/download', [CvController::class, 'downloadCv']);
+Route::get('/user/my-cvs', [CvController::class,'myCvs']);
+Route::apiresource('/cvs', CvController::class);
 
+Route::apiresource('/skills', SkillController::class);
+
+Route::get('/admin-jobads', [JobadController::class,'getJobsForAdmin']);
+Route::apiresource('/jobads', JobadController::class);
+Route::get('/jobads/{jobad}/cvs', [JobadController::class,'getJobCvs']);
+Route::apiResource('/jobads/{jobad}/applications', JobadApplicationController::class);
+Route::patch('jobads/{jobad}/applications/{application}/manage', [JobadApplicationManagementController::class, 'evaluate']);
+Route::put('/jobads/{unapprovedJobad}/approve', [JobadController::class, 'approve']);
+Route::put('jobads/{jobad}/applications/{application}/manage', [JobadApplicationManagementController::class, 'evaluate']);
+Route::apiResource('/jobads/{jobad}/applications', JobadApplicationController::class);
+
+Route::get('/myjobads', [JobadController::class, 'getCompanyJobads']);
 //-------------Daniel new work
-Route::get('/users/{user}/cvs', [CvController::class, 'index']);
-
-
-Route::prefix('v1')->group(function () {
+Route::prefix('auth')->group(function () {
     /*
      * Auth
      */
@@ -73,21 +77,10 @@ Route::prefix('v1')->group(function () {
 
     Route::post('reset-password', [ResetPasswordController::class, 'reset'])
         ->name('password.reset');
-
-    /*
-     * User
-     */
-    Route::get('user', [UserController::class, 'show']);
-
-    Route::patch('user', [UserController::class, 'update']);
-
-    Route::delete('user', [UserController::class, 'destroy']);
 });
 
-Route::post('register', [AuthController::class,'register']);
-//Route::post('login', 'AuthController@login');
 
-
-
-
-
+//----------------daniel----------------------------------------
+Route::post('register/jobseeker', [AuthController::class,'registerAsJobSeeker']);
+Route::post('register/company', [AuthController::class,'registerAsCompany']);
+//Route::post('register/admin', [AuthController::class,'registerAsAdmin']);

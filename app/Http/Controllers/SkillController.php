@@ -20,9 +20,11 @@ class SkillController extends Controller
         return new SkillResource($skill);
     }
 
+    //----------damiel ----------
     public function index()
     {
-        return response(new SkillCollection(Skill::get()), 200);
+        return response(Skill::get()->toTree(), 200);
     }
+    //*--------------------------
 
 }

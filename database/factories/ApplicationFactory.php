@@ -29,4 +29,28 @@ class ApplicationFactory extends Factory
             'jobad_id' => Jobad::factory(),
         ];
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function approved()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => 1,
+            ];
+        });
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function rejected()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => -1,
+            ];
+        });
+    }
 }

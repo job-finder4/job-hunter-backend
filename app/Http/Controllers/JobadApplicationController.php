@@ -13,11 +13,25 @@ use Illuminate\Http\Request;
 
 class JobadApplicationController extends Controller
 {
-    public function index(Jobad $jobad)
+    public function index(Jobad $jobad, Request $request)
     {
-        return response()->json(
-            new ApplicationCollection($jobad->applications),
-            200);
+        $allApplications = $jobad->applications()->get();
+
+
+        if($request->has('filter')){
+            $filter=$request->filter;
+            if ($filter == 'rejected') {
+                $allApplications = $jobad->applications()->where('status', -1)->get();
+            }
+            if ($filter == 'approved') {
+                $allApplications = $jobad->applications()->where('status', 1)->get();
+            }
+            if ($filter == 'pending') {
+                $allApplications = $jobad->applications()->where('status', 0)->get();
+            }
+        }
+
+        return response()->json(new ApplicationCollection($allApplications), 200);
     }
 
 

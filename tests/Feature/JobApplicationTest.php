@@ -262,3 +262,5 @@ class JobApplicationTest extends TestCase
         $this->assertEquals(2, $application->cv->id);
     }
 }
+
+

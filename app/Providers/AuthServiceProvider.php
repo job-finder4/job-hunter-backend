@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Cv;
 use App\Models\Jobad;
 use App\Models\Profile;
 use App\Models\User;
+use App\Policies\CvPolicy;
 use App\Policies\JobadPolicy;
 use App\Policies\ProfilePolicy;
 use Database\Factories\JobadFactory;
@@ -26,7 +28,8 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
         Jobad::class => JobadPolicy::class,
-        Profile::class => ProfilePolicy::class
+        Profile::class => ProfilePolicy::class,
+        Cv::class => CvPolicy::class
     ];
 
     /**

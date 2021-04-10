@@ -17,11 +17,15 @@ class UsersTableSeeder extends Seeder
     {
         // admin user
         $user = User::factory()->create([
-            'name'  => 'John Doe',
-            'email' => 'john@example.com',
+            'name'  => 'Admin',
+            'email' => 'admin@example.com',
+            'password'=>bcrypt('admin')
         ]);
 
-        // random dummy users
-        User::factory(9)->create();
+
+        $user->assignRole('admin');
+
+//        // random dummy users
+//        User::factory(9)->create();
     }
 }

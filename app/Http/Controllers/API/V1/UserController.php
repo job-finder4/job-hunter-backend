@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\V1\UserRequest;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\User as UserResource;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,7 +17,8 @@ class UserController extends Controller
 
     public function show()
     {
-        return new UserResource(Auth::user());
+        $user= Auth::user();
+        return new UserResource($user);
     }
 
     public function update(UserRequest $request)

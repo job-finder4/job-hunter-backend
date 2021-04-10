@@ -163,7 +163,7 @@ class CVTest extends TestCase
         $cv1 = Cv::orderBy('id')->first();
         $cv2 = Cv::orderByDesc('id')->first();
 
-        $resp = $this->get('/api/users/' . $user->id . '/cvs');
+        $resp = $this->get('/api/user/my-cvs');
 //        dd($resp->getContent());
 
         $resp->assertJson([

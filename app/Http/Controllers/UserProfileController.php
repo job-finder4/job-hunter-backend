@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\Profile as ProfileResource;
 
 use App\Models\Profile;
-
 use App\Models\User;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
@@ -34,7 +32,6 @@ class UserProfileController extends Controller
 
     public function update(Request $request,User $user)
     {
-
         $request->validate([
             'details' => '',
             'visible' => ''

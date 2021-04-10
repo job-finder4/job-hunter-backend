@@ -24,7 +24,7 @@ trait RequestDataForTesting
             'job_time' => Jobad::PART_TIME,
             'salary' => ['min_salary' => 1000, 'max_salary' => 1500],
             'expiration_date' => now()->addMonth(),
-            'skills' => Skill::take(2)->get(),
+            'skills' => Skill::take(2)->get()->pluck('id'),
             'approved_at' => now()
         ];
     }

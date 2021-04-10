@@ -16,13 +16,24 @@ use App\Http\Resources\Cv as CvResource;
 
 class CvController extends Controller
 {
-    //-------------------danie lnew essssssssssssssss
-    public function index(User $user)
+    public function __construct()
     {
-        return response(new CvCollection($user->cvs), 200);
+//        $this->middleware('can:download,cv')->only('downloadCv');
+//        $this->middleware('can:create,App\Models\Cv')->only('store');
+//        $this->middleware('can:update,cv')->only('update');
+//        $this->middleware('can:delete,App\Models\Cv')->only('delete');
+//        $this->middleware('can:view,cv')->only('downloadCv');
+//        $this->middleware('can:viewAny,App\Models\User')->only('index');
     }
 
+
+    //-------------------danie lnew essssssssssssssss
+    public function myCvs()
+    {
+        return response(new CvCollection(auth()->user()->cvs), 200);
+    }
     //----------------------------------------------------
+
     public function store(Request $request)
     {
         $user = auth()->user();
@@ -41,18 +52,20 @@ class CvController extends Controller
         return new CvResource($cv);
     }
 
-
-    public function downloadCv(Request $request)
+//-------------daniel edit------------------------------
+    public function downloadCv(Cv $cv)
     {
-        $cv = Cv::findOrFail($request->cv_id);
-
         $path = $cv->path;
         $mime = 'application/pdf';
 
         $myFile = storage_path('app' . $path);
         $headers = ['Content-Type: application/pdf'];
         $newName = $cv->title . '.pdf';
-        return response()->download($myFile, $newName, $headers);
 
+        return Storage::disk('local')->download($path);
+
+        return response()->download($myFile, $newName, $headers);
     }
+
+
 }

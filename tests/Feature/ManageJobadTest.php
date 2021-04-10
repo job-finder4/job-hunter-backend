@@ -66,5 +66,20 @@ class ManageJobadTest extends TestCase
             ->assertJsonCount(5, 'data');
     }
 
+    /**
+     * @test
+     */
+    public function admin_can_retrieve_unapproved_jobads()
+    {
+        $this->withoutExceptionHandling();
+        $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
+
+        $this->actingAs($user = User::factory()->create());
+        $jobads = Jobad::factory()->count(5)->unapproved()->create();
+
+        $this->get('api/admin-jobads?filter=pending')
+            ->assertStatus(200)->assertJsonCount(5,'data');
+    }
+
 
 }

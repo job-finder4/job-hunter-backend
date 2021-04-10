@@ -17,7 +17,7 @@ class CvCollection extends ResourceCollection
         return [
             'data' => $this->collection,
             'link' => [
-                'self' => url('/api/'.$request->user->id.'/cvs')
+                'self' => url('/api/'.auth()->user()->id.'/cvs')
             ]
         ];
     }
