@@ -5,7 +5,6 @@ use App\Http\Controllers\AuthController;
 use  App\Http\Controllers\JobadApplicationController;
 use App\Http\Controllers\API\V1\Auth\ForgotPasswordController;
 use App\Http\Controllers\API\V1\Auth\LogoutController;
-use App\Http\Controllers\API\V1\Auth\RegisterController;
 use App\Http\Controllers\API\V1\Auth\ResetPasswordController;
 use App\Http\Controllers\API\V1\Auth\VerificationController;
 use App\Http\Controllers\API\V1\UserController;
@@ -27,6 +26,13 @@ use App\Http\Controllers\UserApplicationController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+//Broadcast::routes(['middleware' => 'auth:api']); // this works for my api
+
+Route::get('/messager', function (){
+    event(new \App\Events\TestJobEvent('gobranD'));
+//    broadcast(new \App\Events\TestJobEvent('daniel'))->toOthers();
+});
+
 
 /*
  * User
@@ -57,6 +63,11 @@ Route::put('jobads/{jobad}/applications/{application}/manage', [JobadApplication
 Route::apiResource('/jobads/{jobad}/applications', JobadApplicationController::class);
 
 Route::get('/myjobads', [JobadController::class, 'getCompanyJobads']);
+
+
+
+//Route::post('/login', [AuthController::class,'login'])->name('login');
+
 //-------------Daniel new work
 Route::prefix('auth')->group(function () {
     /*
@@ -64,19 +75,18 @@ Route::prefix('auth')->group(function () {
      */
     Route::post('logout', [LogoutController::class, 'logout']);
 
-    Route::post('register', [RegisterController::class, 'register']);
 
-    Route::get('verify-email/{id}/{hash}', [VerificationController::class, 'verify'])
-        ->name('verification.verify');
-
-    Route::post('verify-email/resend', [VerificationController::class, 'resend'])
-        ->name('verification.resend');
-
-    Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])
-        ->name('password.email');
-
-    Route::post('reset-password', [ResetPasswordController::class, 'reset'])
-        ->name('password.reset');
+//    Route::get('verify-email/{id}/{hash}', [VerificationController::class, 'verify'])
+//        ->name('verification.verify');
+//
+//    Route::post('verify-email/resend', [VerificationController::class, 'resend'])
+//        ->name('verification.resend');
+//
+//    Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])
+//        ->name('password.email');
+//
+//    Route::post('reset-password', [ResetPasswordController::class, 'reset'])
+//        ->name('password.reset');
 });
 
 

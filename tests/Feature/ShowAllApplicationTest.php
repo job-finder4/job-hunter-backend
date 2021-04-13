@@ -47,7 +47,7 @@ class ShowAllApplicationTest extends TestCase
     {
         $this->actingAs($this->jobSeeker);
         Application::factory()->count(5)->create(['cv_id' => $this->cv->id]);
-        $this->get('/api/users/' . $this->jobSeeker->id . '/applications')
+        $this->getE('/api/users/' . $this->jobSeeker->id . '/applications')
             ->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [

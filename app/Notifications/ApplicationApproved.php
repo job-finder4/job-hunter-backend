@@ -4,16 +4,19 @@ namespace App\Notifications;
 
 use App\Events\ApplicationEvaluated;
 use App\Models\Application;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-
-class ApplicationApproved extends Notification
+use Illuminate\Notifications\Messages\BroadcastMessage;
+class ApplicationApproved extends Notification implements ShouldBroadcast
 {
     use Queueable;
 
     public $application;
+
 
     /**
      * Create a new notification instance.
@@ -33,7 +36,10 @@ class ApplicationApproved extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['broadcast'];
+//        return ['mail'];
+//        return ['broadcast','mail'];
+
     }
 
     /**
@@ -62,4 +68,28 @@ class ApplicationApproved extends Notification
             //
         ];
     }
+
+    /**
+     * Get the broadcastable representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return BroadcastMessage
+     */
+    public function toBroadcast($notifiable)
+    {
+        return new BroadcastMessage([
+            'application' => $this->application
+        ]);
+    }
+
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return \Illuminate\Broadcasting\Channel|array
+     */
+    public function broadcastOn()
+    {
+        return new PrivateChannel('my-approved-jobs.'.$this->application->user->id);
+    }
+
 }

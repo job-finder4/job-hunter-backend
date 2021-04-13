@@ -11,7 +11,11 @@ class VerifyCsrfToken extends Middleware
      *
      * @var array
      */
+
+    //importantttttttt  daniel
     protected $except = [
+        'broadcasting/auth',
+        'api/broadcasting/auth'
         //
     ];
 }
