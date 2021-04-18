@@ -73,7 +73,6 @@ class ManageJobadApplicationTest extends TestCase
         });
 
         Event::assertDispatchedTimes(ApplicationEvaluated::class,1);
-
     }
 
     /**

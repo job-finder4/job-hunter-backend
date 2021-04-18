@@ -16,6 +16,7 @@ class CreateJobadsTable extends Migration
         Schema::create('jobads', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('user_id');
+            $table->unsignedInteger('category_id');
             $table->string('title');
             $table->text('description');
             $table->unsignedMediumInteger('min_salary');

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use App\Models\Jobad;
 use App\Models\Skill;
 use App\Models\User;
@@ -37,6 +38,7 @@ class JobadFactory extends Factory
             'expiration_date'=>$this->faker->dateTimeBetween(now()->addWeek(),now()->addWeeks(8)),
             'job_type' => $this->faker->randomElement([Jobad::FULL_TIME,Jobad::PART_TIME]),
             'job_time' => $this->faker->randomElement([Jobad::REMOTE,Jobad::ON_SITE]),
+            'category_id'=>Category::factory(),
             'approved_at' => now(),
         ];
     }

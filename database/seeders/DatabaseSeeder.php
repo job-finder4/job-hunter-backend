@@ -15,8 +15,9 @@ class DatabaseSeeder extends Seeder
     {
 //        $this->call(PermissionSeeder::class);
 //        $this->call(SkillSeeder::class);
-//        $this->call(JobadSeeder::class);
-        $this->call(UsersTableSeeder::class);
+//        $this->call(CategorySeeder::class);
+        $this->call(JobadSeeder::class);
+//        $this->call(UsersTableSeeder::class);
         // \App\Models\User::factory(10)->create();
     }
 }

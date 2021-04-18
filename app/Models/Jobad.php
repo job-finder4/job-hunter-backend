@@ -4,13 +4,14 @@ namespace App\Models;
 
 use App\scopes\ApprovedJobadScope;
 use App\scopes\UnExpiredJobadScope;
+use App\Traits\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Jobad extends Model
 {
-    use HasFactory;
+    use HasFactory,Filterable;
 
     const FULL_TIME = 'full_time';
     const PART_TIME = 'part_time';
@@ -67,6 +68,10 @@ class Jobad extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function category(){
+        return $this->belongsTo(Category::class);
     }
 
 }

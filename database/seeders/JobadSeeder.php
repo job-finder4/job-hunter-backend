@@ -21,5 +21,10 @@ class JobadSeeder extends Seeder
         Jobad::factory()->count(30)->create()->each(function ($jobad){
             $jobad->skills()->attach(Skill::inRandomOrder()->get()->pluck('id')->take(rand(1,3)));
         });
+
+//        Jobad::factory()->create([
+//            'description'=>'',
+//            'title'=>'',
+//        ]);
     }
 }

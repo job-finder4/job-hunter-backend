@@ -3,10 +3,13 @@
 namespace Tests\Feature;
 
 use App\Exceptions\MyModelNotFoundException;
+use App\Models\Category;
 use App\Models\Jobad;
 use App\Models\Skill;
 use App\Models\User;
 use Database\Factories\UserFactory;
+use Database\Seeders\CategorySeeder;
+use Database\Seeders\JobadSeeder;
 use Database\Seeders\SkillSeeder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -266,30 +269,104 @@ class CreateJobTest extends TestCase
     }
 
 
-    //-------------------daniel tests ---------------------------------------
+    /**
+     * @test
+     */
+    public function jobads_are_returned_with_assigned_category()
+    {
+        $this->withoutExceptionHandling();
+        $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
+
+        $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
+
+        $this->seed(CategorySeeder::class);
+
+        $category = Category::first();
+        $approved_job = Jobad::factory()->create(['category_id' => $category->id]);
+
+        $this->assertNotNull($approved_job->category);
+
+        $response = $this->get('/api/jobads/' . $approved_job->id)->assertStatus(200);
+
+        $response->assertJson([
+            'data' => [
+                'id' => $approved_job->id,
+                'type' => 'jobads',
+                'attributes' => [
+                    'category' => [
+                        'data' => [
+                            'type' => 'categories',
+                            'id' => $category->id,
+                            'attributes' => [
+                                'name' => $category->name,
+                            ]
+                        ]
+                    ],
+                ],
+            ]
+        ]);
+    }
 
     /**
      * @test
      */
-    public function jobads_should_be_returned_with_pagination()
+    public function jobads_category_filter()
     {
         $this->withoutExceptionHandling();
 
+        $manu=Category::factory()->create(['name'=>'Manufacturing']);
+        $it=Category::factory()->create(['name'=>'IT']);
 
-        $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
-        Jobad::factory()->count(2)->create();
+        Jobad::factory()->count(2)->create(['category_id'=>$manu->id]);
+        Jobad::factory()->count(2)->create(['category_id'=>$it->id]);
 
-        $resp = $this->get('/api/jobads')->assertStatus(200);
+        $response = $this->get('/api/jobads')->assertStatus(200)
+            ->assertJsonCount(4,'data');
 
-
-        $resp->assertJson([
-            'data' => [
-                [
-                    'data' =>
-                        []
-                ]
-            ]
-        ]);
+        $response = $this->get('/api/jobads?category=Manufacturing')->assertStatus(200)
+            ->assertJsonCount(2,'data');
     }
+
+    /**
+     * @test
+     */
+    public function jobads_location_filter()
+    {
+        $this->withoutExceptionHandling();
+//        $this->seed(JobadSeeder::class);
+
+        Jobad::factory()->create(['location'=>'Colorado']);
+        Jobad::factory()->create(['location'=>'Lattakia']);
+
+        $response = $this->get('/api/jobads')->assertStatus(200)
+            ->assertJsonCount(2,'data');
+
+        $response = $this->get('/api/jobads?location=Colorado')->assertStatus(200)
+            ->assertJsonCount(1,'data');
+    }
+
+     /**
+     * @test
+     */
+    public function jobads_location_and_category_filter()
+    {
+        $this->withoutExceptionHandling();
+//        $this->seed(JobadSeeder::class);
+
+        $manu=Category::factory()->create(['name'=>'Manufacturing']);
+        $it=Category::factory()->create(['name'=>'IT']);
+
+        Jobad::factory()->count(2)->create(['category_id'=>$manu->id,'location'=>'Colorado']);
+        Jobad::factory()->count(2)->create(['category_id'=>$it->id]);
+        Jobad::factory()->create(['location'=>'Lattakia']);
+
+        $response = $this->get('/api/jobads')->assertStatus(200)
+            ->assertJsonCount(5,'data');
+
+        $response = $this->get('/api/jobads?location=Colorado&category=Manufacturing')->assertStatus(200)
+            ->assertJsonCount(2,'data');
+
+    }
+
 
 }

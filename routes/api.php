@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobadApplicationManagementController;
 use App\Http\Controllers\JobadController;
 use App\Http\Controllers\SkillController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CvController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\UserApplicationController;
@@ -63,7 +64,7 @@ Route::put('jobads/{jobad}/applications/{application}/manage', [JobadApplication
 Route::apiResource('/jobads/{jobad}/applications', JobadApplicationController::class);
 
 Route::get('/myjobads', [JobadController::class, 'getCompanyJobads']);
-
+Route::apiResource('/categories', CategoryController::class);
 
 
 //Route::post('/login', [AuthController::class,'login'])->name('login');

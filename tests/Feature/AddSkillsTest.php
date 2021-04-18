@@ -17,11 +17,9 @@ class AddSkillsTest extends TestCase
     /**
      * @test
      */
-
     public function an_admin_can_add_new_skills()
     {
         $this->withoutExceptionHandling();
-
 
         $this->actingAs($user = \App\Models\User::factory()->create(), 'api');
 
