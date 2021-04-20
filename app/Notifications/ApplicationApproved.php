@@ -36,7 +36,8 @@ class ApplicationApproved extends Notification implements ShouldBroadcast
      */
     public function via($notifiable)
     {
-        return ['broadcast'];
+//        return ['broadcast'];
+        return ['database', 'broadcast'];
 //        return ['mail'];
 //        return ['broadcast','mail'];
 
@@ -65,7 +66,8 @@ class ApplicationApproved extends Notification implements ShouldBroadcast
     public function toArray($notifiable)
     {
         return [
-            //
+            'application_id' => $this->application->id,
+            'action' => "/applied-jobs",
         ];
     }
 
@@ -78,18 +80,11 @@ class ApplicationApproved extends Notification implements ShouldBroadcast
     public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
-            'application' => $this->application
+            'data' => [
+                'application_id' => $this->application->id,
+                'action' => "/applied-jobs/{$this->application->id}",
+            ]
         ]);
-    }
-
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     */
-    public function broadcastOn()
-    {
-        return new PrivateChannel('my-approved-jobs.'.$this->application->user->id);
     }
 
 }

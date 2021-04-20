@@ -13,6 +13,7 @@ use App\Http\Controllers\JobadApplicationManagementController;
 use App\Http\Controllers\JobadController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\CvController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\UserApplicationController;
@@ -41,6 +42,9 @@ Route::get('/messager', function (){
 Route::get('user', [UserController::class, 'show']);
 Route::patch('user', [UserController::class, 'update']);
 Route::delete('user', [UserController::class, 'destroy']);
+
+Route::get('notifications', [NotificationsController::class, 'index']);
+Route::patch('notifications/{notification}', [NotificationsController::class, 'update']);
 
 Route::get('/users/{user}/cvs', [CvController::class, 'index']);
 Route::get('/users/{user}/profile', [UserProfileController::class, 'show']);

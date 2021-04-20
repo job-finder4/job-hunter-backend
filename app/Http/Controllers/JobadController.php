@@ -36,26 +36,26 @@ class JobadController extends Controller
 
     //----------------------------------------
 
-    public function getCompanyJobads(Request $request)
+    public function getCompanyJobads(Request $request,JobadFilter $filters)
     {
-        $allJobads = null;
-        if (!$request->has('filter')) {
-            $allJobads = auth()->user()->jobads()->activeAndInactive();
-        }
-
-        $filter = $request->filter;
-
-        if ($filter == 'active') {
-            $allJobads = auth()->user()->jobads();
-        }
-        if ($filter == 'expired') {
-            $allJobads = auth()->user()->jobads()->expired();
-        }
-        if ($filter == 'pending') {
-            $allJobads = auth()->user()->jobads()->Unapproved();
-        }
-
-        return response(new JobadCollection($allJobads->paginate(5)), 200);
+//        $allJobads = null;
+//        if (!$request->has('filter')) {
+//            $allJobads = auth()->user()->jobads()->activeAndInactive();
+//        }
+//
+//        $filter = $request->filter;
+//
+//        if ($filter == 'active') {
+//            $allJobads = auth()->user()->jobads();
+//        }
+//        if ($filter == 'expired') {
+//            $allJobads = auth()->user()->jobads()->expired();
+//        }
+//        if ($filter == 'pending') {
+//            $allJobads = auth()->user()->jobads()->Unapproved();
+//        }
+        $resultSet=Jobad::filter($filters);
+        return response(new JobadCollection($resultSet->paginate(5)), 200);
     }
 
     public function approve(Jobad $jobad)

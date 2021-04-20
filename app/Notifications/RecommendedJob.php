@@ -2,14 +2,13 @@
 
 namespace App\Notifications;
 
+use App\Models\Jobad;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class JobadEvaluationStatus extends Notification
+class RecommendedJob extends Notification
 {
     use Queueable;
 
@@ -20,7 +19,7 @@ class JobadEvaluationStatus extends Notification
      *
      * @return void
      */
-    public function __construct($jobad)
+    public function __construct(Jobad $jobad)
     {
         $this->jobad = $jobad;
     }
@@ -33,9 +32,7 @@ class JobadEvaluationStatus extends Notification
      */
     public function via($notifiable)
     {
-//        return ['broadcast'];
         return ['database', 'broadcast'];
-
     }
 
     /**
@@ -46,9 +43,12 @@ class JobadEvaluationStatus extends Notification
      */
     public function toMail($notifiable)
     {
+        $url = url("api/jobads/{$this->jobad}");
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
+            ->subject('Newly Recommended Job')
+            ->greeting('Hello!')
+            ->line('We Are Recommended You To See This Job Ad')
+            ->action('View Job', $url)
             ->line('Thank you for using our application!');
     }
 
@@ -63,24 +63,19 @@ class JobadEvaluationStatus extends Notification
         return [
             'jobad_id' => $this->jobad->id,
             'jobad_title' => $this->jobad->title,
-            'action' => "/myjobs/{$this->jobad->id}",
+            'action' => "/jobs/{$this->jobad->id}",
         ];
     }
 
-    /**
-     * Get the broadcastable representation of the notification.
-     *
-     * @param mixed $notifiable
-     * @return BroadcastMessage
-     */
     public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
             'data' => [
                 'jobad_id' => $this->jobad->id,
                 'jobad_title' => $this->jobad->title,
-                'action' => "/myjobs/{$this->jobad->id}",
+                'action' => "/jobs/{$this->jobad->id}"
             ]
         ]);
     }
+
 }
