@@ -9,6 +9,7 @@ use App\Exceptions\ValidationErrorException;
 use App\Models\Application;
 use App\Models\Cv;
 use App\Models\Jobad;
+use App\Models\JobPreference;
 use App\Models\Profile;
 use App\Models\Skill;
 use App\Profile\UserProfile;
@@ -19,7 +20,7 @@ trait JobSeeker
 {
     public function applications()
     {
-        return $this->hasManyThrough(Application::class,Cv::class);
+        return $this->hasManyThrough(Application::class, Cv::class);
     }
 
     public function cvs()
@@ -34,18 +35,34 @@ trait JobSeeker
 
     public function skills()
     {
-        return $this->morphToMany(Skill::class,'skillable');
+        return $this->morphToMany(Skill::class, 'skillable');
+    }
+
+    public function jobPreference(){
+        return $this->hasOne(JobPreference::class);
     }
 
     public function addProfileDetails($request)
     {
         if (!$this->profile()->exists()) {
-            $storedProfile = Profile::makeNew($request);
+            $storedProfile = Profile::createNew($request);
         } else {
-            $storedProfile = $this->profile->addDetails($request->details);
-
+            $storedProfile = $this->profile;
+            $details = $storedProfile->details->add($request->details);
+            Profile::where('user_id', $request->user()->id)->update(['details' => serialize($details)]);
+            $storedProfile = $storedProfile->fresh();
         }
+
         return $storedProfile;
+    }
+
+    public function deleteProfileDetails($request)
+    {
+        $profile = $this->profile()->firstOrFail();
+        $de = $profile->details;
+        $details = $profile->details->delete($request->details);
+        Profile::where('user_id', $this->id)->update(['details' => serialize($details)]);
+        return $profile->fresh();
     }
 
     public function createCv($cvDetails)
@@ -57,9 +74,9 @@ trait JobSeeker
             throw new FileSizeMismatchException();
         }
 
-        $uniqueName = '/cvs/' . $this->id . '/' ;
+        $uniqueName = '/cvs/' . $this->id . '/';
         $file->storeAs($uniqueName, $file->getClientOriginalName(), 'local');
-        $cv = $this->cvs()->create(['title' => $title, 'path' => $uniqueName.$file->getClientOriginalName()]);
+        $cv = $this->cvs()->create(['title' => $title, 'path' => $uniqueName . $file->getClientOriginalName()]);
 
         return $cv;
     }

@@ -2,19 +2,14 @@
 
 namespace Tests\Feature;
 
-use App\Http\Resources\SkillCollection;
-use App\Http\Resources\User as UserResource;
+use App\Models\Image;
+use App\Models\JobPreference;
 use App\Models\Profile;
 use App\Models\Skill;
 use App\Models\User;
 use App\Profile\UserProfile;
-
-use Illuminate\Auth\Middleware\Authorize;
 use Database\Seeders\SkillSeeder;
-
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Arr;
-
 use Tests\TestCase;
 
 class UserProfileTest extends TestCase
@@ -90,7 +85,6 @@ class UserProfileTest extends TestCase
         $this->actingAs($user = User::factory()->create(), 'api');
 
         $response = $this->post('/api/users/' . $user->id . '/profile', $this->getProfileDetails())
-
             ->assertStatus(201);
 
         $profile = $user->profile;
@@ -254,24 +248,23 @@ class UserProfileTest extends TestCase
     /**
      * @test
      */
-
     public function user_can_add_additional_details_to_his_profile()
     {
         $this->withoutExceptionHandling();
-
         $this->actingAs($user = User::factory()->create(), 'api');
 
-        $profile = $user->profile()->create([
-            'details' => UserProfile::make($this->getProfileDetails()['details'])
-        ]);
+        $profile = Profile::factory()->create(['user_id' => $user->id]);
+
+        $educationsCount = sizeof($profile->details->educations) + 1;
 
         $response = $this->post('/api/users/' . $user->id . '/profile', $this->getAdditionalAttributes())
-
             ->assertStatus(201);
 
         $profile = $user->profile;
+        $profile->fresh();
         $this->assertNotNull($profile);
-        $this->assertCount(2, $profile->details->educations);
+
+        $this->assertCount($educationsCount, $profile->details->educations);
         $this->assertCount(1, Profile::get(), 'there are more one profile for a single user');;
     }
 
@@ -326,16 +319,141 @@ class UserProfileTest extends TestCase
         $this->assertEquals(false, $newProfile->visible);
     }
 
-//
-//    /**
-//     * @test
-//     */
-//    public function skills_field_are_required_to_create_profile()
-//    {
-//        $this->actingAs($profileOwner = User::factory()->create(), 'api');
-//        $resp =$this->post('/api/users/' . $profileOwner->id . '/profile', Arr::except($this->getProfileDetails(),'skills'))
-//            ->assertStatus(422);
-//        $this->assertObjectHasAttribute('skills',json_decode($resp->getContent())->errors->meta);
-//    }
 
+    /**
+     * @test
+     */
+    public function user_can_change_his_skills()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        Profile::factory()->create(['user_id' => $user->id]);
+        $skills = Skill::factory()->count(3)->create();
+
+        //test user hasn't have a skills
+
+        $this->putJson('api/users/' . $user->id . '/profile', [
+            'skills' =>
+                [
+                    $skills[0]->id,
+                    $skills[1]->id
+                ]
+        ]);
+        $this->assertCount(2, $user->skills);
+
+        $this->assertEquals(
+            Skill::find([$skills[0]->id, $skills[1]->id])->pluck('id'),
+            $user->skills->pluck('id')
+        );
+
+        $user = $user->fresh();
+
+        $this->putJson('api/users/' . $user->id . '/profile', [
+            'skills' =>
+                [
+                    $skills[2]->id,
+                ]
+        ]);
+
+        $this->assertCount(1, $user->skills);
+        $this->assertEquals(
+            $skills[2]->id,
+            $user->skills->first()->id
+        );
+
+    }
+
+    /**
+     * @test
+     */
+    public function user_can_delete_details_from_his_profile()
+    {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $profile = Profile::factory()->create(['user_id' => $user->id]);
+
+        $eduShouldDelete = $profile->details->educations[0];
+
+        $eduBeforeDeletion = $user->profile->details->educations;
+        $this->assertNotEmpty((collect($eduBeforeDeletion))->where('id', $eduShouldDelete->id)->first());
+
+        $req = [
+            'details' => [
+                'educations' => [
+                    [
+                        'id' => $eduShouldDelete->id
+                    ]
+                ]
+            ]];
+        $this->put('api/users/' . $user->id . '/profile/delete-details', $req)->assertStatus(200);
+        $educations = $user->profile->details->educations;
+
+        $this->assertCount(count($eduBeforeDeletion) - 1, $educations);
+
+        $this->assertEmpty((collect($educations))->where('id', $eduShouldDelete->id)->first());
+
+    }
+
+    /**
+     * @test
+     */
+    public function delete_un_exist_details_should_return_not_found_exception()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $profile = Profile::factory()->create(['user_id' => $user->id]);
+
+        $req = [
+            'details' => [
+                'educations' => [
+                    [
+                        'id' => '0'
+                    ]
+                ]
+            ]];
+
+        $this->put('api/users/' . $user->id . '/profile/delete-details', $req)->assertStatus(404);
+    }
+
+    /**
+     * @test
+     */
+    public function job_preference_retrieved_with_user_profile_resource()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        Profile::factory()->create(['user_id' => $user->id]);
+        $jobPreference = JobPreference::factory()->create(['user_id' => $user->id]);
+        $this->get('api/users/' . $user->id . '/profile')->assertStatus(200)
+            ->assertJson([
+                'included' => [
+                    'job_preference' => [
+                        'data' => [
+                            'id' => $jobPreference->id
+                        ]
+                    ]
+                ]
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function user_image_retrieved_with_user_profile_resource()
+    {
+        $this->withoutExceptionHandling();
+        $this->actingAs($user = User::factory()->create());
+
+        Profile::factory()->create(['user_id' => $user->id]);
+
+        $image = Image::factory()->create(['imageable_id' => $user->id]);
+
+        $resp = $this->get('api/users/' . $user->id . '/profile')->assertStatus(200)
+            ->assertJson([
+                'included' => [
+                    'image' => url($image->path)
+                ]
+            ]);
+    }
 }

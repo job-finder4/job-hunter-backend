@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\JobadEvaluated;
 use App\Exceptions\MyModelNotFoundException;
+use App\Filters\JobadFilter;
 use App\Http\Resources\CvCollection;
 use App\Http\Resources\JobadCollection;
 use App\Models\Jobad;
@@ -25,9 +27,11 @@ class JobadController extends Controller
     }
 
     //-----------------daniel modification-------------
-    public function index()
+    public function index(Request $request, JobadFilter $filters)
     {
-        return response(new JobadCollection(Jobad::get()), 200);
+        $resultSet=Jobad::filter($filters)->paginate(5);
+//        $resultSet = Jobad::paginate(5);
+        return response(new JobadCollection($resultSet), 200);
     }
 
     //----------------------------------------
@@ -36,28 +40,29 @@ class JobadController extends Controller
     {
         $allJobads = null;
         if (!$request->has('filter')) {
-            $allJobads = auth()->user()->jobads()->activeAndInactive()->get();
+            $allJobads = auth()->user()->jobads()->activeAndInactive();
         }
 
         $filter = $request->filter;
 
         if ($filter == 'active') {
-            $allJobads = auth()->user()->jobads()->get();
+            $allJobads = auth()->user()->jobads();
         }
         if ($filter == 'expired') {
-            $allJobads = auth()->user()->jobads()->expired()->get();
+            $allJobads = auth()->user()->jobads()->expired();
         }
         if ($filter == 'pending') {
-            $allJobads = auth()->user()->jobads()->Unapproved()->get();
+            $allJobads = auth()->user()->jobads()->Unapproved();
         }
 
-        return response(new JobadCollection($allJobads), 200);
+        return response(new JobadCollection($allJobads->paginate(5)), 200);
     }
 
     public function approve(Jobad $jobad)
     {
         $jobad->approved_at = now();
         $jobad->saveOrFail();
+        event(new JobadEvaluated($jobad));
         return response(new JobadResource($jobad), 200);
     }
 
@@ -75,6 +80,7 @@ class JobadController extends Controller
             'location' => 'required',
             'expiration_date' => 'required',
             'skills' => 'required',
+            'category'=>'',
             'approved_at' => ''
         ]);
 
@@ -128,25 +134,11 @@ class JobadController extends Controller
         return response(new JobadResource($jobad->refresh()), 200);
     }
 
-    public function getJobsForAdmin(Request $request)
+    public function getJobsForAdmin(Request $request,JobadFilter $filters)
     {
-        $allJobads = null;
-        if (!$request->has('filter')) {
-            $allJobads = Jobad::get();
-        }
+        $resultSet=Jobad::filter($filters);
 
-        $filter = $request->filter;
-        if ($filter == 'expired') {
-            $allJobads = Jobad::expired()->get();
-        }
-        if ($filter == 'pending') {
-            $allJobads = Jobad::Unapproved()->get();
-        }
-        if ($filter == 'rejected') {
-            $allJobads = Jobad::Unapproved()->get();
-        }
-
-        return response(new JobadCollection($allJobads), 200);
+        return response(new JobadCollection($resultSet->paginate(5)), 200);
     }
 
 }

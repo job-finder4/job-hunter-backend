@@ -42,7 +42,8 @@ class Jobad extends JsonResource
                                 )->toFormattedDateString();
                             }),
                     'approved_at' => optional($this->approved_at)->toFormattedDateString(),
-                    'applied' => $this->applications()->count()
+                    'applied' => $this->applications()->count(),
+                    'category'=>new Category($this->category),
                 ]
             ],
 

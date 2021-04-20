@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 
 class JobadApplicationController extends Controller
 {
-    public function index(Jobad $jobad, Request $request)
+    public function index(Jobad $jobad, Request $request,ApplicationsFilter $filters)
     {
         $allApplications = $jobad->applications()->get();
 

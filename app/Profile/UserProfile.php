@@ -3,10 +3,9 @@
 
 namespace App\Profile;
 
-
+use App\Exceptions\MyModelNotFoundException;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
-use phpDocumentor\Reflection\Types\This;
-
 
 class UserProfile
 {
@@ -28,48 +27,44 @@ class UserProfile
 
     public static function make($details)
     {
-
         self::validateUserProfile($details);
-
         $userProfile = new UserProfile();
         $userProfile->setLocation($details);
         $userProfile->addEducations($details);
         $userProfile->addWorksExperience($details);
-        $userProfile->addLanguages($details);
+        $userProfile->updateLanguages($details);
         $userProfile->phone_number = isset($details['phone_number']) ? $details['phone_number'] : '';
         return $userProfile;
     }
 
-
-
-    private static function indexOf(array $item, array $array)
-    {
-        for ($i = 0; $i < count($array); $i++) {
-            if ($array[$i]->id == $item['id'])
-                return $i;
-        }
-        return -1;
-    }
-
+    //add new details to currently details
     public function add($newDetails)
     {
-
         self::validateUserProfile($newDetails);
         $this->addEducations($newDetails);
         $this->addWorksExperience($newDetails);
-        $this->addLanguages($newDetails);
         return $this;
     }
 
-    /**
-     * @param object|null $location
-     */
-    public function setLocation($details): void
+    public function update($details)
     {
-        if (isset($details['location'])) {
-            $this->location = $details['location']['city'] . ', ' . $details['location']['country'];
-        }
+        self::validateUserProfile($details);
+        if (isset($details['phone_number']))
+            $this->phone_number = $details['phone_number'];
 
+        $this->setLocation($details);
+        $this->updateEducations($details);
+        $this->updateWorksExperience($details);
+        $this->updateLanguages($details);
+        return $this;
+    }
+
+    public function delete($details)
+    {
+        self::validateUserProfile($details);
+        $this->deleteEducations($details);
+        $this->deleteWorksExperience($details);
+        return $this;
     }
 
     /**
@@ -98,28 +93,84 @@ class UserProfile
         }
     }
 
-    public function addLanguages(array $details)
+    public function updateLanguages(array $details)
     {
         if (isset($details['languages'])) {
-            $this->languages = array_merge($details['languages'], $this->languages);
-
+            $this->languages = $details['languages'];
         }
     }
 
-    public function update($details)
+
+    public function setLocation($details): void
     {
-        self::validateUserProfile($details);
-        if (isset($details['phone_number']))
-            $this->phone_number = $details->phone_number;
+        if (isset($details['location'])) {
+            $this->location = $details['location']['city'] . ', ' . $details['location']['country'];
+        }
 
-        $this->setLocation($details);
-
-        $this->updateEducations($details);
-        $this->updateWorksExperience($details);
-        return $this;
     }
 
+    public function updateEducations($details): void
+    {
+        if (!isset($details['educations']))
+            return;
+        foreach ($details['educations'] as $eduItem) {
+            $index = self::indexOf($eduItem, $this->educations);
+            $this->educations[$index]->update($eduItem);
+        }
+    }
 
+    public function updateWorksExperience($details)
+    {
+        if (!isset($details['works_experience']))
+            return;
+        foreach ($details['works_experience'] as $workItem) {
+            $index = self::indexOf($workItem, $this->works_experience);
+            $this->works_experience[$index]->update($workItem);
+        }
+    }
+
+    private function deleteEducations($details)
+    {
+        if (!isset($details['educations']))
+            return;
+
+        foreach ($details['educations'] as $eduItem) {
+            $index = self::indexOf($eduItem, $this->educations);
+            array_splice($this->educations, $index, 1);
+        }
+    }
+
+    private function deleteWorksExperience($details)
+    {
+        if (!isset($details['works_experience']))
+            return;
+        foreach ($details['works_experience'] as $workItem) {
+            $index = self::indexOf($workItem, $this->works_experience);
+            array_splice($this->works_experience, $index, 1);
+        }
+    }
+
+    private static function indexOf(array $item, array $array)
+    {
+        for ($i = 0; $i < count($array); $i++) {
+            if ($array[$i]->id == $item['id'])
+                return $i;
+        }
+        throw new MyModelNotFoundException(class_basename(Arr::first($array)) . ' Not Found');
+    }
+
+    public static function validateUserProfile($attrs)
+    {
+        Validator::validate($attrs, [
+            'location' => ['sometimes', 'required', 'array'],
+            'phone_number' => ['sometimes', 'required'],
+            'educations' => ['sometimes', 'required', 'array'],
+            'works_experience' => ['sometimes', 'required', 'array'],
+            'languages' => ['sometimes', 'required', 'array']
+        ]);
+    }
+
+    //    in test mode only
     public function equals(UserProfile $userProfile): bool
     {
         $tmp = $this->phone_number == $userProfile->phone_number &&
@@ -144,36 +195,5 @@ class UserProfile
         return true;
     }
 
-    public function updateEducations($details): void
-    {
-        if (!isset($details['educations']))
-            return;
-        foreach ($details['educations'] as $eduItem) {
-            $index = self::indexOf($eduItem, $this->educations);
-            $this->educations[$index]->update($eduItem);
-        }
-    }
 
-    public function updateWorksExperience($details)
-
-    {
-        if (!isset($details['works_experience']))
-            return;
-        foreach ($details['works_experience'] as $workItem) {
-            $index = self::indexOf($workItem, $this->works_experience);
-            $this->works_experience[$index]->update($workItem);
-        }
-    }
-
-    public static function  validateUserProfile($attrs)
-    {
-        return Validator::validate($attrs, [
-            'location' => ['sometimes','required','array'],
-            'phone_number' => ['sometimes','required'],
-            'educations' => ['sometimes','required','array'],
-            'works_experience' => ['sometimes','required','array'],
-            'languages' => ['sometimes','required','array']
-        ]);
-    }
 }
-

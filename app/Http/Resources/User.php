@@ -14,9 +14,9 @@ class User extends JsonResource
      */
     public function toArray($request)
     {
-        $role='NONE';
-        if($this->getRoleNames()->isNotEmpty()){
-            $role=$this->getRoleNames()[0];
+        $role = 'NONE';
+        if ($this->getRoleNames()->isNotEmpty()) {
+            $role = $this->getRoleNames()[0];
         }
 
         return [
@@ -26,8 +26,9 @@ class User extends JsonResource
                 'attributes' => [
                     'name' => $this->name,
                     'email' => $this->email,
-                    'role'=>$role
-                ]
+                    'role' => $role,
+                    'image' => url($this->image->path),
+                ],
             ]
         ];
     }

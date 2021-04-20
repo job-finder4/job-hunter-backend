@@ -19,7 +19,7 @@ class Profile extends Model
         'details' => 'array'
     ];
 
-    public static function makeNew($request)
+    public static function createNew($request)
     {
         $request->validate([
             'details' => 'required|array',
@@ -28,24 +28,15 @@ class Profile extends Model
         ]);
         $details = UserProfile::make($request->details);
 
-        $profile = auth()->user()->profile()->create([
+        $profile = $request->user()->profile()->create([
             'details' => $details,
             'visible' => $request->visible
         ]);
 
         auth()->user()->skills()->sync($request->skills);
 
-
         return $profile;
     }
-
-    public function addDetails($newDetails)
-    {
-        $this->details = $this->details->add($newDetails);
-        $this->save();
-        return $this;
-    }
-
 
     public function getDetailsAttribute()
     {
@@ -56,6 +47,7 @@ class Profile extends Model
     {
         $this->attributes['details'] = serialize($value);
     }
+
     public function user()
     {
         return $this->belongsTo(User::class);

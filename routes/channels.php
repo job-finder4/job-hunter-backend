@@ -12,16 +12,10 @@ use Illuminate\Support\Facades\Broadcast;
 | used to check if an authenticated user can listen to the channel.
 |
 */
-
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
+Broadcast::channel('users.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('jobs', function ($user) {
-    \Illuminate\Support\Facades\Log::debug('inside jobs channel');
-    \Illuminate\Support\Facades\Log::debug('sssddaa'.$user);
-    return true;
-});
 
 Broadcast::channel('my-approved-jobs.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;

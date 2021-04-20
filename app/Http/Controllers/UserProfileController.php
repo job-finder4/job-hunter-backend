@@ -13,43 +13,61 @@ class UserProfileController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('can:create,App\Models\Profile')->only('store');
-        $this->middleware('can:update,App\Models\Profile,user')->only('update');
-        $this->middleware('can:view,App\Models\Profile,user')->only('show');
+//        $this->middleware('can:create,App\Models\Profile')->only('store');
+//        $this->middleware('can:update,App\Models\Profile,user')->only('update');
+//        $this->middleware('can:view,App\Models\Profile,user')->only('show');
     }
-
 
     public function show(User $user)
     {
-        return response()->json(new ProfileResource($user->profile),200);
+        $profile = $user->profile()->with('user', 'user.skills')->firstOrFail();
+
+        return response()->json(new ProfileResource($profile), 200);
     }
 
     public function store(Request $request)
     {
-        $profile = auth()->user()->addProfileDetails($request);
-        return response()->json(new ProfileResource($profile), 201);
+        $profile = $request->user()->addProfileDetails($request);
+
+        return response()->json(new ProfileResource($profile->fresh()), 201);
     }
 
-    public function update(Request $request,User $user)
+    public function update(Request $request, User $user)
     {
         $request->validate([
             'details' => '',
-            'visible' => ''
+            'visible' => '',
+            'skills' => ''
         ]);
 
-        $profile = auth()->user()->profile;
+        $profile = Profile::where('user_id',$request->user()->id)->firstOrFail();
+
+        $shouldUpdate = [];
 
         if ($request->exists('details')) {
-            $profile->details = $profile->details->update($request->details);
+            $shouldUpdate['details'] = serialize($profile->details->update($request->details));
         }
 
         if ($request->exists('visible')) {
-            $profile->visible = $request->visible;
+            $shouldUpdate['visible'] = $request->visible;
         }
 
-        $profile->saveOrFail();
+        if ($request->exists('skills')) {
+            $request->user()->skills()->sync($request->skills);
+        }
 
+        Profile::where('user_id',$request->user()->id)->update($shouldUpdate);
+
+        return response(new ProfileResource($profile->fresh()),200);
     }
 
+    public function deleteItems(Request $request)
+    {
+        $request->validate([
+            'details' => ['required','array']
+        ]);
+        $profile = $request->user()->deleteProfileDetails($request);
+        return response(new ProfileResource($profile->fresh()),200);
+    }
 
 }
