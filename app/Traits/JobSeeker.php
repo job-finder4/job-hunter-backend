@@ -59,7 +59,6 @@ trait JobSeeker
     public function deleteProfileDetails($request)
     {
         $profile = $this->profile()->firstOrFail();
-        $de = $profile->details;
         $details = $profile->details->delete($request->details);
         Profile::where('user_id', $this->id)->update(['details' => serialize($details)]);
         return $profile->fresh();
