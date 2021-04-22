@@ -52,6 +52,17 @@ Route::put('/users/{user}/profile', [UserProfileController::class, 'update']);
 Route::post('/users/{user}/profile', [UserProfileController::class, 'store']);
 Route::apiResource('users/{user}/applications', UserApplicationController::class);
 
+Route::post('users/{user}/image',[UserImageController::class,'store']);
+Route::delete('users/{user}/image',[UserImageController::class,'destroy']);
+Route::post('/users/{user}/job-preference', [JobPreferenceController::class, 'store']);
+Route::put('/users/{user}/job-preference', [JobPreferenceController::class, 'update']);
+Route::delete('/users/{user}/job-preference', [JobPreferenceController::class, 'destroy']);
+
+Route::put('users/{user}/profile/delete-details', [UserProfileController::class, 'deleteItems']);
+Route::get('/all-skills', function () {
+    return response(new \App\Http\Resources\SkillCollection(\App\Models\Skill::get()));
+});
+
 Route::get('/cvs/{cv}/download', [CvController::class, 'downloadCv']);
 Route::get('/user/my-cvs', [CvController::class,'myCvs']);
 Route::apiresource('/cvs', CvController::class);
