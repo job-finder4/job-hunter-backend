@@ -44,7 +44,7 @@ Route::patch('user', [UserController::class, 'update']);
 Route::delete('user', [UserController::class, 'destroy']);
 
 Route::get('notifications', [NotificationsController::class, 'index']);
-Route::patch('notifications/{notification}', [NotificationsController::class, 'update']);
+Route::put('notifications/{notification}', [NotificationsController::class, 'update']);
 
 Route::get('/users/{user}/cvs', [CvController::class, 'index']);
 Route::get('/users/{user}/profile', [UserProfileController::class, 'show']);

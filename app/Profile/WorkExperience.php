@@ -3,13 +3,13 @@
 
 namespace App\Profile;
 
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use phpseclib\Math\BigInteger;
 
-class WorkExperience
+class  WorkExperience
 {
     /*** @var integer */
     public $id;
@@ -43,8 +43,8 @@ class WorkExperience
         $this->id = $details['id'];
         $this->job_title = $details['job_title'];
         $this->company_name = $details['company_name'];
-        $this->start_date = $details['start_date'];
-        $this->end_date = $details['end_date'];
+        $this->start_date = Carbon::make($details['start_date'])->toFormattedDateString();
+        $this->end_date = Carbon::make($details['end_date'])->toFormattedDateString();
         $this->industry = $details['industry'];
         $this->job_category = $details['job_category'];
         $this->job_subcategory = $details['job_subcategory'];
@@ -72,9 +72,11 @@ class WorkExperience
     {
         $worksAttrs = self::toArrayOfArrays($worksAttrs);
         $worksExperience = [];
+
         foreach ($worksAttrs as $workAttrs) {
             $worksExperience[] = self::make($workAttrs);
         }
+
         return $worksExperience;
     }
 
@@ -99,11 +101,10 @@ class WorkExperience
             $this->job_description == $workExp->job_description;
     }
 
-    public function update(Array $workAttr)
+    public function update(array $workAttr)
     {
-        foreach ($workAttr as $key=>$attr)
-        {
-            if ($key == 'id')continue;
+        foreach ($workAttr as $key => $attr) {
+            if ($key == 'id') continue;
             $this->$key = $attr;
         }
 
@@ -112,10 +113,10 @@ class WorkExperience
     public static function validateWorkExperience($attrs)
     {
         Validator::validate($attrs, [
-            'job_title' => ['required','string','max:20'],
-            'company_name' => ['required','string','max:20'],
-            'start_date' => ['required','date'],
-            'end_date' => ['sometimes','date','after:start_date'],
+            'job_title' => ['required', 'string', 'max:50'],
+            'company_name' => ['required', 'string', 'max:50'],
+            'start_date' => ['required', 'date'],
+            'end_date' => ['sometimes', 'date', 'after:start_date'],
             'industry' => [],
             'job_category' => [],
             'job_subcategory' => [],

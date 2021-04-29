@@ -29,11 +29,20 @@ class JobadController extends Controller
     //-----------------daniel modification-------------
     public function index(Request $request, JobadFilter $filters)
     {
-        $resultSet=Jobad::filter($filters)->paginate(5);
-//        $resultSet = Jobad::paginate(5);
+        $resultSet = Jobad::filter($filters);
+
+        if ($request->has('search')) {
+            $resultSet = $resultSet->get()
+                ->sortByDesc(function ($job) {
+                    return $job->j_score + $job->s_score + $job->c_score;
+                })
+                ->values()
+                ->forPage(request()->input('page', 0), 5);
+        } else {
+            $resultSet = $resultSet->orderByDesc('created_at')->paginate(5);
+        }
         return response(new JobadCollection($resultSet), 200);
     }
-
     //----------------------------------------
 
     public function getCompanyJobads(Request $request,JobadFilter $filters)
@@ -54,7 +63,7 @@ class JobadController extends Controller
 //        if ($filter == 'pending') {
 //            $allJobads = auth()->user()->jobads()->Unapproved();
 //        }
-        $resultSet=Jobad::filter($filters);
+        $resultSet=auth()->user()->jobads()->filter($filters);
         return response(new JobadCollection($resultSet->paginate(5)), 200);
     }
 

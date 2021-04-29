@@ -26,7 +26,8 @@ class User extends JsonResource
                 'attributes' => [
                     'name' => $this->name,
                     'email' => $this->email,
-                    'role'=>$role
+                    'role'=>$role,
+                    'image' => url($this->image->path),
                 ]
             ]
         ];

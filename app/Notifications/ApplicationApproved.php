@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Events\ApplicationEvaluated;
+use App\Http\Resources\Jobad as JobadResource;
 use App\Models\Application;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Bus\Queueable;
@@ -67,6 +68,7 @@ class ApplicationApproved extends Notification implements ShouldBroadcast
     {
         return [
             'application_id' => $this->application->id,
+            'jobad_title' => $this->application->jobad->title,
             'action' => "/applied-jobs",
         ];
     }
@@ -82,7 +84,8 @@ class ApplicationApproved extends Notification implements ShouldBroadcast
         return new BroadcastMessage([
             'data' => [
                 'application_id' => $this->application->id,
-                'action' => "/applied-jobs/{$this->application->id}",
+                'jobad_title' => $this->application->jobad->title,
+                'action' => "/applied-jobs",
             ]
         ]);
     }
