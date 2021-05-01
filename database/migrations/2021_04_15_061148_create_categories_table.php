@@ -18,7 +18,7 @@ class CreateCategoriesTable extends Migration
             $table->id();
             $table->string('name');
         });
-        DB::statement('ALTER TABLE categories ADD FULLTEXT fulltext_index(name)');
+//        DB::statement('ALTER TABLE categories ADD FULLTEXT fulltext_index(name)');
     }
 
     /**

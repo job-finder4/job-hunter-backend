@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+//    return \App\Models\User::findOrFail(46)->roles;
     return view('welcome');
 });
 

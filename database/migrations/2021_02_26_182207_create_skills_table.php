@@ -21,7 +21,7 @@ class CreateSkillsTable extends Migration
             NestedSet::columns($table);
             $table->timestamps();
         });
-        DB::statement('ALTER TABLE skills ADD FULLTEXT fulltext_index (name)');
+//        DB::statement('ALTER TABLE skills ADD FULLTEXT fulltext_index (name)');
     }
 
     /**

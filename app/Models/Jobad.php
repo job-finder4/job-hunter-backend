@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Jobad extends Model
 {
-    use HasFactory,JobadSearch,Filterable;
+    use HasFactory, JobadSearch, Filterable;
 
     const FULL_TIME = 'full_time';
     const PART_TIME = 'part_time';
@@ -56,6 +56,15 @@ class Jobad extends Model
 
     }
 
+    public function scopePending($query)
+    {
+        return $query->unapproved()->whereDoesntHave('refusal_report');
+    }
+    public function scopeRefused($query)
+    {
+        return $query->activeAndInactive()->whereHas('refusal_report');
+    }
+
     public function skills()
     {
         return $this->morphToMany('App\Models\Skill', 'skillable');
@@ -71,8 +80,28 @@ class Jobad extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function category(){
+    public function category()
+    {
         return $this->belongsTo(Category::class);
+    }
+
+//    public function refusal_report()
+//    {
+//        return $this->reports()->whereHas('user.roles',function ($roles){
+//            return $roles->where('name','admin');
+//        })->oldest();
+//    }
+    public function refusal_report()
+    {
+        return $this->morphOne(Report::class, 'reportable')
+            ->whereHas('user.roles', function ($roles) {
+                return $roles->where('name', 'admin');
+            });
+    }
+
+    public function reports()
+    {
+        return $this->morphMany(Report::class, 'reportable');
     }
 
 }

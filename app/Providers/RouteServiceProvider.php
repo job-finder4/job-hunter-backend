@@ -55,6 +55,14 @@ class RouteServiceProvider extends ServiceProvider
             return Jobad::unapproved()->where('id',$value)->firstOrFail();
         });
 
+        Route::bind('jobad',function ($value)
+        {
+            if(auth()->user()->hasRole('admin')||auth()->user()->hasRole('company')){
+                return Jobad::activeAndInactive()->where('id',$value)->firstOrFail();
+            }
+            return Jobad::findOrFail($value);
+        });
+
     }
 
     /**

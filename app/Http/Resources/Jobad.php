@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Carbon\Carbon;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Report as ReportResource;
 
 class Jobad extends JsonResource
 {
@@ -30,6 +31,7 @@ class Jobad extends JsonResource
                     'job_time' => $this->job_time,
                     'job_type' => $this->job_type,
                     'expiration_date' => $this->expiration_date->diffForHumans(),
+                    'exact_expiration_date' => $this->expiration_date->format('M d Y'),
                     'skills' => new SkillCollection($this->skills),
                     'applied_at' => $this
                         ->when(auth()->check() && auth()->user()->hasRole('jobSeeker'),
@@ -37,13 +39,17 @@ class Jobad extends JsonResource
                                 return optional(
                                     optional(
                                         auth()->user()->applications()->where('jobad_id', $this->id)
-                                    ->first()
+                                            ->first()
                                     )->updated_at
                                 )->toFormattedDateString();
                             }),
                     'approved_at' => optional($this->approved_at)->toFormattedDateString(),
                     'applied' => $this->applications()->count(),
-                    'category'=>new Category($this->category),
+                    'category' => new Category($this->category),
+                    'refusal_report' => $this->when(auth()->check() && !auth()->user()->hasRole('jobSeeker')&&$this->refusal_report&&!$this->approved_at,
+                        function () {
+                            return new ReportResource($this->refusal_report);
+                    }),
                 ]
             ],
 

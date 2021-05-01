@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Category;
 use App\Models\Jobad;
+use App\Models\Report;
 use App\Models\Skill;
 use App\Models\User;
 use Database\Seeders\SkillSeeder;
@@ -64,5 +65,6 @@ class JobadFactory extends Factory
            ];
         });
     }
+
 
 }

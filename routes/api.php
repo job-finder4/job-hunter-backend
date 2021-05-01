@@ -36,6 +36,13 @@ Route::get('/messager', function (){
 });
 
 
+Route::get('refused_jobad', function (){
+//    return \App\Models\Jobad::where('id',1)->first()->reports()->first()->user()->roles;
+//    return \App\Models\Report::first();
+    $job= \App\Models\Jobad::findOrFail(1);
+    return new \App\Http\Resources\Report($job->refusal_report);
+});
+
 /*
  * User
  */
@@ -75,6 +82,7 @@ Route::get('/jobads/{jobad}/cvs', [JobadController::class,'getJobCvs']);
 Route::apiResource('/jobads/{jobad}/applications', JobadApplicationController::class);
 Route::patch('jobads/{jobad}/applications/{application}/manage', [JobadApplicationManagementController::class, 'evaluate']);
 Route::put('/jobads/{unapprovedJobad}/approve', [JobadController::class, 'approve']);
+Route::put('/jobads/{unapprovedJobad}/refuse', [JobadController::class, 'refuse']);
 Route::put('jobads/{jobad}/applications/{application}/manage', [JobadApplicationManagementController::class, 'evaluate']);
 Route::apiResource('/jobads/{jobad}/applications', JobadApplicationController::class);
 
