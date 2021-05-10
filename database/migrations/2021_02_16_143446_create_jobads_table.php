@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateJobadsTable extends Migration
@@ -28,6 +29,7 @@ class CreateJobadsTable extends Migration
             $table->timestamp('expiration_date');
             $table->timestamps();
         });
+//        DB::statement('ALTER TABLE jobads ADD FULLTEXT fulltext_index(title)');
     }
 
     /**
@@ -37,6 +39,10 @@ class CreateJobadsTable extends Migration
      */
     public function down()
     {
+//        Schema::table('jobads',function (Blueprint $table){
+//           $table->dropIndex('fulltext_index');
+//        });
+
         Schema::dropIfExists('jobads');
     }
 }

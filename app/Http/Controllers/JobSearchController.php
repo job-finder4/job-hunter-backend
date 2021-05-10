@@ -17,7 +17,25 @@ class JobSearchController extends Controller
     const LOCATION_POINTS = 3;
     const SALARY_POINTS = 1;
 
-    public function __invoke(Request $request)
+
+    public function search(Request $request)
+    {
+        $request->validate([
+            'search.location' => ['sometimes', 'array'],
+            'search.term' => ['sometimes', 'array'],
+        ]);
+
+        $jobads = Jobad::query()->searchJob($request->search)
+            ->get()
+            ->sortByDesc(function ($job) {
+                return $job->j_score + $job->s_score + $job->c_score;
+            })
+            ->values()
+            ->forPage(request()->input('page',0),5);
+        return response()->json(new JobadCollection($jobads),200);
+    }
+
+    public function advancedSearch(Request $request)
     {
         $points = [];
 

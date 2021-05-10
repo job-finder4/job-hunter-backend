@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Events\ApplicationEvaluated;
+use App\Events\InterviewsWasScheduled;
 use App\Events\JobadEvaluated;
 use App\Listeners\SendApplicationStatusNotification;
 use App\Listeners\SendJobadEvaluationStatusNotification;
+use App\Listeners\SendNotificationToReserveInterview;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -27,6 +29,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         JobadEvaluated::class => [
             SendJobadEvaluationStatusNotification::class
+        ],
+        InterviewsWasScheduled::class => [
+            SendNotificationToReserveInterview::class
         ]
     ];
 

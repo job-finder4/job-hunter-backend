@@ -5,13 +5,16 @@ namespace App\Models;
 use App\scopes\ApprovedJobadScope;
 use App\scopes\UnExpiredJobadScope;
 use App\Traits\Filterable;
+use App\Traits\FullTextSearch;
+use App\Traits\JobadSearch;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Jobad extends Model
 {
-    use HasFactory,Filterable;
+
+    use HasFactory, Filterable, JobadSearch;
 
     const FULL_TIME = 'full_time';
     const PART_TIME = 'part_time';
@@ -21,6 +24,9 @@ class Jobad extends Model
     protected $guarded = ['approved_at', 'user_id'];
     protected $dates = ['expiration_date', 'approved_at'];
 
+    protected $searchable = [
+        'title'
+    ];
 
     protected static function booted()
     {
@@ -70,8 +76,12 @@ class Jobad extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function category(){
+    public function category()
+    {
         return $this->belongsTo(Category::class);
     }
 
+    public function interviews(){
+        return $this->hasMany(Interview::class);
+    }
 }

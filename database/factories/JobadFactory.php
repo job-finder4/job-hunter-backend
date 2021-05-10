@@ -32,13 +32,13 @@ class JobadFactory extends Factory
             'title' => $this->faker->jobTitle,
             'description' => $this->faker->realText(),
             'user_id' => User::factory()->company(),
-            'location' => $this->faker->city.', '.$this->faker->country,
-            'min_salary' => $tmp=$this->faker->numberBetween(200,5000),
-            'max_salary' => $tmp=$this->faker->numberBetween($tmp,$tmp+5000),
-            'expiration_date'=>$this->faker->dateTimeBetween(now()->addWeek(),now()->addWeeks(8)),
-            'job_type' => $this->faker->randomElement([Jobad::FULL_TIME,Jobad::PART_TIME]),
-            'job_time' => $this->faker->randomElement([Jobad::REMOTE,Jobad::ON_SITE]),
-            'category_id'=>Category::factory(),
+            'location' => $this->faker->city . ', ' . $this->faker->country,
+            'min_salary' => $tmp = $this->faker->numberBetween(200, 5000),
+            'max_salary' => $tmp = $this->faker->numberBetween($tmp, $tmp + 5000),
+            'expiration_date' => $this->faker->dateTimeBetween(now()->addWeek(), now()->addWeeks(8)),
+            'job_time' => $this->faker->randomElement([Jobad::FULL_TIME, Jobad::PART_TIME]),
+            'job_type' => $this->faker->randomElement([Jobad::REMOTE, Jobad::ON_SITE]),
+            'category_id' => Category::factory(),
             'approved_at' => now(),
         ];
     }
@@ -58,10 +58,10 @@ class JobadFactory extends Factory
     public function expired()
     {
 
-        return $this->state(function (array $attributes){
-           return [
-               'expiration_date' => now()->subMonth()
-           ];
+        return $this->state(function (array $attributes) {
+            return [
+                'expiration_date' => now()->subMonth()
+            ];
         });
     }
 

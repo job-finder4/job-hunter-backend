@@ -8,6 +8,7 @@ use App\Exceptions\InvalidJobadApplicationException;
 use App\Exceptions\ValidationErrorException;
 use App\Models\Application;
 use App\Models\Cv;
+use App\Models\Interview;
 use App\Models\Jobad;
 use App\Models\JobPreference;
 use App\Models\Profile;
@@ -78,6 +79,10 @@ trait JobSeeker
         $cv = $this->cvs()->create(['title' => $title, 'path' => $uniqueName . $file->getClientOriginalName()]);
 
         return $cv;
+    }
+
+    public function interviews(){
+        return $this->hasMany(Interview::class);
     }
 
 }

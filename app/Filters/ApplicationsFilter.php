@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filters;
 use App\User;
 use Illuminate\Http\Request;

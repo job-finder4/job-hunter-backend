@@ -3,14 +3,14 @@
 
 use App\Http\Controllers\AuthController;
 use  App\Http\Controllers\JobadApplicationController;
-use App\Http\Controllers\API\V1\Auth\ForgotPasswordController;
 use App\Http\Controllers\API\V1\Auth\LogoutController;
-use App\Http\Controllers\API\V1\Auth\ResetPasswordController;
-use App\Http\Controllers\API\V1\Auth\VerificationController;
 use App\Http\Controllers\API\V1\UserController;
+use App\Http\Controllers\JobadInterviewController;
 use App\Http\Controllers\JobPreferenceController as JobPreferenceController;
+use App\Http\Controllers\JobSearchController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\UserImageController;
+use App\Http\Controllers\UserInterviewController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobadApplicationManagementController;
 use App\Http\Controllers\JobadController;
@@ -31,11 +31,26 @@ use App\Http\Controllers\UserApplicationController;
 |
 */
 //Broadcast::routes(['middleware' => 'auth:api']); // this works for my api
+Route::get('jobads/{interviewAbleJobad}/check-interview-able',[JobadInterviewController::class,'checkInterviewAble']);
 
-Route::post('users/{user}/image',[UserImageController::class,'store']);
-Route::delete('users/{user}/image',[UserImageController::class,'destroy']);
+Route::get('my-interviews',[UserInterviewController::class,'index']);
+
+Route::post('jobads/{interviewAbleJobad}/interviews', [JobadInterviewController::class, 'store']);
+
+Route::put('jobads/{interviewAbleJobad}/interviews/{unreservedInterview}/reserve',[JobadInterviewController::class,'book']);
+
+Route::get('jobads/{interviewAbleJobad}/interviews',[JobadInterviewController::class,'show']);
+
+Route::get('jobs/search', [JobSearchController::class, 'search']);
+
+Route::post('users/{user}/image', [UserImageController::class, 'store']);
+
+Route::delete('users/{user}/image', [UserImageController::class, 'destroy']);
+
 Route::post('/users/{user}/job-preference', [JobPreferenceController::class, 'store']);
+
 Route::put('/users/{user}/job-preference', [JobPreferenceController::class, 'update']);
+
 Route::delete('/users/{user}/job-preference', [JobPreferenceController::class, 'destroy']);
 
 Route::put('users/{user}/profile/delete-details', [UserProfileController::class, 'deleteItems']);

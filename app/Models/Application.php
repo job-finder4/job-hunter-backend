@@ -8,7 +8,7 @@ use App\Traits\Filterable;
 
 class Application extends Model
 {
-    use HasFactory,Filterable;
+    use HasFactory, Filterable;
 
     protected $guarded = [];
 
@@ -19,7 +19,7 @@ class Application extends Model
 
     public function getUserIdAttribute()
     {
-        return $this->cv->user_id;
+        return $this->cv['user_id'];
     }
 
     public function Jobad()
@@ -32,4 +32,13 @@ class Application extends Model
         return $this->belongsTo(Cv::class);
     }
 
+    public function scopeApproved()
+    {
+        return $this->where('status', 1);
+    }
+
+    public function scopeRejected()
+    {
+        return $this->where('status', -1);
+    }
 }

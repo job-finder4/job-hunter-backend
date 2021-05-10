@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Application;
+use App\Models\Interview;
 use App\Models\Jobad;
 
 use Illuminate\Cache\RateLimiting\Limit;
@@ -53,6 +55,16 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('unapprovedJobad',function ($value)
         {
             return Jobad::unapproved()->where('id',$value)->firstOrFail();
+        });
+
+        Route::bind('interviewAbleJobad',function ($value)
+        {
+            return Jobad::expired()->where('id',$value)->firstOrFail();
+        });
+
+        Route::bind('unreservedInterview',function ($value)
+        {
+            return Interview::where('id',$value)->whereNull('user_id')->firstOrFail();
         });
 
     }

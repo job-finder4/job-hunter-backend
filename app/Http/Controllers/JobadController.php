@@ -26,36 +26,36 @@ class JobadController extends Controller
         $this->middleware('can:viewCompanyJobads,App\Models\Jobad')->only('getCompanyJobads');
     }
 
-    //-----------------daniel modification-------------
     public function index(Request $request, JobadFilter $filters)
     {
-        $resultSet=Jobad::filter($filters)->paginate(5);
-//        $resultSet = Jobad::paginate(5);
+        $resultSet = Jobad::filter($filters);
+
+        $resultSet = $resultSet->paginate(5);
+
         return response(new JobadCollection($resultSet), 200);
     }
 
-    //----------------------------------------
 
-    public function getCompanyJobads(Request $request)
+    public function getCompanyJobads(Request $request, JobadFilter $filters)
     {
-        $allJobads = null;
-        if (!$request->has('filter')) {
-            $allJobads = auth()->user()->jobads()->activeAndInactive();
-        }
-
-        $filter = $request->filter;
-
-        if ($filter == 'active') {
-            $allJobads = auth()->user()->jobads();
-        }
-        if ($filter == 'expired') {
-            $allJobads = auth()->user()->jobads()->expired();
-        }
-        if ($filter == 'pending') {
-            $allJobads = auth()->user()->jobads()->Unapproved();
-        }
-
-        return response(new JobadCollection($allJobads->paginate(5)), 200);
+//        $allJobads = null;
+//        if (!$request->has('filter')) {
+//            $allJobads = auth()->user()->jobads()->activeAndInactive();
+//        }
+//
+//        $filter = $request->filter;
+//
+//        if ($filter == 'active') {
+//            $allJobads = auth()->user()->jobads();
+//        }
+//        if ($filter == 'expired') {
+//            $allJobads = auth()->user()->jobads()->expired();
+//        }
+//        if ($filter == 'pending') {
+//            $allJobads = auth()->user()->jobads()->Unapproved();
+//        }
+        $resultSet = Jobad::filter($filters);
+        return response(new JobadCollection($resultSet->paginate(5)), 200);
     }
 
     public function approve(Jobad $jobad)
@@ -80,7 +80,7 @@ class JobadController extends Controller
             'location' => 'required',
             'expiration_date' => 'required',
             'skills' => 'required',
-            'category'=>'',
+            'category' => '',
             'approved_at' => ''
         ]);
 
@@ -134,11 +134,23 @@ class JobadController extends Controller
         return response(new JobadResource($jobad->refresh()), 200);
     }
 
-    public function getJobsForAdmin(Request $request,JobadFilter $filters)
+    public function getJobsForAdmin(Request $request, JobadFilter $filters)
     {
-        $resultSet=Jobad::filter($filters);
+        $resultSet = Jobad::filter($filters);
 
         return response(new JobadCollection($resultSet->paginate(5)), 200);
     }
 
 }
+
+
+//if ($request->has('search')) {
+//    $resultSet = $resultSet->get()
+//        ->sortByDesc(function ($job) {
+//            return $job->j_score + $job->s_score + $job->c_score;
+//        })
+//        ->values()
+//        ->forPage(request()->input('page', 0), 5);
+//} else {
+//    $resultSet = $resultSet->orderByDesc('created_at')->paginate(5);
+//}
