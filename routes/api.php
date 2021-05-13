@@ -30,16 +30,31 @@ use App\Http\Controllers\UserApplicationController;
 */
 //Broadcast::routes(['middleware' => 'auth:api']); // this works for my api
 
-Route::get('/messager', function (){
-    event(new \App\Events\TestJobEvent('gobranD'));
-//    broadcast(new \App\Events\TestJobEvent('daniel'))->toOthers();
+Route::get('search_job', \App\Http\Controllers\JobSearchController::class);
+Route::get('test', function () {
+//    return \App\Models\Jobad::where('id',1)->first()->reports()->first()->user()->roles;
+//    return \App\Models\Report::first();
+    $job = \App\Models\Jobad::findOrFail(1);
+    return new \App\Http\Resources\Report($job->refusal_report);
+});
+
+Route::get('testNotification', function () {
+    $fcm = new \App\Firebase\FCM();
+    $fcm->topic('news');
+    $fcm->notification([
+            "body" => "Body of Your Notification",
+            "title" => "Lenovo of Your Notification",
+            "sound" => "default"
+    ]
+    );
+    return $fcm->send();
 });
 
 
-Route::get('refused_jobad', function (){
+Route::get('refused_jobad', function () {
 //    return \App\Models\Jobad::where('id',1)->first()->reports()->first()->user()->roles;
 //    return \App\Models\Report::first();
-    $job= \App\Models\Jobad::findOrFail(1);
+    $job = \App\Models\Jobad::findOrFail(1);
     return new \App\Http\Resources\Report($job->refusal_report);
 });
 
@@ -59,8 +74,8 @@ Route::put('/users/{user}/profile', [UserProfileController::class, 'update']);
 Route::post('/users/{user}/profile', [UserProfileController::class, 'store']);
 Route::apiResource('users/{user}/applications', UserApplicationController::class);
 
-Route::post('users/{user}/image',[UserImageController::class,'store']);
-Route::delete('users/{user}/image',[UserImageController::class,'destroy']);
+Route::post('users/{user}/image', [UserImageController::class, 'store']);
+Route::delete('users/{user}/image', [UserImageController::class, 'destroy']);
 Route::post('/users/{user}/job-preference', [JobPreferenceController::class, 'store']);
 Route::put('/users/{user}/job-preference', [JobPreferenceController::class, 'update']);
 Route::delete('/users/{user}/job-preference', [JobPreferenceController::class, 'destroy']);
@@ -71,14 +86,14 @@ Route::get('/all-skills', function () {
 });
 
 Route::get('/cvs/{cv}/download', [CvController::class, 'downloadCv']);
-Route::get('/user/my-cvs', [CvController::class,'myCvs']);
+Route::get('/user/my-cvs', [CvController::class, 'myCvs']);
 Route::apiresource('/cvs', CvController::class);
 
 Route::apiresource('/skills', SkillController::class);
 
-Route::get('/admin-jobads', [JobadController::class,'getJobsForAdmin']);
+Route::get('/admin-jobads', [JobadController::class, 'getJobsForAdmin']);
 Route::apiresource('/jobads', JobadController::class);
-Route::get('/jobads/{jobad}/cvs', [JobadController::class,'getJobCvs']);
+Route::get('/jobads/{jobad}/cvs', [JobadController::class, 'getJobCvs']);
 Route::apiResource('/jobads/{jobad}/applications', JobadApplicationController::class);
 Route::patch('jobads/{jobad}/applications/{application}/manage', [JobadApplicationManagementController::class, 'evaluate']);
 Route::put('/jobads/{unapprovedJobad}/approve', [JobadController::class, 'approve']);
@@ -90,7 +105,7 @@ Route::get('/myjobads', [JobadController::class, 'getCompanyJobads']);
 Route::apiResource('/categories', CategoryController::class);
 
 
-//Route::post('/login', [AuthController::class,'login'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 //-------------Daniel new work
 Route::prefix('auth')->group(function () {
@@ -115,6 +130,6 @@ Route::prefix('auth')->group(function () {
 
 
 //----------------daniel----------------------------------------
-Route::post('register/jobseeker', [AuthController::class,'registerAsJobSeeker']);
-Route::post('register/company', [AuthController::class,'registerAsCompany']);
+Route::post('register/jobseeker', [AuthController::class, 'registerAsJobSeeker']);
+Route::post('register/company', [AuthController::class, 'registerAsCompany']);
 //Route::post('register/admin', [AuthController::class,'registerAsAdmin']);

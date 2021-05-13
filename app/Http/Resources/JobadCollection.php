@@ -23,10 +23,10 @@ class JobadCollection extends ResourceCollection
 //                'next_page_url' => $this->nextPageUrl(),
             ],
             "meta" => [
-                "current_page" => $request->page+1,
-                "per_page" => 5,
-                "total"=>100,
-                "last_page"=>20
+                "current_page" => $this->currentPage(),
+                "per_page" => $this->perPage(),
+                "total"=>$this->total(),
+                "last_page"=>$this->lastPage()
             ]
         ];
     }

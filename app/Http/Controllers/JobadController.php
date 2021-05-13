@@ -31,17 +31,17 @@ class JobadController extends Controller
     {
         $resultSet = Jobad::filter($filters);
 
-        if ($request->has('search')) {
-            $resultSet = $resultSet->get()
-                ->sortByDesc(function ($job) {
-                    return $job->j_score + $job->s_score + $job->c_score;
-                })
-                ->values()
-                ->forPage(request()->input('page', 0), 5);
-        } else {
-            $resultSet = $resultSet->orderByDesc('created_at')->paginate(5);
-        }
-        return response(new JobadCollection($resultSet), 200);
+//        if ($request->has('search')) {
+//            $resultSet = $resultSet->get()
+//                ->sortByDesc(function ($job) {
+//                    return $job->j_score + $job->s_score + $job->c_score;
+//                })
+//                ->values()
+//                ->forPage(request()->input('page', 0), 5);
+//        } else {
+//            $resultSet = $resultSet->orderByDesc('created_at')->paginate(5);
+//        }
+        return response(new JobadCollection($resultSet->paginate(5)), 200);
     }
     //----------------------------------------
 

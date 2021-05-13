@@ -12,7 +12,7 @@ class JobadRefused extends Notification
 {
     use Queueable;
 
-    protected $jobad;
+    public $jobad;
     /**
      * Create a new notification instance.
      *

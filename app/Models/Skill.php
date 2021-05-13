@@ -13,6 +13,6 @@ class Skill extends Model
 
     public function jobads()
     {
-        return $this->morphedByMany('App\Skill', 'skillable');
+        return $this->morphedByMany('App\Models\Jobad', 'skillable');
     }
 }

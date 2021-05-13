@@ -8,6 +8,7 @@ use App\Models\Jobad;
 use App\Models\User;
 use App\Notifications\ApplicationApproved;
 use App\Notifications\JobadEvaluationStatus;
+use App\Notifications\JobadRefused;
 use App\Traits\RequestDataForTesting;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\PermissionSeeder;
@@ -65,7 +66,7 @@ class ManageJobadTest extends TestCase
         $this->withoutExceptionHandling();
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
         $this->actingAs($user = User::factory()->create(),'api');
-        $jobad = Jobad::factory()->unapproved()->create();
+        $jobad = Jobad::factory()->unapproved()->create(['user_id' => $this->company->id]);
 
         $this->admin->assignRole('admin');
         $this->actingAs($this->admin,'api');
@@ -93,6 +94,60 @@ class ManageJobadTest extends TestCase
                 ]
             ]
         ]);
+    }
+
+    /**
+     * @test
+     */
+    public function when_admin_refuse_jobad_an_email_should_be_sent_to_company()
+    {
+        $this->withoutExceptionHandling();
+        $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
+        $this->actingAs($this->company,'api');
+        $jobad = Jobad::factory()->unapproved()->create(['user_id' => $this->company->id]);
+
+        $this->admin->assignRole('admin');
+        $this->actingAs($this->admin,'api');
+
+        Event::fake();
+        $resp = $this->putJson('api/jobads/' . $jobad->id . '/refuse',
+            ['description' => 'some fields are not good'])
+            ->assertStatus(200);
+
+        Event::assertDispatched(JobadEvaluated::class, function ($event) use ($jobad) {
+            return $event->jobad->id = $jobad->id;
+        });
+
+        Event::assertDispatchedTimes(JobadEvaluated::class, 1);
+    }
+
+    /**
+     * @test
+     */
+    public function when_admin_refuse_jobad_a_notification_should_be_sent_to_company(){
+        $this->withoutExceptionHandling();
+        $this->withoutMiddleware(\Illuminate\Auth\Middleware\Authorize::class);
+        $this->actingAs($this->company,'api');
+        $jobad = Jobad::factory()->unapproved()->create(['user_id'=>$this->company->id]);
+
+        $this->admin->assignRole('admin');
+        $this->actingAs($this->admin,'api');
+
+        Notification::fake();
+
+        $resp = $this->putJson('api/jobads/' . $jobad->id . '/refuse',
+            ['description' => 'some fields are not good'])
+            ->assertStatus(200);
+
+        event(new JobadEvaluated($jobad->refresh()));
+
+        Notification::assertSentTo([$this->company], JobadRefused::class,
+            function (JobadRefused $notification, $channels) use ($jobad) {
+                return (
+                    $notification->jobad->id == $jobad->id &&
+                    $notification->jobad->refusal_report == $jobad->refusal_report
+                );
+            });
     }
 
     /**

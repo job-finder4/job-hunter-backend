@@ -21,6 +21,11 @@ class JobadFilter extends QueryFilters
         $this->builder->searchJob($searchParams);
     }
 
+    public function advancedSearch($searchParams)
+    {
+        $this->builder->advancedSearchJob($searchParams);
+    }
+
     public function category($term)
     {
         return $this->builder->whereHas('category', function ($query) use ($term) {
