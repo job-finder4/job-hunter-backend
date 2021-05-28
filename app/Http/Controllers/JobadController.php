@@ -29,32 +29,14 @@ class JobadController extends Controller
     public function index(Request $request, JobadFilter $filters)
     {
         $resultSet = Jobad::filter($filters);
-
         $resultSet = $resultSet->paginate(5);
-
         return response(new JobadCollection($resultSet), 200);
     }
 
 
-    public function getCompanyJobads(Request $request, JobadFilter $filters)
+    public function getCompanyJobads(Request $request,JobadFilter $filters)
     {
-//        $allJobads = null;
-//        if (!$request->has('filter')) {
-//            $allJobads = auth()->user()->jobads()->activeAndInactive();
-//        }
-//
-//        $filter = $request->filter;
-//
-//        if ($filter == 'active') {
-//            $allJobads = auth()->user()->jobads();
-//        }
-//        if ($filter == 'expired') {
-//            $allJobads = auth()->user()->jobads()->expired();
-//        }
-//        if ($filter == 'pending') {
-//            $allJobads = auth()->user()->jobads()->Unapproved();
-//        }
-        $resultSet = Jobad::filter($filters);
+        $resultSet=auth()->user()->jobads()->filter($filters);
         return response(new JobadCollection($resultSet->paginate(5)), 200);
     }
 
@@ -63,6 +45,18 @@ class JobadController extends Controller
         $jobad->approved_at = now();
         $jobad->saveOrFail();
         event(new JobadEvaluated($jobad));
+        return response(new JobadResource($jobad), 200);
+    }
+
+    public function refuse(Jobad $jobad,Request $request)
+    {
+        $data = $request->validate([
+            'description' => 'required',
+        ]);
+        $description=$data['description'];
+        $jobad->reports()->create(['description'=>$description,'reporter_id'=>auth()->user()->id]);
+        event(new JobadEvaluated($jobad));
+
         return response(new JobadResource($jobad), 200);
     }
 
@@ -80,7 +74,7 @@ class JobadController extends Controller
             'location' => 'required',
             'expiration_date' => 'required',
             'skills' => 'required',
-            'category' => '',
+            'category_id'=>'required',
             'approved_at' => ''
         ]);
 
@@ -120,37 +114,28 @@ class JobadController extends Controller
             $skills = $data['skills'];
             $skillsIds = [];
 
-            foreach ($skills as $skill) {
-                Skill::findOrFail($skill['id']);
-                $skillsIds[] = $skill['id'];
-            }
+           	foreach ($skills as $skillId) {
+				Skill::findOrFail($skillId);
+				$skillsIds[] = $skillId;
+			}
 
             $jobad->skills()->sync($skillsIds);
         }
 
         $data = Arr::except($data, ['skills']);
         $jobad->update($data);
+        $jobad->refusal_report()->delete();
 
         return response(new JobadResource($jobad->refresh()), 200);
     }
 
-    public function getJobsForAdmin(Request $request, JobadFilter $filters)
+    public function getJobsForAdmin(Request $request,JobadFilter $filters)
     {
-        $resultSet = Jobad::filter($filters);
+        $resultSet=Jobad::filter($filters)->orderBy('updated_at');
 
-        return response(new JobadCollection($resultSet->paginate(5)), 200);
+           return response(new JobadCollection($resultSet->paginate(5)), 200);
     }
 
 }
 
 
-//if ($request->has('search')) {
-//    $resultSet = $resultSet->get()
-//        ->sortByDesc(function ($job) {
-//            return $job->j_score + $job->s_score + $job->c_score;
-//        })
-//        ->values()
-//        ->forPage(request()->input('page', 0), 5);
-//} else {
-//    $resultSet = $resultSet->orderByDesc('created_at')->paginate(5);
-//}

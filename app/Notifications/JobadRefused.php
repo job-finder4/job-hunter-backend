@@ -2,31 +2,25 @@
 
 namespace App\Notifications;
 
-use App\Events\ApplicationEvaluated;
-use App\Http\Resources\Jobad as JobadResource;
-use App\Models\Application;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Notifications\Messages\BroadcastMessage;
-class ApplicationApproved extends Notification implements ShouldBroadcast
+
+class JobadRefused extends Notification
 {
     use Queueable;
 
-    public $application;
-
-
+    public $jobad;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Application $application)
+    public function __construct($jobad)
     {
-        $this->application=$application;
+        $this->jobad=$jobad;
     }
 
     /**
@@ -37,11 +31,9 @@ class ApplicationApproved extends Notification implements ShouldBroadcast
      */
     public function via($notifiable)
     {
-//        return ['broadcast'];
-        return ['database', 'broadcast'];
 //        return ['mail'];
-//        return ['broadcast','mail'];
-
+//        return ['broadcast','database'];
+        return ['database'];
     }
 
     /**
@@ -53,8 +45,8 @@ class ApplicationApproved extends Notification implements ShouldBroadcast
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('congratulations!')
-                    ->line('your application have been approved')
+                    ->line('The introduction to the notification.')
+                    ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!');
     }
 
@@ -67,27 +59,28 @@ class ApplicationApproved extends Notification implements ShouldBroadcast
     public function toArray($notifiable)
     {
         return [
-            'application_id' => $this->application->id,
-            'jobad_title' => $this->application->jobad->title,
-            'action' => "/applied-jobs",
+            'jobad_id' => $this->jobad->id,
+            'jobad_title' => $this->jobad->title,
+            'refusal_reason'=>$this->jobad->refusal_report->description,
+            'action' => "/myjobs/{$this->jobad->id}",
         ];
     }
 
     /**
      * Get the broadcastable representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
      * @return BroadcastMessage
      */
     public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
             'data' => [
-                'application_id' => $this->application->id,
-                'jobad_title' => $this->application->jobad->title,
-                'action' => "/applied-jobs",
+                'jobad_id' => $this->jobad->id,
+                'jobad_title' => $this->jobad->title,
+                'refusal_reason'=>$this->jobad->refusal_report->description,
+                'action' => "/myjobs/{$this->jobad->id}",
             ]
         ]);
     }
-
 }

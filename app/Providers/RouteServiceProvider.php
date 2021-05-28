@@ -52,8 +52,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
         });
 
-        Route::bind('unapprovedJobad',function ($value)
-        {
+        Route::bind('unapprovedJobad',function ($value) {
             return Jobad::unapproved()->where('id',$value)->firstOrFail();
         });
 
@@ -62,11 +61,17 @@ class RouteServiceProvider extends ServiceProvider
             return Jobad::expired()->where('id',$value)->firstOrFail();
         });
 
-        Route::bind('unreservedInterview',function ($value)
-        {
-            return Interview::where('id',$value)->whereNull('user_id')->firstOrFail();
+        Route::bind('unreservedInterview',function ($value) {
+            return Interview::where('id', $value)->whereNull('user_id')->firstOrFail();
         });
 
+        Route::bind('jobad',function ($value)
+        {
+            if(auth()->check()&&(auth()->user()->hasRole('admin')||auth()->user()->hasRole('company'))){
+                return Jobad::activeAndInactive()->where('id',$value)->firstOrFail();
+            }
+            return Jobad::findOrFail($value);
+        });
     }
 
     /**

@@ -13,7 +13,7 @@ trait FullTextSearch
     public function fullTextWildcards(String $term)
     {
 
-        $reservedSymbols = ['-', '+', '>', '<', '@', '(', ')', '~','&'];
+        $reservedSymbols = ['-', '+', '>', '<', '@', '(', ')', '~', '&'];
 
         $term = explode(' ', $term);
 

@@ -16,8 +16,7 @@ class Category extends Model
         'name'
     ];
 
-    public function jobads()
-    {
+    public function jobads(){
         return $this->hasMany(Jobad::class);
     }
 }

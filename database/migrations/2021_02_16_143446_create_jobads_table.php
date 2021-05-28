@@ -43,6 +43,7 @@ class CreateJobadsTable extends Migration
 //           $table->dropIndex('fulltext_index');
 //        });
 
+
         Schema::dropIfExists('jobads');
     }
 }

@@ -4,7 +4,7 @@
 namespace App\Filters;
 
 use App\Models\Jobad;
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class JobadFilter extends QueryFilters
@@ -22,6 +22,12 @@ class JobadFilter extends QueryFilters
         $this->builder->searchJob($searchParams);
     }
 
+
+    public function advancedSearch($searchParams)
+    {
+        $this->builder->advancedSearchJob($searchParams);
+    }
+
     public function category($term)
     {
         return $this->builder->whereHas('category', function ($query) use ($term) {
@@ -37,11 +43,15 @@ class JobadFilter extends QueryFilters
     public function job_status($status)
     {
         if ($status == 'pending') {
-            return $this->builder->Unapproved();
+            return $this->builder->pending();
         }
         if ($status == 'expired') {
             return $this->builder->expired();
         }
+        if ($status == 'refused') {
+            return $this->builder->refused();
+        }
+        return null;
     }
 
     public function job_time($time)
@@ -64,13 +74,4 @@ class JobadFilter extends QueryFilters
         return $this->builder->where('max_salary', '<=', $salary);
     }
 
-//     public function pending()
-//    {
-//        return $this->builder->Unapproved();
-//    }
-
-    public function sort_age($type = null)
-    {
-        return $this->builder->orderBy('dob', (!$type || $type == 'asc') ? 'desc' : 'asc');
-    }
 }

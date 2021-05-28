@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Category;
 use App\Models\Jobad;
+use App\Models\Report;
 use App\Models\Skill;
 use App\Models\User;
 use Database\Seeders\SkillSeeder;
@@ -36,9 +37,9 @@ class JobadFactory extends Factory
             'min_salary' => $tmp = $this->faker->numberBetween(200, 5000),
             'max_salary' => $tmp = $this->faker->numberBetween($tmp, $tmp + 5000),
             'expiration_date' => $this->faker->dateTimeBetween(now()->addWeek(), now()->addWeeks(8)),
-            'job_time' => $this->faker->randomElement([Jobad::FULL_TIME, Jobad::PART_TIME]),
-            'job_type' => $this->faker->randomElement([Jobad::REMOTE, Jobad::ON_SITE]),
             'category_id' => Category::factory(),
+            'job_type' => $this->faker->randomElement([Jobad::REMOTE,Jobad::ON_SITE]),
+            'job_time' => $this->faker->randomElement([Jobad::FULL_TIME,Jobad::PART_TIME]),
             'approved_at' => now(),
         ];
     }
@@ -64,5 +65,6 @@ class JobadFactory extends Factory
             ];
         });
     }
+
 
 }

@@ -29,6 +29,7 @@ class User extends JsonResource
                     'role' => $role,
                     'image' => url($this->image->path),
                 ],
+
             ]
         ];
     }

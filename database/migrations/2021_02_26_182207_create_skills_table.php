@@ -34,7 +34,6 @@ class CreateSkillsTable extends Migration
 //        Schema::table('skills',function (Blueprint $table){
 //            $table->dropIndex('fulltext_index');
 //        });
-
         Schema::dropIfExists('skills');
     }
 }

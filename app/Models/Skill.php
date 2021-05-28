@@ -20,7 +20,7 @@ class Skill extends Model
 
     public function jobads()
     {
-        return $this->morphedByMany(Jobad::class, 'skillable');
+        return $this->morphedByMany('App\Models\Jobad', 'skillable');
     }
 
 //    public static function customizeSearchTerm(array $term): string

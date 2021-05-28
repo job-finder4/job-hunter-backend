@@ -10,7 +10,6 @@ class NotificationsController extends Controller
     public function index()
     {
         $notifications = auth()->user()->notifications()->get();
-
         return response($notifications, 200);
     }
 

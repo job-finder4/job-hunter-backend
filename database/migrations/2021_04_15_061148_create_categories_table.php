@@ -28,9 +28,11 @@ class CreateCategoriesTable extends Migration
      */
     public function down()
     {
+
 //        Schema::table('categories',function (Blueprint $table){
 //            $table->dropIndex('fulltext_index');
 //        });
+
         Schema::dropIfExists('categories');
     }
 }
