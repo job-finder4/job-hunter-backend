@@ -11,6 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
 class RecommendUsers implements ShouldQueue
@@ -43,5 +44,6 @@ class RecommendUsers implements ShouldQueue
         })->unique('id');
 
         Notification::send($users,new RecommendedJob($this->jobad));
+//        Log::debug("cccsadsadsa");
     }
 }

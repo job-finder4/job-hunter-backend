@@ -61,16 +61,19 @@ class RouteServiceProvider extends ServiceProvider
             return Jobad::expired()->where('id',$value)->firstOrFail();
         });
 
+
         Route::bind('unreservedInterview',function ($value) {
             return Interview::where('id', $value)->whereNull('user_id')->firstOrFail();
         });
 
         Route::bind('jobad',function ($value)
         {
-            if(auth()->check()&&(auth()->user()->hasRole('admin')||auth()->user()->hasRole('company'))){
-                return Jobad::activeAndInactive()->where('id',$value)->firstOrFail();
-            }
-            return Jobad::findOrFail($value);
+//            if(auth()->check()&&(auth()->user()->hasRole('admin')||auth()->user()->hasRole('company'))){
+//                return Jobad::activeAndInactive()->where('id',$value)->firstOrFail();
+//            }
+//            return Jobad::findOrFail($value);
+
+            return Jobad::activeAndInactive()->where('id',$value)->firstOrFail();
         });
     }
 

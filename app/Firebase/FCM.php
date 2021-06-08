@@ -4,35 +4,32 @@ use GuzzleHttp\Client;
 
 class FCM{
 
-    protected $endpoint;
-    protected $topic;
-    protected $data;
-    protected $notification;
-
-    public function __construct()
-    {
-        $this->endpoint = "https://fcm.googleapis.com/fcm/send";
-    }
-
-    public function setEndPoint($endpoint){
-        //if there is a case to override endpoint
-        $this->endpoint = $endpoint;
-    }
-
-    public function data(array $data=[]){
-
-        $this->data = $data;
-
-    }
-    public function topic($topic){
-        $this->topic=$topic;
-    }
-    public function notification($notification)
-    {
-        $this->notification = $notification;
-    }
-    public function send(){
-//        dd($this->notification);
+//    protected $endpoint;
+//    protected $topic;
+//    protected $data;
+//    protected $notification;
+//
+//    public function __construct()
+//    {
+//        $this->endpoint = "https://fcm.googleapis.com/fcm/send";
+//    }
+//
+//    public function setEndPoint($endpoint){
+//        //if there is a case to override endpoint
+//        $this->endpoint = $endpoint;
+//    }
+//
+//    public function data(array $data=[]){
+//        $this->data = $data;
+//    }
+//    public function setTopic($topic){
+//        $this->topic=$topic;
+//    }
+//    public function setNotification($notification)
+//    {
+//        $this->notification = $notification;
+//    }
+    public static function send($topic,$notification){
         $server_key = env("FCM_SERVER_KEY");
 
         $headers = [
@@ -40,19 +37,19 @@ class FCM{
             'Content-Type'  => 'application/json',
         ];
         $fields = [
-            'to'=>"/topics/" . $this->topic,
+            'to'=>"/topics/" . $topic,
             'content-available' => true,
             'priority' => 'high',
 //            'data' => $this->data,
-            'notification'=>$this->notification,
+            'notification'=>$notification,
         ];
 
         $fields = json_encode ( $fields );
-
         $client = new Client();
 
+        $endpoint = "https://fcm.googleapis.com/fcm/send";
         try{
-            $request = $client->post($this->endpoint,[
+            $request = $client->post($endpoint,[
                 'headers' => $headers,
                 "body" => $fields,
             ]);

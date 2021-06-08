@@ -64,7 +64,7 @@ class JobadEvaluationStatus extends Notification
         return [
             'jobad_id' => $this->jobad->id,
             'jobad_title' => $this->jobad->title,
-            'action' => "/myjobs/{$this->jobad->id}",
+            'action' => "/company/my-jobs/".$this->jobad->id,
         ];
     }
 
@@ -80,7 +80,7 @@ class JobadEvaluationStatus extends Notification
             'data' => [
                 'jobad_id' => $this->jobad->id,
                 'jobad_title' => $this->jobad->title,
-                'action' => "/myjobs/{$this->jobad->id}",
+                'action' => "/company/my-jobs/".$this->jobad->id,
             ]
         ]);
     }

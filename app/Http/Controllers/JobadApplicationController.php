@@ -13,11 +13,9 @@ use Illuminate\Http\Request;
 
 class JobadApplicationController extends Controller
 {
-    public function index(Jobad $jobad, Request $request,ApplicationsFilter $filters)
+    public function index(Jobad $jobad, Request $request)
     {
         $allApplications = $jobad->applications()->get();
-
-
         if($request->has('filter')){
             $filter=$request->filter;
             if ($filter == 'rejected') {

@@ -119,6 +119,7 @@ Route::get('/admin-jobads', [JobadController::class, 'getJobsForAdmin']);
 Route::apiresource('/jobads', JobadController::class);
 Route::get('/jobads/{jobad}/cvs', [JobadController::class, 'getJobCvs']);
 Route::apiResource('/jobads/{jobad}/applications', JobadApplicationController::class);
+//Route::get('/jobads/{interviewAbleJobad}/applications', [JobadApplicationController::class,'index']);
 Route::patch('jobads/{jobad}/applications/{application}/manage', [JobadApplicationManagementController::class, 'evaluate']);
 Route::put('/jobads/{unapprovedJobad}/approve', [JobadController::class, 'approve']);
 Route::put('/jobads/{unapprovedJobad}/refuse', [JobadController::class, 'refuse']);

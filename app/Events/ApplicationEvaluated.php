@@ -15,6 +15,7 @@ class ApplicationEvaluated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $application;
+
     /**
      * Create a new event instance.
      *
@@ -25,13 +26,13 @@ class ApplicationEvaluated
         $this->application = $application;
     }
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     */
-    public function broadcastOn()
-    {
-        return new PrivateChannel('channel-name');
-    }
+//    /**
+//     * Get the channels the event should broadcast on.
+//     *
+//     * @return \Illuminate\Broadcasting\Channel|array
+//     */
+//    public function broadcastOn()
+//    {
+//        return new PrivateChannel('channel-name');
+//    }
 }

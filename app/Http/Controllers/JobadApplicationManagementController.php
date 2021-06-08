@@ -16,8 +16,9 @@ class JobadApplicationManagementController extends Controller
         $application->update([
             'status' => $request->status
         ]);
+
+
         //just for frontend to work
-        //
         event(new ApplicationEvaluated($application));
         return response()->json(new ApplicationResource($application),200);
     }

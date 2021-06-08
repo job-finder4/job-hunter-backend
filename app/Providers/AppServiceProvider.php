@@ -53,8 +53,8 @@ class AppServiceProvider extends ServiceProvider
             );
         });
 
-        ResetPassword::createUrlUsing(function ($notifiable, string $token) {
-            return config('app.url') . '/reset-password?token=' . $token . '&email=' . urlencode($notifiable->email);
-        });
+//        ResetPassword::createUrlUsing(function ($notifiable, string $token) {
+//            return config('app.url') . '/reset-password?token=' . $token . '&email=' . urlencode($notifiable->email);
+//        });
     }
 }

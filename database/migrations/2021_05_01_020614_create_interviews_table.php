@@ -18,14 +18,14 @@ class CreateInterviewsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('jobad_id');
-            $table->timestamp('start_date')->default(now());
-            $table->timestamp('end_date')->default(now());
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
             $table->string('contact_info');
             $table->timestamps();
         });
 
-        DB::statement(DB::raw('ALTER TABLE interviews ALTER COLUMN start_date DROP DEFAULT '));
-        DB::statement(DB::raw('ALTER TABLE interviews ALTER COLUMN end_date  DROP DEFAULT '));
+//        DB::statement(DB::raw('ALTER TABLE interviews ALTER COLUMN start_date DROP DEFAULT '));
+//        DB::statement(DB::raw('ALTER TABLE interviews ALTER COLUMN end_date  DROP DEFAULT '));
     }
 
     /**

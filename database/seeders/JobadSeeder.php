@@ -17,10 +17,6 @@ class JobadSeeder extends Seeder
      */
     public function run()
     {
-<<<<<<< HEAD
-//        Skill::factory()->count(100)->create();
-
-=======
         $categories = [
             "Account Management",
             "Accounting & Finance",
@@ -92,27 +88,18 @@ class JobadSeeder extends Seeder
 //            'title'=>'',
 //        ]);
 
->>>>>>> origin/reports_feature
         Jobad::factory()->count(100)->create()->each(function ($jobad) {
             $jobad->skills()->attach(Skill::inRandomOrder()->get()->pluck('id')->take(rand(1, 4)));
         });
 
-<<<<<<< HEAD
-        $jobad = Jobad::factory()->create([
-=======
         $jobad=Jobad::factory()->create([
->>>>>>> origin/reports_feature
             'title' => 'Technical Marketer',
             'category_id' => '32'
         ]);
         $jobad->skills()->attach([69, 76]);
 
 
-<<<<<<< HEAD
-        $jobad = Jobad::factory()->create([
-=======
         $jobad=Jobad::factory()->create([
->>>>>>> origin/reports_feature
             'title' => 'Technical Support Representative',
             'category_id' => '11'
         ]);
@@ -120,72 +107,43 @@ class JobadSeeder extends Seeder
 
 
 
-<<<<<<< HEAD
-        $jobad = Jobad::factory()->create([
-=======
         $jobad=Jobad::factory()->create([
->>>>>>> origin/reports_feature
             'title' => 'Product Manager',
             'category_id' => '660'
         ]);
         $jobad->skills()->attach([266]);
 
 
-<<<<<<< HEAD
-        $jobad = Jobad::factory()->create([
-=======
         $jobad=Jobad::factory()->create([
->>>>>>> origin/reports_feature
             'title' => 'Web Developer',
             'category_id' => '50'
         ]);
         $jobad->skills()->attach([50]);
 
 
-<<<<<<< HEAD
-        $jobad = Jobad::factory()->create([
-=======
         $jobad=Jobad::factory()->create([
->>>>>>> origin/reports_feature
             'title' => 'Communications Consulting Specialist',
             'category_id' => 12
         ]);
         $jobad->skills()->attach([124]);
 
-<<<<<<< HEAD
-        $jobad = Jobad::factory()->create([
-=======
         $jobad=Jobad::factory()->create([
->>>>>>> origin/reports_feature
             'title' => 'Senior React Engineer',
             'category_id' => 17
         ]);
         $jobad->skills()->attach([46]);
 
 
-<<<<<<< HEAD
-        $jobad = Jobad::factory()->create([
-=======
         $jobad=Jobad::factory()->create([
->>>>>>> origin/reports_feature
             'title' => 'TV and Movies Editor',
             'category_id' => 18
         ]);
         $jobad->skills()->attach([255]);
 
-<<<<<<< HEAD
-        $jobad = Jobad::factory()->create([
-=======
         $jobad=Jobad::factory()->create([
->>>>>>> origin/reports_feature
             'title' => 'Spanish to English Translation, Transcription - Insurance Audios',
             'category_id' => 48
         ]);
         $jobad->skills()->attach([254]);
-<<<<<<< HEAD
-
-
-=======
->>>>>>> origin/reports_feature
     }
 }

@@ -7,9 +7,11 @@ use App\Exceptions\MyModelNotFoundException;
 use App\Filters\JobadFilter;
 use App\Http\Resources\CvCollection;
 use App\Http\Resources\JobadCollection;
+use App\Jobs\RecommendUsers;
 use App\Models\Jobad;
 use App\Http\Resources\Jobad as JobadResource;
 use App\Models\Skill;
+use App\Notifications\RecommendedJob;
 use Illuminate\Http\Request;
 use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Arr;
@@ -45,6 +47,7 @@ class JobadController extends Controller
         $jobad->approved_at = now();
         $jobad->saveOrFail();
         event(new JobadEvaluated($jobad));
+        $this->dispatch(new RecommendUsers($jobad));
         return response(new JobadResource($jobad), 200);
     }
 

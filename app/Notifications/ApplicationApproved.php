@@ -2,7 +2,9 @@
 
 namespace App\Notifications;
 
+use App\Channels\FCMChannel;
 use App\Events\ApplicationEvaluated;
+use App\Firebase\FCMMessage;
 use App\Http\Resources\Jobad as JobadResource;
 use App\Models\Application;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -38,12 +40,18 @@ class ApplicationApproved extends Notification implements ShouldBroadcast
     public function via($notifiable)
     {
 //        return ['broadcast'];
-        return ['database', 'broadcast'];
+//        return [];
+        return ['database',FCMChannel::class,'broadcast'];
 //        return ['mail'];
 //        return ['broadcast','mail'];
-
     }
 
+    public function toFCM($notifiable)
+    {
+        return (new FCMMessage())
+            ->body("Your Application on ".$this->application->jobad->title."Your Application evaluted ")
+            ->title("Application Approved");
+    }
     /**
      * Get the mail representation of the notification.
      *
@@ -69,9 +77,12 @@ class ApplicationApproved extends Notification implements ShouldBroadcast
         return [
             'application_id' => $this->application->id,
             'jobad_title' => $this->application->jobad->title,
+            'jobad_id' => $this->application->jobad->id,
             'action' => "/applied-jobs",
         ];
     }
+
+
 
     /**
      * Get the broadcastable representation of the notification.

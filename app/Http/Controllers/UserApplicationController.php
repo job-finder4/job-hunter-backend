@@ -8,10 +8,23 @@ use Illuminate\Http\Request;
 
 class UserApplicationController extends Controller
 {
-    public function index(User $user)
+    public function index(User $user,Request $request)
     {
-        return response()->json(
-            new ApplicationCollection($user->applications()->orderByDesc('updated_at')->get())
-            ,200);
+    	$allApplications = $user->applications()->get();
+    	
+        if($request->has('filter')){
+            $filter=$request->filter;
+            if ($filter == 'rejected') {
+                $allApplications = $user->applications()->where('status', -1)->orderByDesc('updated_at')->get();
+            }
+            if ($filter == 'approved') {
+                $allApplications = $user->applications()->where('status', 1)->orderByDesc('updated_at')->get();
+            }
+            if ($filter == 'pending') {
+                $allApplications = $user->applications()->where('status', 0)->orderByDesc('updated_at')->get();
+            }
+        }
+
+        return response()->json(new ApplicationCollection($allApplications), 200);
     }
 }

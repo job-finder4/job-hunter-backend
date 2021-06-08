@@ -21,7 +21,7 @@ class CreateSkillsTable extends Migration
             NestedSet::columns($table);
             $table->timestamps();
         });
-//        DB::statement('ALTER TABLE skills ADD FULLTEXT fulltext_index (name)');
+        DB::statement('ALTER TABLE skills ADD FULLTEXT fulltext_index (name)');
     }
 
     /**
@@ -31,9 +31,9 @@ class CreateSkillsTable extends Migration
      */
     public function down()
     {
-//        Schema::table('skills',function (Blueprint $table){
-//            $table->dropIndex('fulltext_index');
-//        });
+        Schema::table('skills',function (Blueprint $table){
+            $table->dropIndex('fulltext_index');
+        });
         Schema::dropIfExists('skills');
     }
 }

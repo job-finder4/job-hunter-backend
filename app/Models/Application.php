@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\scopes\UnExpiredJobadScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Filterable;
@@ -24,7 +25,7 @@ class Application extends Model
 
     public function Jobad()
     {
-        return $this->belongsTo(Jobad::class);
+        return $this->belongsTo(Jobad::class)->withoutGlobalScope(UnExpiredJobadScope::class);
     }
 
     public function cv()

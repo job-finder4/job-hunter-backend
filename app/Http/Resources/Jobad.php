@@ -33,16 +33,16 @@ class Jobad extends JsonResource
                     'expiration_date' => $this->expiration_date->diffForHumans(),
                     'exact_expiration_date' => $this->expiration_date->format('M d Y'),
                     'skills' => new SkillCollection($this->skills),
-                    'applied_at' => $this
-                        ->when(auth()->check() && auth()->user()->hasRole('jobSeeker'),
-                            function () {
-                                return optional(
-                                    optional(
-                                        auth()->user()->applications()->where('jobad_id', $this->id)
-                                            ->first()
-                                    )->updated_at
-                                )->toFormattedDateString();
-                            }),
+//                    'applied_at' => $this
+//                        ->when(auth()->check() && auth()->user()->hasRole('jobSeeker'),
+//                            function () {
+//                                return optional(
+//                                    optional(
+//                                        auth()->user()->applications()->where('jobad_id', $this->id)
+//                                            ->first()
+//                                    )->updated_at
+//                                )->toFormattedDateString();
+//                            }),
                     'approved_at' => optional($this->approved_at)->toFormattedDateString(),
                     'applied' => $this->applications()->count(),
                     'category' => new Category($this->category),
@@ -50,6 +50,15 @@ class Jobad extends JsonResource
                         function () {
                             return new ReportResource($this->refusal_report);
                     }),
+                    $this->mergeWhen((auth()->check() && auth()->user()->hasRole('jobSeeker')),
+                        function () {
+                            $application = optional(auth()->user()->applications()->where('jobad_id', $this->id)->first());
+                            return [
+                                'applied_at' => optional($application->updated_at)->toFormattedDateString(),
+                                'application_status' => $application->status
+                            ];
+                        }
+                    ),
                 ]
             ],
 

@@ -73,5 +73,22 @@ class JobadFilter extends QueryFilters
     {
         return $this->builder->where('max_salary', '<=', $salary);
     }
+    //-----------------------------new
+    public function job_times($times)
+    {
+        $timess=json_decode($times,true);
+        return $this->builder->whereIn('job_time', $timess);
+    }
+    public function job_types($types)
+    {
+        $typess=json_decode($types,true);
+        return $this->builder->whereIn('job_type', $typess);
+    }
+    public function locations($terms)
+    {
+        $termss=json_decode($terms,true);
+        return $this->builder->whereIn('location',$termss);
+    }
+//---------------------------------
 
 }

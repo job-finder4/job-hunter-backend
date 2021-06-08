@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Firebase\FCMMessage;
 use App\Models\Jobad;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -34,7 +35,7 @@ class ReserveInterview extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+//        return ['mail'];
     }
 
 
@@ -46,7 +47,7 @@ class ReserveInterview extends Notification
      */
     public function toMail($notifiable)
     {
-        $actionUrl = "localhost:3000/jobs/{$this->jobad->id}/interviews";
+        $actionUrl = "/jobs/{$this->jobad->id}/interviews";
 
         return (new MailMessage)
             ->line('job title:' . $this->jobad->title)
@@ -67,4 +68,13 @@ class ReserveInterview extends Notification
             //
         ];
     }
+
+//    public function toFCM($notifiable)
+//    {
+//        $actionUrl = "/jobs/{$this->jobad->id}/interviews";
+//
+//        return (new FCMMessage())
+//            ->title('interview appointment')
+//            ->body('job title:' . $this->jobad->title);
+//    }
 }

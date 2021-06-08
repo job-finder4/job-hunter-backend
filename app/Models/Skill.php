@@ -23,6 +23,12 @@ class Skill extends Model
         return $this->morphedByMany('App\Models\Jobad', 'skillable');
     }
 
+    public function users(){
+        return $this->morphedByMany('App\Models\User', 'skillable');
+    }
+
+
+
 //    public static function customizeSearchTerm(array $term): string
 //    {
 //        $skills = Skill::query()->search($term)->with('descendants')->get();

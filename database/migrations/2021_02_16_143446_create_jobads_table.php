@@ -29,7 +29,7 @@ class CreateJobadsTable extends Migration
             $table->timestamp('expiration_date');
             $table->timestamps();
         });
-//        DB::statement('ALTER TABLE jobads ADD FULLTEXT fulltext_index(title)');
+        DB::statement('ALTER TABLE jobads ADD FULLTEXT fulltext_index(title)');
     }
 
     /**
@@ -39,9 +39,9 @@ class CreateJobadsTable extends Migration
      */
     public function down()
     {
-//        Schema::table('jobads',function (Blueprint $table){
-//           $table->dropIndex('fulltext_index');
-//        });
+        Schema::table('jobads',function (Blueprint $table){
+           $table->dropIndex('fulltext_index');
+        });
 
 
         Schema::dropIfExists('jobads');

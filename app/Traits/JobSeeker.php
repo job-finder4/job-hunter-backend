@@ -75,8 +75,8 @@ trait JobSeeker
         }
 
         $uniqueName = '/cvs/' . $this->id . '/';
-        $file->storeAs($uniqueName, $file->getClientOriginalName(), 'local');
-        $cv = $this->cvs()->create(['title' => $title, 'path' => $uniqueName . $file->getClientOriginalName()]);
+        $file->storeAs($uniqueName, $file->hashName(), 'local');
+        $cv = $this->cvs()->create(['title' => $title, 'path' => $uniqueName . $file->hashName()]);
 
         return $cv;
     }

@@ -32,8 +32,8 @@ class JobadRefused extends Notification
     public function via($notifiable)
     {
 //        return ['mail'];
-//        return ['broadcast','database'];
-        return ['database'];
+        return ['broadcast','database'];
+//        return ['database'];
     }
 
     /**
@@ -62,7 +62,7 @@ class JobadRefused extends Notification
             'jobad_id' => $this->jobad->id,
             'jobad_title' => $this->jobad->title,
             'refusal_reason'=>$this->jobad->refusal_report->description,
-            'action' => "/myjobs/{$this->jobad->id}",
+            'action' => "/company/my-jobs/".$this->jobad->id,
         ];
     }
 

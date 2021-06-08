@@ -2,6 +2,8 @@
 
 namespace App\Notifications;
 
+use App\Channels\FCMChannel;
+use App\Firebase\FCMMessage;
 use App\Models\Jobad;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\BroadcastMessage;
@@ -32,7 +34,8 @@ class RecommendedJob extends Notification
      */
     public function via($notifiable)
     {
-        return ['database', 'broadcast'];
+        return ['database', FCMChannel::class,'broadcast'];
+//        return ['database', 'broadcast',];
     }
 
     /**
@@ -76,6 +79,13 @@ class RecommendedJob extends Notification
                 'action' => "/jobs/{$this->jobad->id}"
             ]
         ]);
+    }
+
+    public function toFCM($notifiable)
+    {
+        return (new FCMMessage())
+            ->body($this->jobad->title)
+            ->title("Our Job Recommendation :");
     }
 
 }
