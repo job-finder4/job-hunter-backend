@@ -18,8 +18,7 @@ use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Company, JobSeeker, Notifiable, HasRoles,HasApiTokens;
-    protected $guard_name = 'api';
+    use HasFactory, Notifiable, HasRoles,HasApiTokens;
 
 
     /**
@@ -52,50 +51,14 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    public function image()
+    public function projects()
     {
-        return $this->morphOne(Image::class,'imageable')
-            ->withDefault([
-                'path' => 'storage/profile/user-default.jpg'
-            ]);
+        return $this->belongsToMany(Project::class,'project_users');
     }
 
-
-    /**
-     * @param mixed $user
-     */
-    public function deleteOldImage(): void
+    public function tasks()
     {
-        if ($this->image()->exists()) {
-            $image = $this->image;
-            Storage::disk('public')->delete($image->path);
-            $image->delete();
-        }
-    }
-
-
-    /**
-     * @param UploadedFile $image
-     */
-    public function storeImage(UploadedFile $image): Image
-    {
-        Storage::disk('public')->put('/profile', $image);
-
-        $image = $this->image()->create([
-            'path' => $image->hashName('storage/profile/')
-        ]);
-        return $image;
-    }
-
-
-    /**
-     * The channels the user receives notification broadcasts on.
-     *
-     * @return string
-     */
-    public function receivesBroadcastNotificationsOn()
-    {
-        return 'users.'.$this->id;
+        return $this->hasMany(Task::class);
     }
 
 }

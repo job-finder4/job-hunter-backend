@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\Controllers\BillingController;
+use App\Http\Controllers\PaymentWayController;
+use App\Http\Controllers\PlanController;
+use App\Http\Controllers\SubscriptionController;
+use App\PostCard;
+use App\PostCardSendService;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,8 +18,3 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
-

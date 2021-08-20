@@ -41,13 +41,6 @@ class Handler extends ExceptionHandler
             //
         });
 
-        $this->renderable(function (ValidationException $e, $request) {
-            throw new ValidationErrorException(json_encode($e->errors()));
-        });
-
-        $this->renderable(function (NotFoundHttpException $e,$request){
-            throw new MyModelNotFoundException($e->getMessage());
-        });
 
     }
 }

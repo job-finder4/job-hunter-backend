@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 
+use App\BankingGateway;
+use App\CreditCardGateWay;
+use App\PaymentGateWay;
+use App\PostCardSendService;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\ServiceProvider;
 
@@ -15,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+
     }
 
     /**
@@ -26,7 +30,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         ResetPassword::createUrlUsing(function ($notifiable, string $token) {
-            return config('app.url').'/reset-password?token='.$token.'&email='.urlencode($notifiable->email);
+            return config('app.url') . '/reset-password?token=' . $token . '&email=' . urlencode($notifiable->email);
         });
+
     }
 }
